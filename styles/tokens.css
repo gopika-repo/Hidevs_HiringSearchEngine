@@ -22,7 +22,7 @@
   --color-text-inverse: #FFFFFF;
   --color-text-link: #2563EB;
 
-  /* --- Color System: Accent (Single Strategic Accent) --- */
+  /* --- Color System: Accent --- */
   --color-accent-base: #2563EB;
   --color-accent-hover: #1D4ED8;
   --color-accent-pressed: #1E40AF;
@@ -51,7 +51,7 @@
   --color-selected-bg: #EFF6FF;
   --color-selected-border: #2563EB;
 
-  /* --- Typography Scale (Inter Typeface) --- */
+  /* --- Typography Scale --- */
   --font-family-base: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-family-mono: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
 
@@ -65,7 +65,7 @@
   --type-caption-size: 0.8125rem;  /* 13px */
   --type-label-size: 0.75rem;      /* 12px */
 
-  /* --- Spacing System (8px Base Unit) --- */
+  /* --- Spacing System --- */
   --space-0-5: 4px;
   --space-1: 8px;
   --space-1-5: 12px;
@@ -76,7 +76,6 @@
   --space-5: 40px;
   --space-6: 48px;
   --space-8: 64px;
-  --space-12: 96px;
 
   /* --- Border Radius Scale --- */
   --radius-none: 0px;
@@ -102,7 +101,6 @@
   --duration-fast: 100ms;
   --duration-normal: 200ms;
   --duration-slow: 280ms;
-  --duration-deliberate: 500ms;
 
   --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
   --ease-decelerate: cubic-bezier(0, 0, 0.2, 1);

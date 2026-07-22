@@ -1,106 +1,6 @@
 /* ==========================================================================
-   HiDevs Hiring Search Engine — CSS Variables & Design System Tokens
+   HiDevs Hiring Search Engine — Global Main Stylesheet
    ========================================================================== */
-
-:root {
-  /* Surface & Canvas */
-  --color-bg-base: #F9F9FB;
-  --color-bg-surface: #FFFFFF;
-  --color-bg-subtle: #F3F4F6;
-  --color-bg-inverse: #0F1117;
-
-  /* Borders */
-  --color-border-subtle: #EBEBED;
-  --color-border-default: #D1D5DB;
-  --color-border-strong: #9CA3AF;
-
-  /* Typography */
-  --color-text-primary: #111827;
-  --color-text-secondary: #374151;
-  --color-text-muted: #6B7280;
-  --color-text-disabled: #9CA3AF;
-  --color-text-inverse: #FFFFFF;
-  --color-text-link: #2563EB;
-
-  /* Accent */
-  --color-accent-base: #2563EB;
-  --color-accent-hover: #1D4ED8;
-  --color-accent-pressed: #1E40AF;
-  --color-accent-subtle: #EFF6FF;
-  --color-accent-muted: #BFDBFE;
-
-  /* Semantics */
-  --color-success-base: #16A34A;
-  --color-success-subtle: #F0FDF4;
-  --color-success-text: #15803D;
-
-  --color-warning-base: #D97706;
-  --color-warning-subtle: #FFFBEB;
-  --color-warning-text: #B45309;
-
-  --color-error-base: #DC2626;
-  --color-error-subtle: #FEF2F2;
-  --color-error-text: #B91C1C;
-
-  /* Interactive States */
-  --color-hover-bg: #F3F4F6;
-  --color-focus-ring: rgba(37, 99, 235, 0.35);
-  --color-selected-bg: #EFF6FF;
-  --color-selected-border: #2563EB;
-
-  /* Typography Scale */
-  --font-family-base: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-family-mono: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
-
-  --type-display-size: 2.25rem;
-  --type-h1-size: 1.875rem;
-  --type-h2-size: 1.5rem;
-  --type-h3-size: 1.25rem;
-  --type-body-lg-size: 1.0625rem;
-  --type-body-size: 0.9375rem;
-  --type-body-sm-size: 0.875rem;
-  --type-caption-size: 0.8125rem;
-  --type-label-size: 0.75rem;
-
-  /* Spacing */
-  --space-0-5: 4px;
-  --space-1: 8px;
-  --space-1-5: 12px;
-  --space-2: 16px;
-  --space-2-5: 20px;
-  --space-3: 24px;
-  --space-4: 32px;
-  --space-5: 40px;
-  --space-6: 48px;
-  --space-8: 64px;
-
-  /* Radii */
-  --radius-none: 0px;
-  --radius-xs: 2px;
-  --radius-sm: 4px;
-  --radius-md: 6px;
-  --radius-lg: 8px;
-  --radius-xl: 12px;
-  --radius-full: 9999px;
-
-  /* Elevation */
-  --shadow-none: none;
-  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.05);
-  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.08), 0 4px 6px rgba(0, 0, 0, 0.05);
-  --shadow-focus: 0 0 0 3px var(--color-focus-ring);
-
-  /* Motion */
-  --duration-fast: 100ms;
-  --duration-normal: 200ms;
-  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
-
-  /* Layout Bounds */
-  --container-max-width: 1280px;
-  --header-height: 56px;
-  --sidebar-width: 240px;
-}
 
 * {
   box-sizing: border-box;
@@ -115,5 +15,31 @@ body {
   background-color: var(--color-bg-base);
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   min-height: 100vh;
+}
+
+/* Accessibility Focus Ring */
+:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus);
+}
+
+/* Base Link Reset */
+a {
+  color: var(--color-text-link);
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+/* Utility Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.fade-in {
+  animation: fadeIn var(--duration-normal) var(--ease-standard);
 }

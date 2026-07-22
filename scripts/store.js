@@ -1,5 +1,5 @@
 /* ==========================================================================
-   HiDevs Hiring Search Engine — Reactive State Store & Dispatcher
+   HiDevs Hiring Search Engine — Clean Central State Manager
    ========================================================================== */
 
 import { mockCandidates } from './mockData.js';
@@ -11,12 +11,12 @@ class Store {
       searchQuery: '',
       activeQuickFilters: new Set(),
       filters: {
-        availability: null, // 'Open to Work' | null
-        experienceLevel: null, // '3-5' | null
+        availability: null,
+        experienceLevel: null,
         roleTypes: new Set(),
         skills: new Set(),
-        workMode: null, // 'Remote' | null
-        builderSignals: new Set(), // 'hackathon_winner' | 'active_builder' | 'ai_agent'
+        workMode: null,
+        builderSignals: new Set(),
         rankingPercentile: 100
       },
       shortlistedIds: new Set(["cand-1"]),
@@ -26,13 +26,8 @@ class Store {
       ],
       compareQueue: new Set(),
       activePreviewCandidateId: null,
-      activeView: 'search', // 'search' | 'workspace' | 'profile' | 'compare'
+      activeView: 'search', // 'search' | 'workspace' | 'profile'
       activeProfileCandidateId: "cand-1",
-      recruiterNotes: {
-        "cand-1": [
-          { date: "Jul 22, 2026", text: "Strong LangChain & FastAPI background. Validate RAG pipeline scaling." }
-        ]
-      },
       pipeline: {
         saved: ["cand-2"],
         shortlisted: ["cand-1"],
@@ -56,8 +51,7 @@ class Store {
     this.listeners.forEach(listener => listener(this.state));
   }
 
-  // --- State Mutators ---
-
+  // --- Mutators ---
   setSearchQuery(query) {
     this.state.searchQuery = query;
     this.notify();
@@ -75,8 +69,6 @@ class Store {
   setFilter(category, value) {
     if (category === 'availability') {
       this.state.filters.availability = this.state.filters.availability === value ? null : value;
-    } else if (category === 'experienceLevel') {
-      this.state.filters.experienceLevel = this.state.filters.experienceLevel === value ? null : value;
     } else if (category === 'workMode') {
       this.state.filters.workMode = this.state.filters.workMode === value ? null : value;
     }
@@ -161,22 +153,10 @@ class Store {
     this.notify();
   }
 
-  addNote(candidateId, text) {
-    if (!this.state.recruiterNotes[candidateId]) {
-      this.state.recruiterNotes[candidateId] = [];
-    }
-    this.state.recruiterNotes[candidateId].unshift({
-      date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
-      text
-    });
-    this.notify();
-  }
-
-  // --- Selectors ---
-
+  // --- Filter Selector ---
   getFilteredCandidates() {
     return this.state.candidates.filter(cand => {
-      // 1. Search Query
+      // Search Query
       if (this.state.searchQuery.trim()) {
         const q = this.state.searchQuery.toLowerCase();
         const matchName = cand.name.toLowerCase().includes(q);
@@ -185,7 +165,7 @@ class Store {
         if (!matchName && !matchHeadline && !matchSkills) return false;
       }
 
-      // 2. Quick Filters
+      // Quick Filters
       if (this.state.activeQuickFilters.has("open_work") && cand.availability !== "Open to Work") return false;
       if (this.state.activeQuickFilters.has("remote") && cand.workMode !== "Remote" && cand.workMode !== "Remote Only") return false;
       if (this.state.activeQuickFilters.has("immediate") && cand.noticePeriodDays > 15) return false;
@@ -193,7 +173,7 @@ class Store {
       if (this.state.activeQuickFilters.has("ai_engineers") && !cand.roleTypes.includes("AI / ML Engineer")) return false;
       if (this.state.activeQuickFilters.has("top_ranked") && cand.builderProof.aiRankPercentile > 25) return false;
 
-      // 3. Primary Sidebar Filters
+      // Sidebar Filters
       if (this.state.filters.availability && cand.availability !== this.state.filters.availability) return false;
       if (this.state.filters.workMode && cand.workMode !== this.state.filters.workMode) return false;
       

@@ -1,5 +1,5 @@
 /* ==========================================================================
-   HiDevs Hiring Search Engine — Layout Stylesheet
+   HiDevs Hiring Search Engine — Clean Production Layout Stylesheet
    ========================================================================== */
 
 #app-root {
@@ -12,7 +12,7 @@
 .global-header {
   position: sticky;
   top: 0;
-  z-index: 100;
+  z-index: 40;
   height: var(--header-height);
   background-color: var(--color-bg-surface);
   border-bottom: 1px solid var(--color-border-subtle);
@@ -101,6 +101,7 @@
   background-color: var(--color-bg-surface);
   cursor: pointer;
 }
+
 .user-profile-avatar {
   width: 28px;
   height: 28px;
@@ -114,7 +115,7 @@
   justify-content: center;
 }
 
-/* --- Main Content Grid Container --- */
+/* --- Main Layout Grid --- */
 .main-container {
   flex: 1;
   display: flex;
@@ -123,9 +124,10 @@
   margin: 0 auto;
   padding: var(--space-3) var(--space-4);
   gap: var(--space-3);
+  position: relative;
 }
 
-/* --- Filter Sidebar Container --- */
+/* Sidebar Filters */
 .filter-sidebar {
   width: var(--sidebar-width);
   flex-shrink: 0;
@@ -137,9 +139,10 @@
   top: calc(var(--header-height) + var(--space-3));
   max-height: calc(100vh - var(--header-height) - var(--space-6));
   overflow-y: auto;
+  padding-right: var(--space-1);
 }
 
-/* --- Main Results Area --- */
+/* Center Feed */
 .results-area {
   flex: 1;
   display: flex;
@@ -148,7 +151,6 @@
   min-width: 0;
 }
 
-/* --- Results Header Band --- */
 .results-header-band {
   display: flex;
   flex-direction: column;
@@ -201,6 +203,71 @@
   color: var(--color-text-primary);
   cursor: pointer;
 }
-.sort-select:focus {
-  outline: none;
+
+/* --- Slide-Over Preview Panel (60% Viewport) --- */
+.preview-panel-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(15, 17, 23, 0.35);
+  z-index: 50;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--duration-slow) var(--ease-standard), visibility var(--duration-slow);
+}
+
+.preview-panel-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.preview-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: var(--preview-panel-width);
+  height: 100vh;
+  background-color: var(--color-bg-surface);
+  box-shadow: var(--shadow-xl);
+  z-index: 51;
+  transform: translateX(100%);
+  transition: transform var(--duration-slow) var(--ease-spring);
+  display: flex;
+  flex-direction: column;
+  border-top-left-radius: var(--radius-2xl);
+}
+
+.preview-panel-overlay.active .preview-panel {
+  transform: translateX(0);
+}
+
+.preview-panel-header {
+  height: 72px;
+  padding: 0 var(--space-4);
+  border-bottom: 1px solid var(--color-border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+
+.preview-panel-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.preview-panel-footer {
+  height: 64px;
+  padding: 0 var(--space-4);
+  border-top: 1px solid var(--color-border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
 }

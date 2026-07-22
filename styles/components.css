@@ -1,5 +1,5 @@
 /* ==========================================================================
-   HiDevs Hiring Search Engine — Components Stylesheet
+   HiDevs Hiring Search Engine — Clean Production Components Stylesheet
    ========================================================================== */
 
 /* --- Buttons --- */
@@ -26,6 +26,26 @@
   box-shadow: var(--shadow-focus);
 }
 
+.btn-primary {
+  background-color: var(--color-accent-base);
+  color: var(--color-text-inverse);
+}
+.btn-primary:hover {
+  background-color: var(--color-accent-hover);
+}
+.btn-primary:active {
+  background-color: var(--color-accent-pressed);
+}
+
+.btn-secondary {
+  background-color: var(--color-bg-surface);
+  color: var(--color-text-primary);
+  border-color: var(--color-border-default);
+}
+.btn-secondary:hover {
+  background-color: var(--color-bg-subtle);
+}
+
 .btn-ghost {
   background-color: transparent;
   color: var(--color-text-secondary);
@@ -50,7 +70,334 @@
   color: var(--color-text-primary);
 }
 
-/* --- Search Controls & Dropdown Suggestions --- */
+.btn-sm {
+  height: 32px;
+  padding: 0 var(--space-1-5);
+  font-size: var(--type-caption-size);
+}
+
+/* --- Badges & Chips --- */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-0-5);
+  font-size: var(--type-caption-size);
+  font-weight: 500;
+  height: 24px;
+  padding: 0 var(--space-1);
+  border-radius: var(--radius-full);
+}
+
+.badge-open-to-work {
+  background-color: var(--color-success-subtle);
+  color: var(--color-success-text);
+}
+.badge-open-to-work::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--color-success-base);
+}
+
+.badge-open-select {
+  background-color: var(--color-warning-subtle);
+  color: var(--color-warning-text);
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background-color: var(--color-bg-subtle);
+  border: 1px solid var(--color-border-subtle);
+  color: var(--color-text-secondary);
+  font-size: var(--type-caption-size);
+  font-weight: 500;
+  padding: 3px 8px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-standard);
+}
+.chip:hover {
+  border-color: var(--color-border-default);
+  color: var(--color-text-primary);
+}
+.chip.active {
+  background-color: var(--color-accent-subtle);
+  border-color: var(--color-accent-muted);
+  color: var(--color-accent-base);
+}
+
+.quick-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 var(--space-1-5);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border-default);
+  background: var(--color-bg-surface);
+  color: var(--color-text-secondary);
+  font-size: var(--type-caption-size);
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all var(--duration-fast) var(--ease-standard);
+}
+.quick-chip:hover {
+  border-color: var(--color-border-strong);
+  color: var(--color-text-primary);
+}
+.quick-chip.selected {
+  background-color: var(--color-bg-subtle);
+  border-color: var(--color-border-strong);
+  color: var(--color-text-primary);
+  font-weight: 600;
+}
+
+/* --- Candidate Cards --- */
+.candidate-card {
+  background-color: var(--color-bg-surface);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  transition: border-color var(--duration-fast) var(--ease-standard), box-shadow var(--duration-fast) var(--ease-standard);
+  position: relative;
+}
+
+.candidate-card:hover {
+  border-color: var(--color-border-default);
+  box-shadow: var(--shadow-sm);
+}
+
+.card-header-row {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-1-5);
+}
+
+.avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-accent-subtle);
+  color: var(--color-accent-base);
+  font-weight: 600;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.candidate-info {
+  flex: 1;
+}
+
+.candidate-name {
+  font-size: var(--type-body-size);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  text-decoration: none;
+  cursor: pointer;
+}
+.candidate-name:hover {
+  color: var(--color-accent-base);
+}
+
+.candidate-headline {
+  font-size: var(--type-body-sm-size);
+  color: var(--color-text-secondary);
+}
+
+.candidate-meta {
+  font-size: var(--type-caption-size);
+  color: var(--color-text-muted);
+  display: flex;
+  gap: var(--space-1);
+}
+
+.card-divider {
+  height: 1px;
+  background-color: var(--color-border-subtle);
+  margin: var(--space-0-5) 0;
+}
+
+.skills-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+}
+
+.builder-proof-line {
+  font-size: var(--type-body-sm-size);
+  color: var(--color-text-muted);
+  font-weight: 500;
+}
+
+.ai-summary-box {
+  font-size: var(--type-body-sm-size);
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+  background-color: var(--color-bg-base);
+  padding: var(--space-1-5);
+  border-radius: var(--radius-md);
+  border-left: 3px solid var(--color-accent-base);
+}
+
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: var(--type-caption-size);
+  color: var(--color-text-muted);
+  margin-top: var(--space-0-5);
+}
+
+/* --- Filter Sidebar Section --- */
+.filter-section {
+  border-bottom: 1px solid var(--color-border-subtle);
+  padding-bottom: var(--space-2);
+}
+
+.filter-section-title {
+  font-size: var(--type-label-size);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-text-muted);
+  font-weight: 600;
+  margin-bottom: var(--space-1-5);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.filter-options-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.form-check {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--type-body-sm-size);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+}
+.form-check input {
+  accent-color: var(--color-accent-base);
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+/* --- Intelligence Cards --- */
+.intel-card {
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border-subtle);
+  border-left: 3px solid var(--color-accent-base);
+  border-radius: var(--radius-lg);
+  padding: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1-5);
+}
+
+.intel-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.intel-card-title {
+  font-size: var(--type-body-size);
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+.intel-signal-tag {
+  font-size: var(--type-caption-size);
+  font-weight: 600;
+  color: var(--color-accent-base);
+  background: var(--color-accent-subtle);
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+}
+
+.intel-observation {
+  font-size: var(--type-body-sm-size);
+  color: var(--color-text-secondary);
+}
+
+.intel-evidence-list {
+  list-style-type: disc;
+  padding-left: var(--space-3);
+  font-size: var(--type-caption-size);
+  color: var(--color-text-muted);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.intel-takeaway {
+  font-size: var(--type-body-sm-size);
+  font-style: italic;
+  color: var(--color-text-primary);
+  background: var(--color-bg-subtle);
+  padding: var(--space-1);
+  border-radius: var(--radius-md);
+}
+
+/* --- Kanban Board --- */
+.kanban-board {
+  display: flex;
+  gap: var(--space-2);
+  overflow-x: auto;
+  padding-bottom: var(--space-3);
+}
+
+.kanban-column {
+  width: 260px;
+  flex-shrink: 0;
+  background-color: var(--color-bg-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-2);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1-5);
+}
+
+.kanban-column-header {
+  font-size: var(--type-body-sm-size);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: var(--space-1);
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.kanban-card {
+  background-color: var(--color-bg-surface);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--space-1-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  cursor: pointer;
+  box-shadow: var(--shadow-xs);
+}
+.kanban-card:hover {
+  box-shadow: var(--shadow-sm);
+}
+
+/* --- Global Search Controls --- */
 .search-wrapper {
   position: relative;
   width: 100%;
@@ -127,35 +474,7 @@
   background-color: var(--color-bg-subtle);
 }
 
-/* --- Quick Filter Chips --- */
-.quick-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  height: 32px;
-  padding: 0 var(--space-1-5);
-  border-radius: var(--radius-md);
-  border: 1px solid var(--color-border-default);
-  background: var(--color-bg-surface);
-  color: var(--color-text-secondary);
-  font-size: var(--type-caption-size);
-  font-weight: 500;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: all var(--duration-fast) var(--ease-standard);
-}
-.quick-chip:hover {
-  border-color: var(--color-border-strong);
-  color: var(--color-text-primary);
-}
-.quick-chip.selected {
-  background-color: var(--color-bg-subtle);
-  border-color: var(--color-border-strong);
-  color: var(--color-text-primary);
-  font-weight: 600;
-}
-
-/* --- Empty Search Experience Component --- */
+/* --- Empty Search Experience --- */
 .empty-search-state {
   display: flex;
   flex-direction: column;
