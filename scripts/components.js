@@ -89,101 +89,117 @@ export function renderStructuredBriefCard(cand) {
   `;
 }
 
-// --- Candidate Card Renderer ---
+// --- Candidate Card Renderer (Linear/Stripe Information Hierarchy) ---
 export function renderCandidateCard(cand, state) {
   const isShortlisted = state.shortlistedIds.has(cand.id);
 
+  const aiScoreText = cand.builderProof?.aiRankPercentile
+    ? `Top ${cand.builderProof.aiRankPercentile}% AI Rank`
+    : `94% AI Match`;
+
   return `
     <div class="candidate-card" data-id="${cand.id}">
-      <div class="card-header-row">
-        <div class="avatar">${sanitizeHtml(cand.avatar)}</div>
-        <div class="candidate-info">
-          <div style="display: flex; align-items: center; justify-content: space-between; gap: var(--space-1); flex-wrap: wrap;">
-            <div class="candidate-name" data-action="open-preview" data-id="${cand.id}">${sanitizeHtml(cand.name)}</div>
-            ${cand.links ? `
-              <div class="direct-links-row" style="display: flex; gap: var(--space-1); align-items: center;">
-                ${cand.links.github ? `<a href="${sanitizeHtml(cand.links.github)}" target="_blank" rel="noopener noreferrer" class="direct-link-btn" title="GitHub Profile" onclick="event.stopPropagation();">${icons.github} GitHub</a>` : ''}
-                ${cand.links.linkedin ? `<a href="${sanitizeHtml(cand.links.linkedin)}" target="_blank" rel="noopener noreferrer" class="direct-link-btn" title="LinkedIn Profile" onclick="event.stopPropagation();">${icons.linkedin} LinkedIn</a>` : ''}
-                ${cand.links.portfolio ? `<a href="${sanitizeHtml(cand.links.portfolio)}" target="_blank" rel="noopener noreferrer" class="direct-link-btn" title="Portfolio Website" onclick="event.stopPropagation();">${icons.portfolio} Portfolio</a>` : ''}
-              </div>
-            ` : ''}
-          </div>
-          <div class="candidate-headline">${sanitizeHtml(cand.headline)} · ${sanitizeHtml(cand.company)}</div>
-          <div class="candidate-meta">
-            <span>${sanitizeHtml(cand.location)}</span> · 
-            <span>${sanitizeHtml(cand.workMode)}</span> · 
-            <span>${cand.experienceYears} yrs exp</span> · 
-            <span>${cand.noticePeriodDays === 0 ? 'Immediate' : cand.noticePeriodDays + 'd notice'}</span>
+      <!-- Header Row: 1. Name, 2. Current Role, 3. AI Hiring Score, 4. Open to Work -->
+      <div class="card-header-main">
+        <div class="card-identity-group">
+          <div class="avatar">${sanitizeHtml(cand.avatar)}</div>
+          <div class="identity-details">
+            <!-- 1. Candidate Name & 3. AI Hiring Score -->
+            <div class="name-score-row">
+              <span class="candidate-name" data-action="open-preview" data-id="${cand.id}">
+                ${sanitizeHtml(cand.name)}
+              </span>
+              <span class="ai-score-pill">
+                ${icons.star} ${aiScoreText}
+              </span>
+            </div>
+            <!-- 2. Current Role -->
+            <div class="candidate-headline">
+              ${sanitizeHtml(cand.headline)} · <strong>${sanitizeHtml(cand.company)}</strong>
+            </div>
           </div>
         </div>
-        <span class="badge ${cand.availability === 'Open to Work' ? 'badge-open-to-work' : 'badge-open-select'}">
-          ${sanitizeHtml(cand.availability)}
-        </span>
+
+        <div class="card-status-group">
+          <!-- 4. Open To Work Status -->
+          <span class="badge ${cand.availability === 'Open to Work' ? 'badge-open-to-work' : 'badge-open-select'}">
+            ${sanitizeHtml(cand.availability)}
+          </span>
+          ${cand.links ? `
+            <div class="direct-links-row">
+              ${cand.links.github ? `<a href="${sanitizeHtml(cand.links.github)}" target="_blank" rel="noopener noreferrer" class="direct-link-btn" title="GitHub Profile" onclick="event.stopPropagation();">${icons.github}</a>` : ''}
+              ${cand.links.linkedin ? `<a href="${sanitizeHtml(cand.links.linkedin)}" target="_blank" rel="noopener noreferrer" class="direct-link-btn" title="LinkedIn Profile" onclick="event.stopPropagation();">${icons.linkedin}</a>` : ''}
+              ${cand.links.portfolio ? `<a href="${sanitizeHtml(cand.links.portfolio)}" target="_blank" rel="noopener noreferrer" class="direct-link-btn" title="Portfolio Website" onclick="event.stopPropagation();">${icons.portfolio}</a>` : ''}
+            </div>
+          ` : ''}
+        </div>
       </div>
 
-      <div class="card-divider"></div>
+      <!-- 5. One-line AI Summary -->
+      <div class="ai-summary-headline">
+        ${sanitizeHtml(cand.fitVerdict?.reason || cand.aiSummary)}
+      </div>
 
+      <!-- 6. Top Skills -->
       <div class="skills-row">
         ${(cand.primarySkills || []).map(s => `<span class="chip active">${sanitizeHtml(typeof s === 'string' ? s : s.name)}</span>`).join('')}
         ${(cand.skills || []).map(s => typeof s === 'string' ? s : s.name).filter(s => !(cand.primarySkills || []).map(ps => typeof ps === 'string' ? ps : ps.name).includes(s)).slice(0, 3).map(s => `<span class="chip">${sanitizeHtml(s)}</span>`).join('')}
       </div>
 
-      <div class="builder-proof-line" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--space-1);">
-        <div style="display: flex; align-items: center; gap: var(--space-1-5); flex-wrap: wrap; position: relative;">
-          <!-- Projects Popover Anchor -->
-          <div style="position: relative; display: inline-block;">
-            <button class="btn btn-ghost btn-sm" data-action="toggle-projects-popover" data-target-popover="projects-popover-${cand.id}" style="padding: 2px 6px; height: 26px; font-size: 12px;">
-              ${icons.zap} ${cand.builderProof?.projectsCount ?? (cand.projects ? cand.projects.length : 0)} Projects
-            </button>
-            <div id="projects-popover-${cand.id}" class="builder-proof-popover" style="display: none; position: absolute; bottom: 100%; left: 0; margin-bottom: 6px; z-index: 120; width: 280px; background: var(--color-bg-surface); border: 1px solid var(--color-border-subtle); border-radius: var(--radius-md); box-shadow: var(--shadow-md); padding: 12px; text-align: left;">
-              <div style="font-weight: 700; font-size: 11px; text-transform: uppercase; color: var(--color-text-muted); margin-bottom: 8px;">Deployed & Verified Projects</div>
-              ${cand.projects && cand.projects.length > 0 ? cand.projects.map(p => `
-                <div style="margin-bottom: 8px; padding-bottom: 6px; border-bottom: 1px solid var(--color-border-subtle);">
-                  <div style="font-weight: 600; font-size: 13px; color: var(--color-text-primary);">${sanitizeHtml(p.name)}</div>
-                  <div style="font-size: 12px; color: var(--color-text-muted); margin: 2px 0;">${sanitizeHtml(p.description)}</div>
-                  <div class="skills-row" style="margin-top: 4px;">
-                    ${(p.techStack || []).map(t => `<span class="chip" style="font-size: 10px; padding: 1px 4px;">${sanitizeHtml(t)}</span>`).join('')}
-                  </div>
-                </div>
-              `).join('') : '<div style="font-size: 12px; color: var(--color-text-muted);">No projects listed</div>'}
-              <button class="btn btn-ghost btn-sm" data-action="open-preview" data-id="${cand.id}" style="width: 100%; justify-content: center; margin-top: 4px;">See full profile →</button>
-            </div>
+      <!-- 7. Important Metrics -->
+      <div class="metrics-bar">
+        <span class="metric-item">${sanitizeHtml(cand.location)}</span>
+        <span class="metric-dot">•</span>
+        <span class="metric-item">${cand.experienceYears} yrs exp</span>
+        <span class="metric-dot">•</span>
+        <span class="metric-item">${cand.noticePeriodDays === 0 ? 'Immediate (0d)' : cand.noticePeriodDays + 'd notice'}</span>
+        <span class="metric-dot">•</span>
+
+        <!-- Projects Popover Anchor -->
+        <div class="popover-anchor">
+          <button class="btn-metric-link" data-action="toggle-projects-popover" data-target-popover="projects-popover-${cand.id}" onclick="event.stopPropagation();">
+            ${icons.zap} ${cand.builderProof?.projectsCount ?? (cand.projects ? cand.projects.length : 0)} Projects
+          </button>
+          <div id="projects-popover-${cand.id}" class="builder-proof-popover" style="display: none;">
+            <div class="popover-header">Deployed & Verified Projects</div>
+            ${cand.projects && cand.projects.length > 0 ? cand.projects.map(p => `
+              <div class="popover-item">
+                <div class="popover-item-title">${sanitizeHtml(p.name)}</div>
+                <div class="popover-item-sub">${sanitizeHtml(p.description)}</div>
+              </div>
+            `).join('') : '<div class="popover-item-sub">No projects listed</div>'}
+            <button class="btn btn-ghost btn-sm popover-cta" data-action="open-preview" data-id="${cand.id}">See full profile →</button>
           </div>
+        </div>
 
-          <span>·</span>
+        <span class="metric-dot">•</span>
 
-          <!-- Hackathons Popover Anchor -->
-          <div style="position: relative; display: inline-block;">
-            <button class="btn btn-ghost btn-sm" data-action="toggle-hackathons-popover" data-target-popover="hackathons-popover-${cand.id}" style="padding: 2px 6px; height: 26px; font-size: 12px;">
-              ${icons.trophy} ${cand.builderProof?.hackathonWinsCount ?? (cand.hackathons ? cand.hackathons.length : 0)} Hackathon Wins
-            </button>
-            <div id="hackathons-popover-${cand.id}" class="builder-proof-popover" style="display: none; position: absolute; bottom: 100%; left: 0; margin-bottom: 6px; z-index: 120; width: 260px; background: var(--color-bg-surface); border: 1px solid var(--color-border-subtle); border-radius: var(--radius-md); box-shadow: var(--shadow-md); padding: 12px; text-align: left;">
-              <div style="font-weight: 700; font-size: 11px; text-transform: uppercase; color: var(--color-text-muted); margin-bottom: 8px;">Hackathon & Benchmark Awards</div>
-              ${cand.hackathons && cand.hackathons.length > 0 ? cand.hackathons.map(h => `
-                <div style="margin-bottom: 6px; font-size: 12px;">
-                  <strong style="color: var(--color-text-primary);">🏆 ${sanitizeHtml(h.name)}</strong>
-                  <div style="color: var(--color-text-secondary); font-size: 11px;">Rank: ${sanitizeHtml(h.rank)} · ${sanitizeHtml(h.date)}</div>
-                </div>
-              `).join('') : `<div style="font-size: 12px; color: var(--color-text-muted);">${cand.builderProof.hackathonWinsCount} verified hackathon wins</div>`}
-              <button class="btn btn-ghost btn-sm" data-action="open-preview" data-id="${cand.id}" style="width: 100%; justify-content: center; margin-top: 4px;">See full profile →</button>
-            </div>
+        <!-- Hackathons Popover Anchor -->
+        <div class="popover-anchor">
+          <button class="btn-metric-link" data-action="toggle-hackathons-popover" data-target-popover="hackathons-popover-${cand.id}" onclick="event.stopPropagation();">
+            ${icons.trophy} ${cand.builderProof?.hackathonWinsCount ?? (cand.hackathons ? cand.hackathons.length : 0)} Hackathons
+          </button>
+          <div id="hackathons-popover-${cand.id}" class="builder-proof-popover" style="display: none;">
+            <div class="popover-header">Hackathon & Benchmark Awards</div>
+            ${cand.hackathons && cand.hackathons.length > 0 ? cand.hackathons.map(h => `
+              <div class="popover-item">
+                <div class="popover-item-title">🏆 ${sanitizeHtml(h.name)}</div>
+                <div class="popover-item-sub">Rank: ${sanitizeHtml(h.rank)} · ${sanitizeHtml(h.date)}</div>
+              </div>
+            `).join('') : `<div class="popover-item-sub">${cand.builderProof.hackathonWinsCount} verified wins</div>`}
+            <button class="btn btn-ghost btn-sm popover-cta" data-action="open-preview" data-id="${cand.id}">See full profile →</button>
           </div>
-
-          <span>·</span>
-
-          <span style="display: inline-flex; align-items: center; gap: 4px; font-size: 12px;">${icons.star} Top ${cand.builderProof.aiRankPercentile}% AI Rank</span>
         </div>
       </div>
 
-      <div class="card-divider"></div>
-
+      <!-- 8. Action Buttons -->
       <div class="card-footer">
-        <div>Active ${sanitizeHtml(cand.lastActive)}</div>
-        <div style="display: flex; gap: 8px;">
+        <div class="last-active-text">Active ${sanitizeHtml(cand.lastActive)}</div>
+        <div class="action-buttons-group">
           <button class="btn ${isShortlisted ? 'btn-secondary' : 'btn-ghost'} btn-sm" data-action="shortlist" data-id="${cand.id}">
             ${isShortlisted ? '★ Shortlisted' : 'Shortlist'}
           </button>
-          <button class="btn btn-primary btn-sm" data-action="open-preview" data-id="${cand.id}" style="font-weight: 600;">
+          <button class="btn btn-primary btn-sm" data-action="open-preview" data-id="${cand.id}">
             View Profile →
           </button>
         </div>
