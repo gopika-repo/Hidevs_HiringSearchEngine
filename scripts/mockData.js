@@ -31,6 +31,8 @@ export const mockRecruiterData = {
   ]
 };
 
+export const mockQuickFilters = mockRecruiterData.quickFilters;
+
 export const mockCandidates = [
   {
     id: "cand-1",
