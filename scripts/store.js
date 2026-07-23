@@ -28,7 +28,6 @@ class Store {
         { id: "col-1", name: "AI Engineers Q3", candidateIds: ["cand-1", "cand-2"] },
         { id: "col-2", name: "Immediate Joiners", candidateIds: ["cand-3"] }
       ],
-      compareQueue: new Set(),
       activePreviewCandidateId: null,
       activeView: 'search', // 'search' | 'workspace' | 'profile'
       activeProfileCandidateId: "cand-1",
@@ -183,17 +182,6 @@ class Store {
       this.state.activeProfileCandidateId = candidateId;
     }
     this.closePreviewPanel();
-    this.notify();
-  }
-
-  toggleCompare(candidateId) {
-    if (this.state.compareQueue.has(candidateId)) {
-      this.state.compareQueue.delete(candidateId);
-    } else {
-      if (this.state.compareQueue.size < 3) {
-        this.state.compareQueue.add(candidateId);
-      }
-    }
     this.notify();
   }
 

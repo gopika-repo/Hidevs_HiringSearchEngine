@@ -227,13 +227,27 @@ class ApplicationController {
       const id = btn.dataset.id;
 
       if (action === 'shortlist') store.toggleShortlist(id);
-      else if (action === 'compare') store.toggleCompare(id);
       else if (action === 'open-preview') store.openPreviewPanel(id);
       else if (action === 'close-preview') store.closePreviewPanel();
       else if (action === 'open-full-profile') store.setView('profile', id);
       else if (action === 'prev-page') store.setPage(Math.max(1, (store.state.currentPage || 1) - 1));
       else if (action === 'next-page') store.setPage((store.state.currentPage || 1) + 1);
-      else handleFilterClick(btn);
+      else if (action === 'toggle-projects-popover' || action === 'toggle-hackathons-popover') {
+        e.stopPropagation();
+        const targetId = btn.dataset.targetPopover;
+        const popover = document.getElementById(targetId);
+        if (popover) {
+          const isVisible = popover.style.display === 'block';
+          document.querySelectorAll('.builder-proof-popover').forEach(p => p.style.display = 'none');
+          popover.style.display = isVisible ? 'none' : 'block';
+        }
+      } else handleFilterClick(btn);
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.builder-proof-popover') && !e.target.closest('[data-action="toggle-projects-popover"]') && !e.target.closest('[data-action="toggle-hackathons-popover"]')) {
+        document.querySelectorAll('.builder-proof-popover').forEach(p => p.style.display = 'none');
+      }
     });
 
     document.getElementById('preview-overlay')?.addEventListener('click', (e) => {
@@ -241,7 +255,10 @@ class ApplicationController {
     });
 
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') store.closePreviewPanel();
+      if (e.key === 'Escape') {
+        store.closePreviewPanel();
+        document.querySelectorAll('.builder-proof-popover').forEach(p => p.style.display = 'none');
+      }
     });
 
     // HTML5 Drag and Drop Handlers for Kanban Workspace

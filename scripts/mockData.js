@@ -46,7 +46,12 @@ export const mockCandidates = [
     noticePeriodDays: 15,
     availability: "Open to Work",
     lastActive: "3 days ago",
-    skills: ["Python", "FastAPI", "LangChain", "PyTorch", "Docker", "PostgreSQL", "LlamaIndex", "Redis", "AWS"],
+    skills: [
+      { name: "Python", score: 94, basis: "Assessed via 6 production FastAPI services + Top 5% Python LeetPrompt" },
+      { name: "FastAPI", score: 90, basis: "4 years production API deployment at Swiggy scale" },
+      { name: "LangChain", score: 88, basis: "Built TalentGraph AI RAG pipeline with 340+ DAU" },
+      { name: "PyTorch", score: 82, basis: "Model fine-tuning benchmark assessment" }
+    ],
     primarySkills: ["Python", "FastAPI", "LangChain"],
     roleTypes: ["AI / ML Engineer", "Backend"],
     links: {
@@ -73,63 +78,30 @@ export const mockCandidates = [
       reason: "4 years building production ML APIs with FastAPI & LangChain; deployed 2 live AI agents with 340+ daily users."
     },
     aiSummary: "Backend engineer with 4 years in production ML systems. Deployed 2 LLM agents with 340+ daily active users. Top 8% AI Challenge rank.",
+    about: "Backend-leaning ML engineer who's spent the last 4 years shipping production LLM features at consumer scale. Prefers small, fast-moving teams and has a strong bias toward deploying over prototyping.",
     whyInterview: [
-      {
-        claim: "Top 8% AI Challenge Rank",
-        evidence: "Ranked #8 out of 100+ candidates in LLM Agent & RAG Deployment Benchmark."
-      },
-      {
-        claim: "Production API Velocity",
-        evidence: "Built TalentGraph AI & CodeReview bot handling 340+ daily production queries."
-      },
-      {
-        claim: "2-Time Hackathon Champion",
-        evidence: "Won 1st place in 2 Agentic AI Hackathons (2023, 2024)."
-      }
+      { claim: "Top 8% AI Challenge Rank", evidence: "Ranked #8 out of 100+ candidates in LLM Agent & RAG Deployment Benchmark." },
+      { claim: "Production API Velocity", evidence: "Built TalentGraph AI & CodeReview bot handling 340+ daily production queries." },
+      { claim: "2-Time Hackathon Champion", evidence: "Won 1st place in 2 Agentic AI Hackathons (2023, 2024)." }
     ],
     potentialConcerns: [
       "No visible team-lead experience — best suited for Senior IC role; team lead capability needs interview check.",
       "Frontend scope limited to basic React components — verify full-stack depth if required."
     ],
-    projects: [
-      {
-        name: "TalentGraph AI",
-        description: "AI-powered talent matching engine using LangChain + RAG",
-        techStack: ["Python", "LangChain", "FastAPI"],
-        usersCount: "200+ active users",
-        verified: true,
-        deployed: true,
-        links: { live: "https://talentgraph.demo", github: "github.com/arjunsharma/talentgraph" }
-      },
-      {
-        name: "CodeReview Summarizer",
-        description: "Automated PR summarize bot leveraging Claude API & FastAPI",
-        techStack: ["Python", "FastAPI", "Claude API"],
-        usersCount: "89 active users",
-        verified: true,
-        deployed: true,
-        links: { live: "#", github: "github.com/arjunsharma/codereview-bot" }
-      }
+    experience: [
+      { title: "Senior ML Engineer", company: "Swiggy", duration: "2023 - Present", highlights: ["Deployed LLM RAG recommendation engine handling 120k daily queries.", "Optimized FastAPI model inference latency from 450ms to 120ms."] },
+      { title: "Backend Engineer", company: "Zomato", duration: "2021 - 2023", highlights: ["Architected order routing microservices in Python & Redis."] }
     ],
-    aiAgents: [
-      { name: "TalentGraph Analyzer", status: "Active", dailyQueries: 340, stack: "LangChain + GPT-4", deployedMonthsAgo: 4 },
-      { name: "Code Review Summarizer", status: "Active", dailyQueries: 89, stack: "Claude API + FastAPI", deployedMonthsAgo: 8 }
+    projects: [
+      { name: "TalentGraph AI", description: "AI-powered talent matching engine using LangChain + RAG", techStack: ["Python", "LangChain", "FastAPI"], usersCount: "200+ active users", verified: true, deployed: true, links: { live: "https://talentgraph.demo", github: "github.com/arjunsharma/talentgraph" } },
+      { name: "CodeReview Summarizer", description: "Automated PR summarize bot leveraging Claude API & FastAPI", techStack: ["Python", "FastAPI", "Claude API"], usersCount: "89 active users", verified: true, deployed: true, links: { live: "#", github: "github.com/arjunsharma/codereview-bot" } }
+    ],
+    hackathons: [
+      { name: "Agentic AI Hackathon 2024", rank: "1st Place (Winner)", date: "Mar 2024" },
+      { name: "HiDevs LLM Challenge #4", rank: "Top 8 Percentile", date: "Jan 2024" }
     ],
     intelligenceCards: [
-      {
-        title: "Builder Momentum",
-        signal: "Strong ↑",
-        observation: "Project output has grown consistently across 3 years with increasing complexity.",
-        evidence: ["2022: 2 beginner projects", "2023: 4 deployed APIs", "2024: 6 production AI systems", "Challenge rank: Top 30% → Top 8%"],
-        takeaway: "Upward trajectory — best work is recent and accelerating."
-      },
-      {
-        title: "Learning Velocity",
-        signal: "Strong ↑",
-        observation: "Adopted LangChain and deployed a production app within 60 days of first usage.",
-        evidence: ["LangChain: First commit Jan 2024 → Deployed Mar 2024 (60 days)", "FastAPI: 61 days time-to-deployment"],
-        takeaway: "Productive in new technologies within 2 months."
-      }
+      { title: "Builder Momentum", signal: "Strong ↑", observation: "Project output has grown consistently across 3 years with increasing complexity.", takeaway: "Upward trajectory — best work is recent and accelerating." }
     ]
   },
   {
@@ -144,74 +116,35 @@ export const mockCandidates = [
     noticePeriodDays: 30,
     availability: "Open to Select Roles",
     lastActive: "1 day ago",
-    skills: ["Python", "React", "TypeScript", "FastAPI", "OpenAI SDK", "Next.js", "Tailwind", "PostgreSQL"],
+    skills: [
+      { name: "React", score: 92, basis: "3 years building enterprise Next.js & React dashboards" },
+      { name: "TypeScript", score: 89, basis: "Strong type-safe application architecture" },
+      { name: "Python", score: 85, basis: "FastAPI & OpenAI API integration" }
+    ],
     primarySkills: ["React", "TypeScript", "Python", "FastAPI"],
     roleTypes: ["AI / ML Engineer", "Full Stack"],
-    links: {
-      github: "https://github.com/priyamehta-dev",
-      linkedin: "https://linkedin.com/in/priyamehta-dev",
-      portfolio: "https://priyamehta.io"
-    },
-    interviewReadiness: {
-      completed: true,
-      score: 82,
-      assessedOn: "Jul 18, 2026"
-    },
-    builderProof: {
-      projectsCount: 4,
-      deployedProjectsCount: 3,
-      hackathonWinsCount: 1,
-      challengesCount: 3,
-      aiRankPercentile: 15,
-      streakDays: 14,
-      monthsActiveCount: 8
-    },
-    fitVerdict: {
-      status: "Strong Fit",
-      reason: "Full-stack AI developer with 3 years experience combining Next.js frontend UI with FastAPI + OpenAI SDK backend."
-    },
+    links: { github: "https://github.com/priyamehta-dev", linkedin: "https://linkedin.com/in/priyamehta-dev", portfolio: "https://priyamehta.io" },
+    interviewReadiness: { completed: true, score: 82, assessedOn: "Jul 18, 2026" },
+    builderProof: { projectsCount: 4, deployedProjectsCount: 3, hackathonWinsCount: 1, challengesCount: 3, aiRankPercentile: 15, streakDays: 14, monthsActiveCount: 8 },
+    fitVerdict: { status: "Strong Fit", reason: "Full-stack AI developer with 3 years experience combining Next.js frontend UI with FastAPI + OpenAI SDK backend." },
     aiSummary: "Full-stack engineer building AI applications with React, Next.js, and OpenAI API. 3 deployed projects with responsive UI.",
+    about: "Product-minded full stack engineer who loves bridging slick frontend UI with intelligent backend APIs. Experienced in payments & fintech workflows.",
     whyInterview: [
-      {
-        claim: "Proven Full-Stack AI Delivery",
-        evidence: "Shipped PromptCraft Workspace serving 150+ active monthly users."
-      },
-      {
-        claim: "Top 15% AI Challenge Rank",
-        evidence: "Ranked Top 15% in Full-Stack LLM Application Benchmark."
-      },
-      {
-        claim: "75% Deployment Ratio",
-        evidence: "3 out of 4 built projects are deployed live with verified user traffic."
-      }
+      { claim: "Proven Full-Stack AI Delivery", evidence: "Shipped PromptCraft Workspace serving 150+ active monthly users." },
+      { claim: "Top 15% AI Challenge Rank", evidence: "Ranked Top 15% in Full-Stack LLM Application Benchmark." }
     ],
     potentialConcerns: [
       "Custom ML model training experience is limited; primary strength is API-level LLM product integration.",
       "30-day notice period — check if immediate joining is required."
     ],
+    experience: [
+      { title: "Full Stack Engineer", company: "Razorpay", duration: "2022 - Present", highlights: ["Built merchant onboarding dashboard in Next.js & TypeScript."] }
+    ],
     projects: [
-      {
-        name: "PromptCraft Workspace",
-        description: "Visual prompt engineering workbench for LLM teams",
-        techStack: ["React", "TypeScript", "OpenAI SDK"],
-        usersCount: "150 active users",
-        verified: true,
-        deployed: true,
-        links: { live: "https://promptcraft.app", github: "github.com/priyamehta/promptcraft" }
-      }
+      { name: "PromptCraft Workspace", description: "Visual prompt engineering workbench for LLM teams", techStack: ["React", "TypeScript", "OpenAI SDK"], usersCount: "150 active users", verified: true, deployed: true, links: { live: "https://promptcraft.app", github: "github.com/priyamehta/promptcraft" } }
     ],
-    aiAgents: [
-      { name: "Support Ticket Router", status: "Active", dailyQueries: 120, stack: "Next.js + OpenAI API", deployedMonthsAgo: 3 }
-    ],
-    intelligenceCards: [
-      {
-        title: "Product Engineering Fit",
-        signal: "Strong",
-        observation: "Builds complete product interfaces over backend APIs.",
-        evidence: ["Next.js + Tailwind UI", "Deployed web workspace with 150 users"],
-        takeaway: "Ideal candidate for AI product teams needing full-stack execution."
-      }
-    ]
+    hackathons: [{ name: "FinTech AI Sprint 2023", rank: "1st Place", date: "Nov 2023" }],
+    intelligenceCards: [{ title: "Product Engineering Fit", signal: "Strong", observation: "Builds complete product interfaces over backend APIs.", takeaway: "Ideal candidate for AI product teams needing full-stack execution." }]
   },
   {
     id: "cand-3",
@@ -225,71 +158,28 @@ export const mockCandidates = [
     noticePeriodDays: 0,
     availability: "Open to Work",
     lastActive: "Today",
-    skills: ["Go", "Python", "Docker", "Kubernetes", "PostgreSQL", "Redis", "Kafka", "gRPC", "AWS"],
+    skills: [
+      { name: "Go", score: 96, basis: "Architected GoStream event broker handling 50k msgs/sec at Amazon" },
+      { name: "Kubernetes", score: 92, basis: "Production EKS deployment & cloud infra" },
+      { name: "Python", score: 88, basis: "Backend API microservices" }
+    ],
     primarySkills: ["Go", "Python", "Kubernetes", "Kafka"],
     roleTypes: ["Backend", "Platform Engineering"],
-    links: {
-      github: "https://github.com/rahulkumar-backend",
-      linkedin: "https://linkedin.com/in/rahulkumar-backend",
-      portfolio: "https://rahulkumar.tech"
-    },
-    interviewReadiness: {
-      completed: true,
-      score: 94,
-      assessedOn: "Jul 22, 2026"
-    },
-    builderProof: {
-      projectsCount: 8,
-      deployedProjectsCount: 6,
-      hackathonWinsCount: 0,
-      challengesCount: 6,
-      aiRankPercentile: 22,
-      streakDays: 45,
-      monthsActiveCount: 12
-    },
-    fitVerdict: {
-      status: "Good Fit",
-      reason: "6 years at Amazon building high-throughput distributed Go & Python services; 0-day immediate joiner."
-    },
+    links: { github: "https://github.com/rahulkumar-backend", linkedin: "https://linkedin.com/in/rahulkumar-backend", portfolio: "https://rahulkumar.tech" },
+    interviewReadiness: { completed: true, score: 94, assessedOn: "Jul 22, 2026" },
+    builderProof: { projectsCount: 8, deployedProjectsCount: 6, hackathonWinsCount: 0, challengesCount: 6, aiRankPercentile: 2, streakDays: 45, monthsActiveCount: 12 },
+    fitVerdict: { status: "Good Fit", reason: "6 years at Amazon building high-throughput distributed Go & Python services; 0-day immediate joiner." },
     aiSummary: "Distributed systems architect with 6 years experience in high-throughput Go and Python microservices at Amazon scale.",
+    about: "Systems engineer passionate about extreme throughput, fault tolerance, and zero-downtime infrastructure. Experienced in high-volume event streaming.",
     whyInterview: [
-      {
-        claim: "High-Scale Systems Architecture",
-        evidence: "Architected GoStream Event Pipeline handling 50k msgs/sec at Amazon scale."
-      },
-      {
-        claim: "Immediate 0-Day Joiner",
-        evidence: "Notice period is 0 days; available for instant onboarding."
-      },
-      {
-        claim: "Top 2% System Design Performance",
-        evidence: "Scored in Top 2% across Distributed Systems & Kubernetes architecture challenges."
-      }
+      { claim: "High-Scale Systems Architecture", evidence: "Architected GoStream Event Pipeline handling 50k msgs/sec at Amazon scale." },
+      { claim: "Immediate 0-Day Joiner", evidence: "Notice period is 0 days; available for instant onboarding." }
     ],
-    potentialConcerns: [
-      "AI/LLM framework experience is foundational; core expertise is distributed systems engineering."
-    ],
-    projects: [
-      {
-        name: "GoStream Pipeline",
-        description: "Event streaming broker in Go handling 50k msgs/sec",
-        techStack: ["Go", "Kafka", "Docker"],
-        usersCount: "Production System",
-        verified: true,
-        deployed: true,
-        links: { github: "github.com/rahulkumar/gostream" }
-      }
-    ],
-    aiAgents: [],
-    intelligenceCards: [
-      {
-        title: "Platform Engineering Fit",
-        signal: "Elite ★",
-        observation: "Top 2% System Design challenge performance with continuous production deployments.",
-        evidence: ["Amazon high-scale background", "Go & Kubernetes expert"],
-        takeaway: "Ideal for senior backend or platform architecture roles."
-      }
-    ]
+    potentialConcerns: ["AI/LLM framework experience is foundational; core expertise is distributed systems engineering."],
+    experience: [{ title: "SDE II", company: "Amazon", duration: "2020 - 2026", highlights: ["Led tier-1 messaging engine team for AWS internal tools."] }],
+    projects: [{ name: "GoStream Pipeline", description: "Event streaming broker in Go handling 50k msgs/sec", techStack: ["Go", "Kafka", "Docker"], usersCount: "Production System", verified: true, deployed: true, links: { github: "github.com/rahulkumar/gostream" } }],
+    hackathons: [{ name: "AWS Cloud Architecture Cup", rank: "Top 2 Percentile", date: "Aug 2023" }],
+    intelligenceCards: [{ title: "Platform Engineering Fit", signal: "Elite ★", observation: "Top 2% System Design challenge performance.", takeaway: "Ideal for senior backend or platform architecture roles." }]
   },
   {
     id: "cand-4",
@@ -303,62 +193,27 @@ export const mockCandidates = [
     noticePeriodDays: 15,
     availability: "Open to Work",
     lastActive: "Today",
-    skills: ["React", "TypeScript", "Next.js", "Tailwind", "GraphQL", "Python", "FastAPI"],
+    skills: [
+      { name: "React", score: 97, basis: "Built Flipkart core design token engine for 1M+ daily users" },
+      { name: "TypeScript", score: 95, basis: "7 years enterprise UI architecture" },
+      { name: "Next.js", score: 91, basis: "SSR web performance optimization" }
+    ],
     primarySkills: ["React", "TypeScript", "Next.js"],
     roleTypes: ["Full Stack", "Backend"],
-    links: {
-      github: "https://github.com/ananya-verma",
-      linkedin: "https://linkedin.com/in/ananyaverma-ui",
-      portfolio: "https://ananya.design"
-    },
-    interviewReadiness: {
-      completed: true,
-      score: 91,
-      assessedOn: "Jul 21, 2026"
-    },
-    builderProof: {
-      projectsCount: 10,
-      deployedProjectsCount: 8,
-      hackathonWinsCount: 3,
-      challengesCount: 7,
-      aiRankPercentile: 5,
-      streakDays: 60,
-      monthsActiveCount: 14
-    },
-    fitVerdict: {
-      status: "Strong Fit",
-      reason: "7 years UI architect at Flipkart building micro-frontend engines and design systems serving 1M+ daily users."
-    },
+    links: { github: "https://github.com/ananya-verma", linkedin: "https://linkedin.com/in/ananyaverma-ui", portfolio: "https://ananya.design" },
+    interviewReadiness: { completed: true, score: 91, assessedOn: "Jul 21, 2026" },
+    builderProof: { projectsCount: 10, deployedProjectsCount: 8, hackathonWinsCount: 3, challengesCount: 7, aiRankPercentile: 5, streakDays: 60, monthsActiveCount: 14 },
+    fitVerdict: { status: "Strong Fit", reason: "7 years UI architect at Flipkart building micro-frontend engines and design systems serving 1M+ daily users." },
     aiSummary: "Frontend architect with 7 years specializing in high-performance web applications and design system engines.",
+    about: "Design system architect and performance obsessive. Specialized in micro-frontends, rendering optimization, and component accessibility.",
     whyInterview: [
-      {
-        claim: "Top 5% Global UI Architect",
-        evidence: "Ranked Top 5% in Frontend Architecture & Performance benchmarks."
-      },
-      {
-        claim: "1M+ User Scale Impact",
-        evidence: "Created DesignSystem Engine adopted across Flipkart's web platform serving 1M+ users."
-      },
-      {
-        claim: "3-Time Hackathon Winner",
-        evidence: "Secured 1st place in 3 competitive Web Performance & React hackathons."
-      }
+      { claim: "Top 5% Global UI Architect", evidence: "Ranked Top 5% in Frontend Architecture & Performance benchmarks." },
+      { claim: "1M+ User Scale Impact", evidence: "Created DesignSystem Engine adopted across Flipkart's web platform serving 1M+ users." }
     ],
-    potentialConcerns: [
-      "Primarily frontend & UI architecture focused — test backend FastAPI capabilities during technical interview."
-    ],
-    projects: [
-      {
-        name: "DesignSystem Engine",
-        description: "Cross-platform design token engine for e-commerce apps",
-        techStack: ["TypeScript", "React", "Next.js"],
-        usersCount: "1M+ daily users",
-        verified: true,
-        deployed: true,
-        links: { github: "github.com/ananya/design-engine" }
-      }
-    ],
-    aiAgents: [],
+    potentialConcerns: ["Primarily frontend & UI architecture focused — test backend FastAPI capabilities during technical interview."],
+    experience: [{ title: "Lead Frontend Engineer", company: "Flipkart", duration: "2019 - Present", highlights: ["Maintained design token pipeline across 14 web products."] }],
+    projects: [{ name: "DesignSystem Engine", description: "Cross-platform design token engine for e-commerce apps", techStack: ["TypeScript", "React", "Next.js"], usersCount: "1M+ daily users", verified: true, deployed: true, links: { github: "github.com/ananya/design-engine" } }],
+    hackathons: [{ name: "React India Hackathon", rank: "1st Place", date: "Oct 2023" }],
     intelligenceCards: []
   },
   {
@@ -373,51 +228,26 @@ export const mockCandidates = [
     noticePeriodDays: 30,
     availability: "Open to Select Roles",
     lastActive: "2 days ago",
-    skills: ["Python", "FastAPI", "Kubernetes", "Docker", "PyTorch", "AWS", "PostgreSQL"],
+    skills: [
+      { name: "Python", score: 82, basis: "PyTorch model training scripts" },
+      { name: "Kubernetes", score: 86, basis: "4 model inference deployments on EKS" }
+    ],
     primarySkills: ["Python", "FastAPI", "Kubernetes"],
     roleTypes: ["AI / ML Engineer", "Platform Engineering"],
-    links: {
-      github: "https://github.com/devansh-patel",
-      linkedin: "https://linkedin.com/in/devansh-mlops"
-    },
-    interviewReadiness: {
-      completed: false,
-      score: 0,
-      assessedOn: ""
-    },
-    builderProof: {
-      projectsCount: 5,
-      deployedProjectsCount: 4,
-      hackathonWinsCount: 1,
-      challengesCount: 4,
-      aiRankPercentile: 12,
-      streakDays: 18,
-      monthsActiveCount: 6
-    },
-    fitVerdict: {
-      status: "Good Fit",
-      reason: "2 years experience deploying PyTorch model pipelines on EKS with 80% project deployment ratio."
-    },
+    links: { github: "https://github.com/devansh-patel", linkedin: "https://linkedin.com/in/devansh-mlops" },
+    interviewReadiness: { completed: false, score: 0, assessedOn: "" },
+    builderProof: { projectsCount: 5, deployedProjectsCount: 4, hackathonWinsCount: 1, challengesCount: 4, aiRankPercentile: 12, streakDays: 18, monthsActiveCount: 6 },
+    fitVerdict: { status: "Good Fit", reason: "2 years experience deploying PyTorch model pipelines on EKS with 80% project deployment ratio." },
     aiSummary: "MLOps engineer focused on model deployment pipelines, Kubernetes orchestration, and GPU inference scaling.",
+    about: "Cloud-native ML infrastructure enthusiast. Focuses on automating PyTorch model serving pipelines and optimizing GPU cluster workloads.",
     whyInterview: [
-      {
-        claim: "Top 12% MLOps Benchmark",
-        evidence: "Scored Top 12% in Kubernetes Model Deployment & GPU Inference challenges."
-      },
-      {
-        claim: "Automated ML Deployments",
-        evidence: "Deployed 4 PyTorch inference APIs on PhonePe Kubernetes infrastructure."
-      },
-      {
-        claim: "Hackathon Winner",
-        evidence: "Won 1st place in Cloud Native ML Infrastructure Challenge (2024)."
-      }
+      { claim: "Top 12% MLOps Benchmark", evidence: "Scored Top 12% in Kubernetes Model Deployment & GPU Inference challenges." },
+      { claim: "Automated ML Deployments", evidence: "Deployed 4 PyTorch inference APIs on PhonePe Kubernetes infrastructure." }
     ],
-    potentialConcerns: [
-      "2 years total experience — verify independent distributed system architecture capacity."
-    ],
+    potentialConcerns: ["2 years total experience — verify independent distributed system architecture capacity."],
+    experience: [{ title: "MLOps Engineer", company: "PhonePe", duration: "2024 - Present", highlights: ["Configured Kubeflow pipelines for transaction fraud ML models."] }],
     projects: [],
-    aiAgents: [],
+    hackathons: [{ name: "Cloud Native ML Challenge", rank: "1st Place", date: "Jan 2024" }],
     intelligenceCards: []
   },
   {
@@ -432,52 +262,113 @@ export const mockCandidates = [
     noticePeriodDays: 0,
     availability: "Open to Work",
     lastActive: "Today",
-    skills: ["Python", "PyTorch", "LangChain", "LlamaIndex", "FastAPI", "Docker", "PostgreSQL"],
+    skills: [
+      { name: "Python", score: 98, basis: "Fine-tuned Llama 3 & Mistral 7B for financial RAG" },
+      { name: "PyTorch", score: 95, basis: "5 years deep learning & embedding pipeline development" },
+      { name: "LangChain", score: 92, basis: "Multi-agent graph architectures" }
+    ],
     primarySkills: ["Python", "PyTorch", "LangChain", "LlamaIndex"],
     roleTypes: ["AI / ML Engineer"],
-    links: {
-      github: "https://github.com/sneha-reddy",
-      linkedin: "https://linkedin.com/in/snehareddy-ai",
-      portfolio: "https://snehareddy.ai"
-    },
-    interviewReadiness: {
-      completed: true,
-      score: 96,
-      assessedOn: "Jul 23, 2026"
-    },
-    builderProof: {
-      projectsCount: 9,
-      deployedProjectsCount: 6,
-      hackathonWinsCount: 4,
-      challengesCount: 8,
-      aiRankPercentile: 3,
-      streakDays: 90,
-      monthsActiveCount: 18
-    },
-    fitVerdict: {
-      status: "Strong Fit",
-      reason: "Top 3% AI Researcher with 5 years fine-tuning open-source LLMs and building RAG pipelines; 0-day joiner."
-    },
+    links: { github: "https://github.com/sneha-reddy", linkedin: "https://linkedin.com/in/snehareddy-ai", portfolio: "https://snehareddy.ai" },
+    interviewReadiness: { completed: true, score: 96, assessedOn: "Jul 23, 2026" },
+    builderProof: { projectsCount: 9, deployedProjectsCount: 6, hackathonWinsCount: 4, challengesCount: 8, aiRankPercentile: 3, streakDays: 90, monthsActiveCount: 18 },
+    fitVerdict: { status: "Strong Fit", reason: "Top 3% AI Researcher with 5 years fine-tuning open-source LLMs and building RAG pipelines; 0-day joiner." },
     aiSummary: "Top 3% AI Researcher specializing in fine-tuning open-source LLMs, RAG architectures, and custom embedding pipelines.",
+    about: "Applied AI researcher dedicated to making open-source LLMs performant for vertical domain tasks. Experienced in quantization and vector search.",
     whyInterview: [
-      {
-        claim: "Top 3% Global AI Challenge Rank",
-        evidence: "Ranked #3 out of 100+ candidates in LLM Fine-Tuning & Vector Search benchmark."
-      },
-      {
-        claim: "4-Time Hackathon Champion",
-        evidence: "4 first-place wins across Generative AI & RAG Hackathons."
-      },
-      {
-        claim: "Immediate 0-Day Joiner",
-        evidence: "Notice period is 0 days; available for immediate remote hire."
-      }
+      { claim: "Top 3% Global AI Challenge Rank", evidence: "Ranked #3 out of 100+ candidates in LLM Fine-Tuning & Vector Search benchmark." },
+      { claim: "4-Time Hackathon Champion", evidence: "4 first-place wins across Generative AI & RAG Hackathons." }
     ],
-    potentialConcerns: [
-      "Deep specialization in AI research — confirm interest in day-to-day web application engineering."
-    ],
+    potentialConcerns: ["Deep specialization in AI research — confirm interest in day-to-day web application engineering."],
+    experience: [{ title: "Senior AI Scientist", company: "CRED", duration: "2021 - Present", highlights: ["Built internal LLM agent assistant used by 400+ employees."] }],
     projects: [],
-    aiAgents: [],
+    hackathons: [
+      { name: "GenAI World Hackathon", rank: "1st Place", date: "Feb 2024" },
+      { name: "Vector Search Open Cup", rank: "1st Place", date: "Nov 2023" }
+    ],
     intelligenceCards: []
-  }
+  },
+  // Candidates 7 - 50 generated with realistic spread across roles, experience, notice periods, and scores
+  ...Array.from({ length: 44 }, (_, i) => {
+    const idx = i + 7;
+    const roles = [["AI / ML Engineer", "Backend"], ["Full Stack"], ["Backend", "Platform Engineering"], ["AI / ML Engineer"], ["Full Stack", "Backend"]];
+    const locations = ["Bangalore", "Mumbai", "Delhi NCR", "Hyderabad", "Pune", "Chennai", "Remote"];
+    const workModes = ["Remote", "Hybrid", "Remote Only"];
+    const availabilities = ["Open to Work", "Open to Select Roles", "Not Available"];
+    const companies = ["Zomato", "Paytm", "MakeMyTrip", "Urban Company", "Ola Cabs", "Postman", "Groww", "Unacademy", "Nykaa", "InMobi"];
+    const techStacks = [["Python", "FastAPI", "Docker"], ["React", "TypeScript", "Next.js"], ["Go", "Kubernetes", "Kafka"], ["PyTorch", "LangChain", "Python"]];
+    
+    const roleSel = roles[i % roles.length];
+    const locSel = locations[i % locations.length];
+    const wmSel = workModes[i % workModes.length];
+    const avSel = availabilities[i % availabilities.length];
+    const compSel = companies[i % companies.length];
+    const stackSel = techStacks[i % techStacks.length];
+    const expYrs = (i % 8) + 1;
+    const rankPct = Math.min(95, Math.floor(5 + (i * 2.1)));
+    const noticeDays = (i % 3) === 0 ? 0 : ((i % 2) === 0 ? 15 : 30);
+    const mockScore = Math.floor(65 + (i % 32));
+    const isCompleted = i % 4 !== 0;
+
+    return {
+      id: `cand-${idx}`,
+      name: `Candidate ${idx} (${['Rohan', 'Kavya', 'Vikram', 'Aditi', 'Siddharth', 'Meera', 'Aditya', 'Pooja', 'Tanmay', 'Divya'][i % 10]} ${['Gupta', 'Nair', 'Malhotra', 'Sen', 'Joshi', 'Kapoor', 'Rao', 'Bhat', 'Saxena', 'Iyer'][i % 10]})`,
+      avatar: `${['RG', 'KN', 'VM', 'AS', 'SJ', 'MK', 'AR', 'PB', 'TS', 'DI'][i % 10]}`,
+      headline: `${expYrs > 5 ? 'Senior' : 'Software'} ${roleSel[0]}`,
+      company: compSel,
+      location: locSel,
+      workMode: wmSel,
+      experienceYears: expYrs,
+      noticePeriodDays: noticeDays,
+      availability: avSel,
+      lastActive: `${(i % 7) + 1} days ago`,
+      skills: stackSel.map(s => ({
+        name: s,
+        score: Math.floor(70 + Math.random() * 25),
+        basis: `Assessed via ${s} code challenge benchmark`
+      })),
+      primarySkills: stackSel,
+      roleTypes: roleSel,
+      links: {
+        github: `https://github.com/candidate-${idx}`,
+        linkedin: `https://linkedin.com/in/candidate-${idx}`,
+        portfolio: (i % 3 === 0) ? `https://candidate-${idx}.dev` : undefined
+      },
+      interviewReadiness: {
+        completed: isCompleted,
+        score: isCompleted ? mockScore : 0,
+        assessedOn: isCompleted ? `Jul ${10 + (i % 12)}, 2026` : ""
+      },
+      builderProof: {
+        projectsCount: (i % 6) + 2,
+        deployedProjectsCount: (i % 4) + 1,
+        hackathonWinsCount: (i % 3),
+        challengesCount: (i % 5) + 3,
+        aiRankPercentile: rankPct,
+        streakDays: (i * 3) % 40,
+        monthsActiveCount: (i % 12) + 3
+      },
+      fitVerdict: {
+        status: rankPct <= 25 ? "Strong Fit" : (rankPct <= 60 ? "Good Fit" : "Stretch Fit"),
+        reason: `${expYrs} years developing ${stackSel.join(', ')} systems with Top ${rankPct}% AI Rank.`
+      },
+      aiSummary: `${roleSel[0]} with ${expYrs} years experience in ${stackSel.join(' & ')} at ${compSel}.`,
+      about: `Experienced ${roleSel[0]} specializing in ${stackSel.join(', ')}. Focused on building scalable applications with robust test coverage.`,
+      whyInterview: [
+        { claim: `Top ${rankPct}% Rank Performance`, evidence: `Scored in Top ${rankPct}% in ${roleSel[0]} benchmark challenges.` },
+        { claim: `Proven ${compSel} Tenure`, evidence: `${expYrs} years shipping production software in ${locSel}.` }
+      ],
+      potentialConcerns: [
+        `Notice period is ${noticeDays} days — verify timeline compatibility.`
+      ],
+      experience: [
+        { title: `${expYrs > 5 ? 'Senior' : 'Software'} Engineer`, company: compSel, duration: "2023 - Present", highlights: [`Built core ${stackSel[0]} features.`, `Improved build pipeline efficiency by 25%.`] }
+      ],
+      projects: [
+        { name: `Project ${idx} Alpha`, description: `Scalable ${stackSel[0]} service for data processing`, techStack: stackSel, usersCount: `${(i + 1) * 40}+ users`, verified: true, deployed: true, links: { github: `github.com/candidate-${idx}/alpha` } }
+      ],
+      hackathons: (i % 3 === 0) ? [{ name: `HiDevs Challenge #${i + 1}`, rank: `Top ${rankPct}%`, date: "2024" }] : [],
+      intelligenceCards: []
+    };
+  })
 ];

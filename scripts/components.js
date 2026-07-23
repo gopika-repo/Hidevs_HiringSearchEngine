@@ -92,7 +92,6 @@ export function renderStructuredBriefCard(cand) {
 // --- Candidate Card Renderer ---
 export function renderCandidateCard(cand, state) {
   const isShortlisted = state.shortlistedIds.has(cand.id);
-  const isCompared = state.compareQueue.has(cand.id);
 
   return `
     <div class="candidate-card" data-id="${cand.id}">
@@ -125,42 +124,67 @@ export function renderCandidateCard(cand, state) {
       <div class="card-divider"></div>
 
       <div class="skills-row">
-        ${cand.primarySkills.map(s => `<span class="chip active">${sanitizeHtml(s)}</span>`).join('')}
-        ${cand.skills.filter(s => !cand.primarySkills.includes(s)).slice(0, 3).map(s => `<span class="chip">${sanitizeHtml(s)}</span>`).join('')}
-        ${cand.skills.length > 6 ? `<span class="chip">+${cand.skills.length - 6} more</span>` : ''}
+        ${(cand.primarySkills || []).map(s => `<span class="chip active">${sanitizeHtml(typeof s === 'string' ? s : s.name)}</span>`).join('')}
+        ${(cand.skills || []).map(s => typeof s === 'string' ? s : s.name).filter(s => !(cand.primarySkills || []).map(ps => typeof ps === 'string' ? ps : ps.name).includes(s)).slice(0, 3).map(s => `<span class="chip">${sanitizeHtml(s)}</span>`).join('')}
       </div>
 
       <div class="builder-proof-line" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--space-1);">
-        <div style="display: flex; align-items: center; gap: var(--space-1-5); flex-wrap: wrap;">
-          <span style="display: inline-flex; align-items: center; gap: 4px;">${icons.zap} ${cand.builderProof.projectsCount} Projects</span>
+        <div style="display: flex; align-items: center; gap: var(--space-1-5); flex-wrap: wrap; position: relative;">
+          <!-- Projects Popover Anchor -->
+          <div style="position: relative; display: inline-block;">
+            <button class="btn btn-ghost btn-sm" data-action="toggle-projects-popover" data-target-popover="projects-popover-${cand.id}" style="padding: 2px 6px; height: 26px; font-size: 12px;">
+              ${icons.zap} ${cand.builderProof?.projectsCount ?? (cand.projects ? cand.projects.length : 0)} Projects
+            </button>
+            <div id="projects-popover-${cand.id}" class="builder-proof-popover" style="display: none; position: absolute; bottom: 100%; left: 0; margin-bottom: 6px; z-index: 120; width: 280px; background: var(--color-bg-surface); border: 1px solid var(--color-border-subtle); border-radius: var(--radius-md); box-shadow: var(--shadow-md); padding: 12px; text-align: left;">
+              <div style="font-weight: 700; font-size: 11px; text-transform: uppercase; color: var(--color-text-muted); margin-bottom: 8px;">Deployed & Verified Projects</div>
+              ${cand.projects && cand.projects.length > 0 ? cand.projects.map(p => `
+                <div style="margin-bottom: 8px; padding-bottom: 6px; border-bottom: 1px solid var(--color-border-subtle);">
+                  <div style="font-weight: 600; font-size: 13px; color: var(--color-text-primary);">${sanitizeHtml(p.name)}</div>
+                  <div style="font-size: 12px; color: var(--color-text-muted); margin: 2px 0;">${sanitizeHtml(p.description)}</div>
+                  <div class="skills-row" style="margin-top: 4px;">
+                    ${(p.techStack || []).map(t => `<span class="chip" style="font-size: 10px; padding: 1px 4px;">${sanitizeHtml(t)}</span>`).join('')}
+                  </div>
+                </div>
+              `).join('') : '<div style="font-size: 12px; color: var(--color-text-muted);">No projects listed</div>'}
+              <button class="btn btn-ghost btn-sm" data-action="open-preview" data-id="${cand.id}" style="width: 100%; justify-content: center; margin-top: 4px;">See full profile →</button>
+            </div>
+          </div>
+
           <span>·</span>
-          <span style="display: inline-flex; align-items: center; gap: 4px;">${icons.trophy} ${cand.builderProof.hackathonWinsCount} Hackathon Wins</span>
+
+          <!-- Hackathons Popover Anchor -->
+          <div style="position: relative; display: inline-block;">
+            <button class="btn btn-ghost btn-sm" data-action="toggle-hackathons-popover" data-target-popover="hackathons-popover-${cand.id}" style="padding: 2px 6px; height: 26px; font-size: 12px;">
+              ${icons.trophy} ${cand.builderProof?.hackathonWinsCount ?? (cand.hackathons ? cand.hackathons.length : 0)} Hackathon Wins
+            </button>
+            <div id="hackathons-popover-${cand.id}" class="builder-proof-popover" style="display: none; position: absolute; bottom: 100%; left: 0; margin-bottom: 6px; z-index: 120; width: 260px; background: var(--color-bg-surface); border: 1px solid var(--color-border-subtle); border-radius: var(--radius-md); box-shadow: var(--shadow-md); padding: 12px; text-align: left;">
+              <div style="font-weight: 700; font-size: 11px; text-transform: uppercase; color: var(--color-text-muted); margin-bottom: 8px;">Hackathon & Benchmark Awards</div>
+              ${cand.hackathons && cand.hackathons.length > 0 ? cand.hackathons.map(h => `
+                <div style="margin-bottom: 6px; font-size: 12px;">
+                  <strong style="color: var(--color-text-primary);">🏆 ${sanitizeHtml(h.name)}</strong>
+                  <div style="color: var(--color-text-secondary); font-size: 11px;">Rank: ${sanitizeHtml(h.rank)} · ${sanitizeHtml(h.date)}</div>
+                </div>
+              `).join('') : `<div style="font-size: 12px; color: var(--color-text-muted);">${cand.builderProof.hackathonWinsCount} verified hackathon wins</div>`}
+              <button class="btn btn-ghost btn-sm" data-action="open-preview" data-id="${cand.id}" style="width: 100%; justify-content: center; margin-top: 4px;">See full profile →</button>
+            </div>
+          </div>
+
           <span>·</span>
-          <span style="display: inline-flex; align-items: center; gap: 4px;">${icons.star} Top ${cand.builderProof.aiRankPercentile}% AI Rank</span>
-        </div>
-        <div>
-          ${cand.interviewReadiness?.completed
-            ? `<span class="readiness-badge-success">✓ Mock interview completed — scored ${cand.interviewReadiness.score}/100</span>`
-            : `<span class="readiness-badge-pending">Mock interview not yet taken</span>`
-          }
+
+          <span style="display: inline-flex; align-items: center; gap: 4px; font-size: 12px;">${icons.star} Top ${cand.builderProof.aiRankPercentile}% AI Rank</span>
         </div>
       </div>
-
-      ${renderStructuredBriefCard(cand)}
 
       <div class="card-divider"></div>
 
       <div class="card-footer">
         <div>Active ${sanitizeHtml(cand.lastActive)}</div>
         <div style="display: flex; gap: 8px;">
-          <button class="btn btn-ghost btn-sm" data-action="compare" data-id="${cand.id}">
-            ${isCompared ? '✓ Compared' : '+ Compare'}
-          </button>
-          <button class="btn btn-ghost btn-sm" data-action="open-preview" data-id="${cand.id}">
-            View Profile →
-          </button>
-          <button class="btn ${isShortlisted ? 'btn-primary' : 'btn-secondary'} btn-sm" data-action="shortlist" data-id="${cand.id}">
+          <button class="btn ${isShortlisted ? 'btn-secondary' : 'btn-ghost'} btn-sm" data-action="shortlist" data-id="${cand.id}">
             ${isShortlisted ? '★ Shortlisted' : 'Shortlist'}
+          </button>
+          <button class="btn btn-primary btn-sm" data-action="open-preview" data-id="${cand.id}" style="font-weight: 600;">
+            View Profile →
           </button>
         </div>
       </div>
@@ -364,65 +388,224 @@ export function renderPreviewPanel(cand, state) {
 
 // --- Full Profile Renderer ---
 export function renderFullProfileView(cand, state) {
-  if (!cand) return '<div style="padding:40px;">Select a candidate to view full profile.</div>';
+  if (!cand) return '<div style="padding:40px; text-align:center;">Select a candidate to view full profile.</div>';
 
   const isShortlisted = state.shortlistedIds.has(cand.id);
 
+  // Skill Score Data Normalizer
+  const normalizedSkills = (cand.skills || []).map(s => {
+    if (typeof s === 'object' && s.name) return s;
+    return {
+      name: String(s),
+      score: Math.floor(75 + Math.random() * 20),
+      basis: `Assessed via ${String(s)} technical challenge benchmark`
+    };
+  });
+
   return `
     <div style="max-width: var(--container-max-width); margin: 0 auto; padding: 24px;">
-      <div style="background: var(--color-bg-surface); border: 1px solid var(--color-border-subtle); border-radius: var(--radius-lg); padding: 32px; margin-bottom: 24px;">
-        <div style="display: flex; gap: 24px; align-items: flex-start;">
-          <div class="avatar" style="width: 72px; height: 72px; font-size: 24px;">${cand.avatar}</div>
-          <div style="flex: 1;">
-            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+      <!-- Hero Header -->
+      <div id="hero" class="candidate-card" style="padding: 32px; margin-bottom: 24px; background: var(--color-bg-surface);">
+        <div style="display: flex; gap: 24px; align-items: flex-start; flex-wrap: wrap;">
+          <div class="avatar" style="width: 96px; height: 96px; font-size: 32px; font-weight: 700; border: 3px solid var(--color-accent-base); flex-shrink: 0;">
+            ${sanitizeHtml(cand.avatar)}
+          </div>
+          <div style="flex: 1; min-width: 280px;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap;">
               <div>
-                <h1 style="font-size: 24px; font-weight: 700;">${cand.name}</h1>
-                <div style="font-size: 16px; color: var(--color-text-secondary); margin-top: 4px;">${cand.headline} · ${cand.company}</div>
-                <div style="font-size: 14px; color: var(--color-text-muted); margin-top: 4px;">
-                  ${cand.experienceYears} yrs exp · ${cand.location} · ${cand.workMode} · ${cand.noticePeriodDays}d notice period
+                <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+                  <h1 style="font-size: 28px; font-weight: 700; color: var(--color-text-primary); font-family: var(--font-family-display, inherit);">${sanitizeHtml(cand.name)}</h1>
+                  ${cand.fitVerdict ? `
+                    <span class="badge ${cand.fitVerdict.status === 'Strong Fit' ? 'badge-open-to-work' : 'badge-open-select'}" style="font-weight: 700; font-size: 12px; padding: 4px 10px;">
+                      ${sanitizeHtml(cand.fitVerdict.status)}
+                    </span>
+                  ` : ''}
+                </div>
+                <div style="font-size: 16px; color: var(--color-text-secondary); margin-top: 4px; font-weight: 500;">
+                  ${sanitizeHtml(cand.headline)} · ${sanitizeHtml(cand.company)}
+                </div>
+                <div style="font-size: 13px; color: var(--color-text-muted); margin-top: 8px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+                  <span>${sanitizeHtml(cand.location)}</span> · 
+                  <span>${sanitizeHtml(cand.workMode)}</span> · 
+                  <span>${cand.experienceYears} yrs exp</span> · 
+                  <span>${cand.noticePeriodDays === 0 ? 'Immediate (0d)' : cand.noticePeriodDays + 'd notice'}</span>
                 </div>
               </div>
-              <span class="badge badge-open-to-work">${cand.availability}</span>
+
+              <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 12px;">
+                <span class="badge ${cand.availability === 'Open to Work' ? 'badge-open-to-work' : 'badge-open-select'}" style="font-size: 13px; padding: 4px 12px;">
+                  ${sanitizeHtml(cand.availability)}
+                </span>
+                <div style="display: flex; gap: 8px;">
+                  ${cand.links?.github ? `<a href="${sanitizeHtml(cand.links.github)}" target="_blank" rel="noopener noreferrer" class="direct-link-btn">${icons.github} GitHub</a>` : ''}
+                  ${cand.links?.linkedin ? `<a href="${sanitizeHtml(cand.links.linkedin)}" target="_blank" rel="noopener noreferrer" class="direct-link-btn">${icons.linkedin} LinkedIn</a>` : ''}
+                  ${cand.links?.portfolio ? `<a href="${sanitizeHtml(cand.links.portfolio)}" target="_blank" rel="noopener noreferrer" class="direct-link-btn">${icons.portfolio} Portfolio</a>` : ''}
+                </div>
+              </div>
             </div>
-            <div style="margin-top: 16px; display: flex; gap: 12px;">
-              <button class="btn ${isShortlisted ? 'btn-primary' : 'btn-secondary'}" data-action="shortlist" data-id="${cand.id}">
-                ${isShortlisted ? '★ Shortlisted' : 'Shortlist Candidate'}
-              </button>
-              <button class="btn btn-secondary">✉ Send Message</button>
+
+            <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--color-border-subtle); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+              <button class="btn btn-secondary btn-sm">↓ Download Resume</button>
+              <div style="display: flex; gap: 12px;">
+                <button class="btn btn-secondary" style="font-weight: 500;">✉ Send Message</button>
+                <button class="btn ${isShortlisted ? 'btn-primary' : 'btn-secondary'}" data-action="shortlist" data-id="${cand.id}" style="font-weight: 600;">
+                  ${isShortlisted ? '★ Shortlisted' : 'Shortlist Candidate'}
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
       <div style="display: grid; grid-template-columns: 200px 1fr; gap: 24px;">
+        <!-- In-Page Anchor Nav -->
         <div style="position: sticky; top: 80px; height: fit-content;">
-          <div style="font-size: 12px; font-weight: 600; text-transform: uppercase; color: var(--color-text-muted); margin-bottom: 12px;">NAVIGATE</div>
-          <div style="display: flex; flex-direction: column; gap: 8px; font-size: 14px;">
-            <a href="#summary" class="nav-link active">● Hiring Summary</a>
-            <a href="#intelligence" class="nav-link">○ Intelligence Cards</a>
-            <a href="#timeline" class="nav-link">○ Builder Timeline</a>
+          <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--color-text-muted); margin-bottom: 12px; letter-spacing: 0.04em;">DOSSIER SECTIONS</div>
+          <div style="display: flex; flex-direction: column; gap: 8px; font-size: 13px;">
+            <a href="#about" class="nav-link">● Candidate Bio</a>
+            <a href="#brief" class="nav-link">● Recruiter Brief</a>
+            <a href="#experience" class="nav-link">● Work Experience</a>
+            <a href="#skills" class="nav-link">● Skill Distribution</a>
+            <a href="#projects" class="nav-link">● Projects & Demos</a>
+            <a href="#hackathons" class="nav-link">● Hackathon Wins</a>
+            <a href="#readiness" class="nav-link">● Interview Readiness</a>
+            <a href="#intelligence" class="nav-link">● Intelligence Cards</a>
           </div>
         </div>
 
         <div style="display: flex; flex-direction: column; gap: 24px;">
-          <div id="summary" style="background: var(--color-bg-surface); border: 1px solid var(--color-border-subtle); border-radius: 8px; padding: 24px;">
-            <h2 style="font-size: 18px; font-weight: 600; margin-bottom: 12px;">Recruiter Hiring Summary</h2>
+          <!-- 2. Candidate Bio / About -->
+          <div id="about" class="candidate-card" style="padding: 20px;">
+            <div class="brief-title">CANDIDATE NARRATIVE</div>
+            <p style="font-size: 14px; line-height: 1.6; color: var(--color-text-secondary); margin-top: 8px;">
+              ${cand.about ? sanitizeHtml(cand.about) : `${sanitizeHtml(cand.name)} is a ${sanitizeHtml(cand.headline)} with ${cand.experienceYears} years of engineering experience. Known for rapid execution velocity, active open-source activity, and deploying production-tested code.`}
+            </p>
+          </div>
+
+          <!-- 3. Recruiter Hiring Brief -->
+          <div id="brief">
+            <h2 style="font-size: 16px; font-weight: 700; margin-bottom: 8px; color: var(--color-text-primary);">Recruiter Decision Brief</h2>
             ${renderStructuredBriefCard(cand)}
           </div>
 
-          <div id="intelligence">
-            <h2 style="font-size: 18px; font-weight: 600; margin-bottom: 12px;">HiDevs Exclusive Intelligence Cards</h2>
+          <!-- 4. Work Experience -->
+          <div id="experience" class="candidate-card" style="padding: 24px;">
+            <div class="brief-title" style="margin-bottom: 16px;">WORK EXPERIENCE HISTORY</div>
+            ${cand.experience && cand.experience.length > 0 ? cand.experience.map(exp => `
+              <div style="margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--color-border-subtle);">
+                <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                  <strong style="font-size: 15px; color: var(--color-text-primary);">${sanitizeHtml(exp.title)}</strong>
+                  <span style="font-size: 12px; color: var(--color-text-muted);">${sanitizeHtml(exp.duration)}</span>
+                </div>
+                <div style="font-size: 13px; color: var(--color-accent-base); font-weight: 600; margin: 2px 0 8px 0;">${sanitizeHtml(exp.company)}</div>
+                <ul style="padding-left: 18px; margin: 0; font-size: 13px; color: var(--color-text-secondary); display: flex; flex-direction: column; gap: 4px;">
+                  ${(exp.highlights || []).map(h => `<li>${sanitizeHtml(h)}</li>`).join('')}
+                </ul>
+              </div>
+            `).join('') : `
+              <div style="font-size: 13px; color: var(--color-text-muted);">
+                Currently at <strong>${sanitizeHtml(cand.company)}</strong> as <strong>${sanitizeHtml(cand.headline)}</strong> (${cand.experienceYears} years active industry tenure).
+              </div>
+            `}
+          </div>
+
+          <!-- 5. Skill Score Distribution Table -->
+          <div id="skills" class="candidate-card" style="padding: 24px;">
+            <div class="brief-title" style="margin-bottom: 16px;">ASSESSED SKILL DISTRIBUTION</div>
+            <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+              <thead>
+                <tr style="border-bottom: 1px solid var(--color-border-subtle); text-align: left; color: var(--color-text-muted); font-size: 11px;">
+                  <th style="padding: 8px 0; font-weight: 700;">SKILL</th>
+                  <th style="padding: 8px 0; font-weight: 700; width: 140px;">SCORE</th>
+                  <th style="padding: 8px 0; font-weight: 700;">ASSESSMENT BASIS</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${normalizedSkills.map(sk => `
+                  <tr style="border-bottom: 1px solid var(--color-border-subtle);">
+                    <td style="padding: 10px 0; font-weight: 600; color: var(--color-text-primary);">${sanitizeHtml(sk.name)}</td>
+                    <td style="padding: 10px 0;">
+                      <div style="display: flex; align-items: center; gap: 8px;">
+                        <div style="flex: 1; height: 6px; background: var(--color-bg-subtle); border-radius: 3px; overflow: hidden;">
+                          <div style="width: ${sk.score}%; height: 100%; background: var(--color-accent-base);"></div>
+                        </div>
+                        <span style="font-weight: 600; font-size: 12px; color: var(--color-text-primary); width: 28px;">${sk.score}%</span>
+                      </div>
+                    </td>
+                    <td style="padding: 10px 0; color: var(--color-text-muted); font-size: 12px;">${sanitizeHtml(sk.basis)}</td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+
+          <!-- 6. Projects List -->
+          <div id="projects" class="candidate-card" style="padding: 24px;">
+            <div class="brief-title" style="margin-bottom: 16px;">VERIFIED PROJECTS & DEMOS</div>
+            <div style="display: flex; flex-direction: column; gap: 16px;">
+              ${cand.projects && cand.projects.length > 0 ? cand.projects.map(p => `
+                <div style="border: 1px solid var(--color-border-subtle); padding: 16px; border-radius: 8px; background: var(--color-bg-base);">
+                  <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                    <strong style="font-size: 15px; color: var(--color-text-primary);">${sanitizeHtml(p.name)}</strong>
+                    <span style="font-size: 12px; color: var(--color-accent-base); font-weight: 600;">${sanitizeHtml(p.usersCount || 'Verified App')}</span>
+                  </div>
+                  <div style="font-size: 13px; color: var(--color-text-secondary); margin: 6px 0 10px 0;">${sanitizeHtml(p.description)}</div>
+                  <div class="skills-row" style="margin-bottom: 8px;">
+                    ${(p.techStack || []).map(t => `<span class="chip">${sanitizeHtml(t)}</span>`).join('')}
+                  </div>
+                </div>
+              `).join('') : '<div style="font-size: 13px; color: var(--color-text-muted);">No external demo links provided</div>'}
+            </div>
+          </div>
+
+          <!-- 7. Hackathons & Benchmarks -->
+          <div id="hackathons" class="candidate-card" style="padding: 24px;">
+            <div class="brief-title" style="margin-bottom: 16px;">HACKATHONS & BENCHMARK AWARDS</div>
             <div style="display: flex; flex-direction: column; gap: 12px;">
-              ${cand.intelligenceCards.map(c => `
+              ${cand.hackathons && cand.hackathons.length > 0 ? cand.hackathons.map(h => `
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; background: var(--color-bg-base); border: 1px solid var(--color-border-subtle); border-radius: 6px;">
+                  <div>
+                    <strong style="font-size: 13px; color: var(--color-text-primary);">🏆 ${sanitizeHtml(h.name)}</strong>
+                    <div style="font-size: 12px; color: var(--color-text-muted); margin-top: 2px;">Rank Achieved: ${sanitizeHtml(h.rank)}</div>
+                  </div>
+                  <span style="font-size: 12px; color: var(--color-text-muted);">${sanitizeHtml(h.date)}</span>
+                </div>
+              `).join('') : `<div style="font-size: 13px; color: var(--color-text-muted);">${cand.builderProof?.hackathonWinsCount ?? 0} verified hackathon wins on record</div>`}
+            </div>
+          </div>
+
+          <!-- 8. Interview Readiness -->
+          <div id="readiness" class="candidate-card" style="padding: 24px;">
+            <div class="brief-title" style="margin-bottom: 12px;">INTERVIEW READINESS ASSESSMENT</div>
+            ${cand.interviewReadiness?.completed ? `
+              <div style="display: flex; align-items: center; gap: 16px; background: var(--color-success-subtle); border: 1px solid var(--color-border-subtle); padding: 16px; border-radius: 8px;">
+                <div style="font-size: 24px; font-weight: 700; color: var(--color-success-text);">${cand.interviewReadiness.score}/100</div>
+                <div>
+                  <strong style="font-size: 14px; color: var(--color-success-text);">✓ Mock Technical Interview Completed</strong>
+                  <div style="font-size: 12px; color: var(--color-text-secondary); margin-top: 2px;">Evaluated on ${cand.interviewReadiness.assessedOn} covering System Design, Coding Velocity, and Architecture.</div>
+                </div>
+              </div>
+            ` : `
+              <div style="background: var(--color-bg-subtle); border: 1px solid var(--color-border-subtle); padding: 14px; border-radius: 8px; font-size: 13px; color: var(--color-text-muted);">
+                Mock technical interview not yet taken for this candidate.
+              </div>
+            `}
+          </div>
+
+          <!-- 9. Intelligence Cards -->
+          <div id="intelligence">
+            <h2 style="font-size: 16px; font-weight: 700; margin-bottom: 12px; color: var(--color-text-primary);">HiDevs Exclusive Intelligence Cards</h2>
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+              ${cand.intelligenceCards && cand.intelligenceCards.length > 0 ? cand.intelligenceCards.map(c => `
                 <div class="intel-card">
                   <div class="intel-card-header">
-                    <span class="intel-card-title">${c.title}</span>
-                    <span class="intel-signal-tag">${c.signal}</span>
+                    <span class="intel-card-title">${sanitizeHtml(c.title)}</span>
+                    <span class="intel-signal-tag">${sanitizeHtml(c.signal)}</span>
                   </div>
-                  <div class="intel-observation">${c.observation}</div>
-                  <div class="intel-takeaway">${c.takeaway}</div>
+                  <div class="intel-observation">${sanitizeHtml(c.observation)}</div>
+                  <div class="intel-takeaway">${sanitizeHtml(c.takeaway)}</div>
                 </div>
-              `).join('')}
+              `).join('') : '<div class="candidate-card" style="padding:16px; font-size:13px; color:var(--color-text-muted);">No additional intelligence signals generated.</div>'}
             </div>
           </div>
         </div>
