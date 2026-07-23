@@ -32,53 +32,51 @@ export function renderStructuredBriefCard(cand) {
     : ["Verify specific architecture preferences and leadership scope in interview."];
 
   return `
-    <div class="structured-brief-card" style="background: var(--color-bg-base); border: 1px solid var(--color-border-subtle); border-radius: var(--radius-md); padding: 14px; margin: 12px 0;">
+    <div class="structured-brief-card">
       <!-- 1. Fit Verdict -->
-      <div style="margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid var(--color-border-subtle);">
-        <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--color-text-muted); margin-bottom: 4px; letter-spacing: 0.04em;">
-          RECRUITER HIRING BRIEF
-        </div>
-        <div style="display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap;">
-          <span class="badge ${verdict.status === 'Strong Fit' ? 'badge-open-to-work' : 'badge-open-select'}" style="font-weight: 700; font-size: 11px;">
+      <div class="brief-header-row">
+        <div class="brief-title">RECRUITER HIRING BRIEF</div>
+        <div class="brief-verdict-group">
+          <span class="badge ${verdict.status === 'Strong Fit' ? 'badge-open-to-work' : 'badge-open-select'}">
             ${sanitizeHtml(verdict.status)}
           </span>
-          <span style="font-size: 13px; font-weight: 600; color: var(--color-text-primary);">
+          <span class="brief-verdict-reason">
             ${sanitizeHtml(verdict.reason)}
           </span>
         </div>
       </div>
 
       <!-- 2. Top 3 Evidence-Backed Reasons to Hire -->
-      <div style="margin-bottom: 10px;">
-        <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--color-text-muted); margin-bottom: 6px; letter-spacing: 0.04em;">
-          TOP EVIDENCE-BACKED REASONS TO HIRE
-        </div>
-        <div style="display: flex; flex-direction: column; gap: 6px;">
+      <div>
+        <div class="brief-section-title">TOP EVIDENCE-BACKED REASONS TO HIRE</div>
+        <div class="brief-evidence-list">
           ${topReasons.slice(0, 3).map(item => `
-            <div style="font-size: 12.5px; line-height: 1.4;">
-              <strong style="color: var(--color-text-primary);">✓ ${sanitizeHtml(item.claim)}:</strong>
-              <span style="color: var(--color-text-secondary);">${sanitizeHtml(item.evidence)}</span>
+            <div class="brief-evidence-item">
+              <span class="brief-evidence-icon">${icons.check}</span>
+              <div>
+                <strong>${sanitizeHtml(item.claim)}:</strong>
+                <span>${sanitizeHtml(item.evidence)}</span>
+              </div>
             </div>
           `).join('')}
         </div>
       </div>
 
-      <!-- 3. Interview to Verify (Honest Concerns / Open Questions) -->
-      <div style="margin-bottom: 10px;">
-        <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--color-text-muted); margin-bottom: 6px; letter-spacing: 0.04em;">
-          INTERVIEW TO VERIFY
-        </div>
-        <div style="display: flex; flex-direction: column; gap: 4px;">
+      <!-- 3. Interview to Verify -->
+      <div>
+        <div class="brief-section-title">INTERVIEW TO VERIFY</div>
+        <div class="brief-verify-list">
           ${concerns.map(concern => `
-            <div style="font-size: 12px; color: var(--color-text-muted); display: flex; gap: 6px;">
-              <span>🔍</span> <span>${sanitizeHtml(concern)}</span>
+            <div class="brief-verify-item">
+              <span>${icons.searchLens}</span>
+              <span>${sanitizeHtml(concern)}</span>
             </div>
           `).join('')}
         </div>
       </div>
 
       <!-- 4. Logistics at a Glance -->
-      <div style="display: flex; gap: 10px; flex-wrap: wrap; font-size: 11.5px; color: var(--color-text-secondary); padding-top: 8px; border-top: 1px solid var(--color-border-subtle); background: var(--color-bg-surface); padding: 8px 10px; border-radius: 4px; margin-top: 8px;">
+      <div class="brief-logistics-bar">
         <div><strong>Availability:</strong> ${sanitizeHtml(cand.availability)}</div>
         <div>•</div>
         <div><strong>Notice:</strong> ${cand.noticePeriodDays === 0 ? 'Immediate (0d)' : cand.noticePeriodDays + ' days'}</div>
@@ -101,13 +99,13 @@ export function renderCandidateCard(cand, state) {
       <div class="card-header-row">
         <div class="avatar">${sanitizeHtml(cand.avatar)}</div>
         <div class="candidate-info">
-          <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap;">
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: var(--space-1); flex-wrap: wrap;">
             <div class="candidate-name" data-action="open-preview" data-id="${cand.id}">${sanitizeHtml(cand.name)}</div>
             ${cand.links ? `
-              <div class="direct-links-row" style="display: flex; gap: 6px; align-items: center;">
-                ${cand.links.github ? `<a href="${sanitizeHtml(cand.links.github)}" target="_blank" rel="noopener noreferrer" style="font-size: 12px; text-decoration: none; color: var(--color-text-secondary); background: var(--color-bg-surface); border: 1px solid var(--color-border-subtle); padding: 2px 6px; border-radius: 4px; display: inline-flex; align-items: center; gap: 4px;" title="GitHub Profile" onclick="event.stopPropagation();">🐙 <span style="font-size: 11px;">GitHub</span></a>` : ''}
-                ${cand.links.linkedin ? `<a href="${sanitizeHtml(cand.links.linkedin)}" target="_blank" rel="noopener noreferrer" style="font-size: 12px; text-decoration: none; color: var(--color-text-secondary); background: var(--color-bg-surface); border: 1px solid var(--color-border-subtle); padding: 2px 6px; border-radius: 4px; display: inline-flex; align-items: center; gap: 4px;" title="LinkedIn Profile" onclick="event.stopPropagation();">💼 <span style="font-size: 11px;">LinkedIn</span></a>` : ''}
-                ${cand.links.portfolio ? `<a href="${sanitizeHtml(cand.links.portfolio)}" target="_blank" rel="noopener noreferrer" style="font-size: 12px; text-decoration: none; color: var(--color-text-secondary); background: var(--color-bg-surface); border: 1px solid var(--color-border-subtle); padding: 2px 6px; border-radius: 4px; display: inline-flex; align-items: center; gap: 4px;" title="Portfolio Website" onclick="event.stopPropagation();">🌐 <span style="font-size: 11px;">Portfolio</span></a>` : ''}
+              <div class="direct-links-row" style="display: flex; gap: var(--space-1); align-items: center;">
+                ${cand.links.github ? `<a href="${sanitizeHtml(cand.links.github)}" target="_blank" rel="noopener noreferrer" class="direct-link-btn" title="GitHub Profile" onclick="event.stopPropagation();">${icons.github} GitHub</a>` : ''}
+                ${cand.links.linkedin ? `<a href="${sanitizeHtml(cand.links.linkedin)}" target="_blank" rel="noopener noreferrer" class="direct-link-btn" title="LinkedIn Profile" onclick="event.stopPropagation();">${icons.linkedin} LinkedIn</a>` : ''}
+                ${cand.links.portfolio ? `<a href="${sanitizeHtml(cand.links.portfolio)}" target="_blank" rel="noopener noreferrer" class="direct-link-btn" title="Portfolio Website" onclick="event.stopPropagation();">${icons.portfolio} Portfolio</a>` : ''}
               </div>
             ` : ''}
           </div>
@@ -132,14 +130,18 @@ export function renderCandidateCard(cand, state) {
         ${cand.skills.length > 6 ? `<span class="chip">+${cand.skills.length - 6} more</span>` : ''}
       </div>
 
-      <div class="builder-proof-line" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
-        <div>
-          ⚡ ${cand.builderProof.projectsCount} Projects · 🏆 ${cand.builderProof.hackathonWinsCount} Hackathon Wins · ★ Top ${cand.builderProof.aiRankPercentile}% AI Rank
+      <div class="builder-proof-line" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--space-1);">
+        <div style="display: flex; align-items: center; gap: var(--space-1-5); flex-wrap: wrap;">
+          <span style="display: inline-flex; align-items: center; gap: 4px;">${icons.zap} ${cand.builderProof.projectsCount} Projects</span>
+          <span>·</span>
+          <span style="display: inline-flex; align-items: center; gap: 4px;">${icons.trophy} ${cand.builderProof.hackathonWinsCount} Hackathon Wins</span>
+          <span>·</span>
+          <span style="display: inline-flex; align-items: center; gap: 4px;">${icons.star} Top ${cand.builderProof.aiRankPercentile}% AI Rank</span>
         </div>
         <div>
           ${cand.interviewReadiness?.completed
-            ? `<span class="badge" style="background: #ECFDF5; color: #047857; border: 1px solid #A7F3D0; font-size: 11px; font-weight: 600;">✓ Mock interview completed — scored ${cand.interviewReadiness.score}/100</span>`
-            : `<span class="badge" style="background: #F3F4F6; color: #6B7280; border: 1px solid #E5E7EB; font-size: 11px; font-weight: 500;">Mock interview not yet taken</span>`
+            ? `<span class="readiness-badge-success">✓ Mock interview completed — scored ${cand.interviewReadiness.score}/100</span>`
+            : `<span class="readiness-badge-pending">Mock interview not yet taken</span>`
           }
         </div>
       </div>
