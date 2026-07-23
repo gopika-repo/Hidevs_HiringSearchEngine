@@ -34,40 +34,40 @@ class ApplicationController {
     const user = mockRecruiterData.currentUser;
     this.appRoot.innerHTML = `
       <!-- Global Header -->
-      <header class="global-header">
+      <header class="global-header" role="banner">
         <div class="header-left-zone">
-          <a class="header-brand" id="brand-home">
+          <a class="header-brand" id="brand-home" href="#" aria-label="HiDevs Hiring Search Engine">
             <span>HiDevs</span>
             <span class="badge-logo">HIRING SEARCH</span>
           </a>
         </div>
 
-        <div class="header-search-container">
+        <div class="header-search-container" role="search">
           <div class="search-wrapper" style="position: relative; display: flex; align-items: center;">
-            <span class="search-icon-svg">
+            <span class="search-icon-svg" aria-hidden="true">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
             </span>
-            <input type="text" id="global-search-input" class="global-search-input" placeholder="Search 'Python developer in Bangalore', 'Top AI builders'..." style="padding-right: 60px;" />
-            <kbd style="position: absolute; right: 12px; font-size: 10px; font-weight: 700; background: var(--color-bg-subtle); color: var(--color-text-muted); border: 1px solid var(--color-border-subtle); border-radius: 4px; padding: 2px 6px; pointer-events: none;">⌘K</kbd>
-            <div class="search-suggestions-dropdown" id="search-dropdown"></div>
+            <input type="text" id="global-search-input" class="global-search-input" placeholder="Search 'Python developer in Bangalore', 'Top AI builders'..." style="padding-right: 60px;" aria-label="Global natural language recruiter candidate search" autocomplete="off" />
+            <kbd style="position: absolute; right: 12px; font-size: 10px; font-weight: 700; background: var(--color-bg-subtle); color: var(--color-text-muted); border: 1px solid var(--color-border-subtle); border-radius: 4px; padding: 2px 6px; pointer-events: none;" aria-hidden="true">⌘K</kbd>
+            <div class="search-suggestions-dropdown" id="search-dropdown" role="listbox" aria-label="Search Auto-Complete Suggestions"></div>
           </div>
         </div>
 
-        <div class="header-right-zone">
-          <a class="nav-link-item active" id="nav-search-engine">
+        <div class="header-right-zone" role="navigation" aria-label="Main Navigation">
+          <a class="nav-link-item active" id="nav-search-engine" href="#" role="button" aria-current="page">
             <span>Search Engine</span>
           </a>
-          <a class="nav-link-item" id="nav-workspace">
+          <a class="nav-link-item" id="nav-workspace" href="#" role="button">
             <span>Workspace</span>
             <span class="badge-count" id="shortlist-count-badge">0</span>
           </a>
-          <a class="nav-link-item" id="nav-profile">
+          <a class="nav-link-item" id="nav-profile" href="#" role="button">
             <span>Profile View</span>
           </a>
-          <button class="btn-icon" title="Notifications">
+          <button class="btn-icon" title="Notifications" aria-label="Notifications">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
           </button>
-          <div class="user-profile-btn">
+          <div class="user-profile-btn" tabindex="0" aria-label="User Profile (${user.name})">
             <div class="user-profile-avatar">${user.avatar}</div>
             <span style="font-size: 13px; font-weight: 500;">${user.name.split(' ')[0]}</span>
           </div>

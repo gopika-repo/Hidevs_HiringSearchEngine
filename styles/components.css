@@ -1144,3 +1144,62 @@
   flex-wrap: wrap;
   gap: 6px;
 }
+
+/* --- Production-Grade Accessibility, Focus & Micro-Transition Styles --- */
+:focus-visible {
+  outline: 2px solid var(--color-accent-base) !important;
+  outline-offset: 2px !important;
+}
+
+.btn, .chip, .candidate-card, .suggestion-item, .direct-link-btn {
+  transition: background-color var(--duration-fast), border-color var(--duration-fast), box-shadow var(--duration-fast), transform var(--duration-fast);
+}
+
+.btn:active, .chip:active {
+  transform: translateY(1px);
+}
+
+.candidate-card:hover {
+  border-color: var(--color-border-strong);
+  box-shadow: var(--shadow-sm);
+}
+
+.empty-search-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px;
+  text-align: center;
+  background: var(--color-bg-surface);
+  border: 1px dashed var(--color-border-strong);
+  border-radius: var(--radius-lg);
+  margin: 24px 0;
+}
+
+.empty-state-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-full);
+  background: var(--color-bg-subtle);
+  color: var(--color-text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.empty-state-title {
+  font-size: var(--type-h3-size);
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: 6px;
+}
+
+.empty-state-subtitle {
+  font-size: var(--type-body-sm-size);
+  color: var(--color-text-muted);
+  max-width: 360px;
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
