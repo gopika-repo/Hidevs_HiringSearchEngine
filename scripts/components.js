@@ -204,131 +204,196 @@ export function renderQuickFilters(state) {
   }).join('');
 }
 
-// --- Filter Sidebar Renderer ---
+// --- Recruiter-First Filter Sidebar Renderer (4 Logical Collapsible Sections) ---
 export function renderFilterSidebar(state) {
   const skillsList = ["Python", "FastAPI", "LangChain", "React", "TypeScript", "Go", "Docker", "PyTorch"];
   const roleList = ["AI / ML Engineer", "Backend", "Full Stack", "Platform Engineering"];
 
-  const renderSectionHeader = (title, hasActive, sectionKey) => `
-    <div class="filter-section-title" style="display: flex; justify-content: space-between; align-items: center;">
-      <span>${title}</span>
-      ${hasActive ? `<button class="btn btn-ghost btn-sm" data-action="clear-section" data-section="${sectionKey}" style="padding:0; font-size:11px; color:var(--color-accent-base); font-weight:500;">Clear</button>` : ''}
-    </div>
-  `;
-
   return `
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-      <span style="font-weight: 600; font-size: 14px;">FILTERS</span>
-      <button class="btn btn-ghost btn-sm" data-action="clear-filters" style="padding:0;">Clear All</button>
+    <div class="sidebar-top-bar" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--color-border-subtle);">
+      <span style="font-weight: 700; font-size: 13px; letter-spacing: 0.04em; color: var(--color-text-primary);">RECRUITER FILTERS</span>
+      <button class="btn btn-ghost btn-sm" data-action="clear-filters" style="padding: 2px 6px; font-size: 11px; color: var(--color-accent-base);">Clear All</button>
     </div>
 
-    <!-- Location -->
-    <div class="filter-section">
-      ${renderSectionHeader("Location", Boolean(state.filters.location), "location")}
-      <div style="margin-top: 8px;">
-        <input type="text" class="global-search-input" placeholder="e.g. Bangalore, Remote, Delhi..." value="${sanitizeHtml(state.filters.location || '')}" data-action="filter-location-input" style="width: 100%; height: 32px; padding: 0 10px; font-size: 13px;">
-      </div>
-    </div>
+    <div class="recruiter-filter-accordion">
+      <!-- Section 1: Core Candidate Specs (Role, Experience, Location, Remote, Notice, Salary) -->
+      <details class="filter-group-details" open>
+        <summary class="filter-group-summary">
+          <span class="group-title">🎯 CORE SPECS (Role, Exp, Location, Notice, Salary)</span>
+        </summary>
+        <div class="filter-group-body">
+          <!-- Role -->
+          <div class="sub-filter-block">
+            <label class="sub-filter-label">Target Role</label>
+            <div class="filter-pills-row">
+              ${roleList.map(r => `
+                <button class="chip ${state.filters.roleTypes.has(r) ? 'active' : ''}" data-action="filter-role" data-value="${r}">
+                  ${r}
+                </button>
+              `).join('')}
+            </div>
+          </div>
 
-    <!-- Availability -->
-    <div class="filter-section">
-      ${renderSectionHeader("Availability", Boolean(state.filters.availability), "availability")}
-      <div class="filter-options-list" style="margin-top: 6px;">
-        <label class="form-check">
-          <input type="radio" name="availability" value="Open to Work" ${state.filters.availability === 'Open to Work' ? 'checked' : ''} data-action="filter-radio" data-category="availability">
-          <span>Open to Work</span>
-        </label>
-        <label class="form-check">
-          <input type="radio" name="availability" value="Open to Select Roles" ${state.filters.availability === 'Open to Select Roles' ? 'checked' : ''} data-action="filter-radio" data-category="availability">
-          <span>Open to Select Roles</span>
-        </label>
-      </div>
-    </div>
+          <!-- Skills & Verified Skills -->
+          <div class="sub-filter-block">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <label class="sub-filter-label">Skills & Stack</label>
+              <label class="form-check" style="font-size: 11px;">
+                <input type="checkbox" ${state.filters.builderSignals.has('verified_skills') ? 'checked' : ''} data-action="filter-signal" data-value="verified_skills">
+                <span>Verified Only</span>
+              </label>
+            </div>
+            <div class="skills-row" style="margin-top: 4px;">
+              ${skillsList.map(s => `
+                <span class="chip ${state.filters.skills.has(s) ? 'active' : ''}" data-action="filter-skill" data-value="${s}">
+                  ${s}
+                </span>
+              `).join('')}
+            </div>
+          </div>
 
-    <!-- Role Type -->
-    <div class="filter-section">
-      ${renderSectionHeader("Role Type", state.filters.roleTypes.size > 0, "roleTypes")}
-      <div class="filter-options-list" style="margin-top: 6px;">
-        ${roleList.map(r => `
-          <label class="form-check">
-            <input type="checkbox" ${state.filters.roleTypes.has(r) ? 'checked' : ''} data-action="filter-role" data-value="${r}">
-            <span>${r}</span>
-          </label>
-        `).join('')}
-      </div>
-    </div>
+          <!-- Experience -->
+          <div class="sub-filter-block">
+            <label class="sub-filter-label">Years of Experience</label>
+            <div class="filter-pills-row">
+              <button class="chip ${state.filters.experienceLevel === '0-2' ? 'active' : ''}" data-action="filter-radio" data-category="experienceLevel" value="0-2">0-2 Yrs</button>
+              <button class="chip ${state.filters.experienceLevel === '3-5' ? 'active' : ''}" data-action="filter-radio" data-category="experienceLevel" value="3-5">3-5 Yrs</button>
+              <button class="chip ${state.filters.experienceLevel === '6+' ? 'active' : ''}" data-action="filter-radio" data-category="experienceLevel" value="6+">6+ Yrs</button>
+            </div>
+          </div>
 
-    <!-- Skills -->
-    <div class="filter-section">
-      ${renderSectionHeader("Skills & Stack", state.filters.skills.size > 0, "skills")}
-      <div class="skills-row" style="margin-top: 8px;">
-        ${skillsList.map(s => `
-          <span class="chip ${state.filters.skills.has(s) ? 'active' : ''}" data-action="filter-skill" data-value="${s}">
-            ${s}
-          </span>
-        `).join('')}
-      </div>
-    </div>
+          <!-- Location & Remote -->
+          <div class="sub-filter-block">
+            <label class="sub-filter-label">Location & Remote</label>
+            <input type="text" class="global-search-input" placeholder="e.g. Bangalore, Remote, Delhi..." value="${sanitizeHtml(state.filters.location || '')}" data-action="filter-location-input" style="width: 100%; height: 30px; padding: 0 8px; font-size: 12px; margin-bottom: 6px;">
+            <div class="filter-pills-row">
+              <button class="chip ${state.filters.workMode === 'Remote' ? 'active' : ''}" data-action="filter-radio" data-category="workMode" value="Remote">Remote Only</button>
+              <button class="chip ${state.filters.workMode === 'Hybrid' ? 'active' : ''}" data-action="filter-radio" data-category="workMode" value="Hybrid">Hybrid</button>
+            </div>
+          </div>
 
-    <!-- Experience Level -->
-    <div class="filter-section">
-      ${renderSectionHeader("Experience Level", Boolean(state.filters.experienceLevel), "experienceLevel")}
-      <div class="filter-options-list" style="margin-top: 6px;">
-        <label class="form-check">
-          <input type="radio" name="experienceLevel" value="0-2" ${state.filters.experienceLevel === '0-2' ? 'checked' : ''} data-action="filter-radio" data-category="experienceLevel">
-          <span>0-2 Years</span>
-        </label>
-        <label class="form-check">
-          <input type="radio" name="experienceLevel" value="3-5" ${state.filters.experienceLevel === '3-5' ? 'checked' : ''} data-action="filter-radio" data-category="experienceLevel">
-          <span>3-5 Years</span>
-        </label>
-        <label class="form-check">
-          <input type="radio" name="experienceLevel" value="6+" ${state.filters.experienceLevel === '6+' ? 'checked' : ''} data-action="filter-radio" data-category="experienceLevel">
-          <span>6+ Years</span>
-        </label>
-      </div>
-    </div>
+          <!-- Notice Period & Immediate Joiner -->
+          <div class="sub-filter-block">
+            <label class="sub-filter-label">Notice Period / Immediate Joiner</label>
+            <div class="filter-pills-row">
+              <button class="chip ${state.filters.noticePeriod === 'immediate' ? 'active' : ''}" data-action="filter-radio" data-category="noticePeriod" value="immediate">⚡ Immediate (0d)</button>
+              <button class="chip ${state.filters.noticePeriod === '15d' ? 'active' : ''}" data-action="filter-radio" data-category="noticePeriod" value="15d">≤15 Days</button>
+              <button class="chip ${state.filters.noticePeriod === '30d' ? 'active' : ''}" data-action="filter-radio" data-category="noticePeriod" value="30d">≤30 Days</button>
+            </div>
+          </div>
 
-    <!-- Top AI Rank % -->
-    <div class="filter-section">
-      ${renderSectionHeader(`Top AI Rank (${state.filters.rankingPercentile}%)`, state.filters.rankingPercentile < 100, "rankingPercentile")}
-      <div style="margin-top: 8px;">
-        <input type="range" min="5" max="100" step="5" value="${state.filters.rankingPercentile}" data-action="filter-rank-range" style="width: 100%; cursor: pointer; accent-color: var(--color-accent-base);">
-        <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--color-text-muted); margin-top: 4px;">
-          <span>Top 5%</span>
-          <span>Top 100%</span>
+          <!-- Salary Expectation -->
+          <div class="sub-filter-block">
+            <label class="sub-filter-label">Salary Expectation (LPA)</label>
+            <div class="filter-pills-row">
+              <button class="chip ${state.filters.salary === '<20L' ? 'active' : ''}" data-action="filter-radio" data-category="salary" value="<20L">&lt; 20 LPA</button>
+              <button class="chip ${state.filters.salary === '20-35L' ? 'active' : ''}" data-action="filter-radio" data-category="salary" value="20-35L">20 - 35 LPA</button>
+              <button class="chip ${state.filters.salary === '35L+' ? 'active' : ''}" data-action="filter-radio" data-category="salary" value="35L+">35+ LPA</button>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      </details>
 
-    <!-- Work Mode -->
-    <div class="filter-section">
-      ${renderSectionHeader("Work Mode", Boolean(state.filters.workMode), "workMode")}
-      <div class="filter-options-list" style="margin-top: 6px;">
-        <label class="form-check">
-          <input type="radio" name="workMode" value="Remote" ${state.filters.workMode === 'Remote' ? 'checked' : ''} data-action="filter-radio" data-category="workMode">
-          <span>Remote Only</span>
-        </label>
-        <label class="form-check">
-          <input type="radio" name="workMode" value="Hybrid" ${state.filters.workMode === 'Hybrid' ? 'checked' : ''} data-action="filter-radio" data-category="workMode">
-          <span>Hybrid</span>
-        </label>
-      </div>
-    </div>
+      <!-- Section 2: Candidate Status & Background (Open to Work, Company Exp, Education) -->
+      <details class="filter-group-details" open>
+        <summary class="filter-group-summary">
+          <span class="group-title">💼 RECRUITER STATUS (Availability, Company, Ed)</span>
+        </summary>
+        <div class="filter-group-body">
+          <!-- Open to Work -->
+          <div class="sub-filter-block">
+            <label class="sub-filter-label">Availability Status</label>
+            <div class="filter-pills-row">
+              <button class="chip ${state.filters.availability === 'Open to Work' ? 'active' : ''}" data-action="filter-radio" data-category="availability" value="Open to Work">● Open to Work</button>
+              <button class="chip ${state.filters.availability === 'Open to Select Roles' ? 'active' : ''}" data-action="filter-radio" data-category="availability" value="Open to Select Roles">Open to Select Roles</button>
+            </div>
+          </div>
 
-    <!-- Builder Signals -->
-    <div class="filter-section" style="border-bottom: none;">
-      ${renderSectionHeader("★ BUILDER SIGNALS", state.filters.builderSignals.size > 0, "builderSignals")}
-      <div class="filter-options-list" style="margin-top: 6px;">
-        <label class="form-check">
-          <input type="checkbox" ${state.filters.builderSignals.has('hackathon') ? 'checked' : ''} data-action="filter-signal" data-value="hackathon">
-          <span>Hackathon Winner</span>
-        </label>
-        <label class="form-check">
-          <input type="checkbox" ${state.filters.builderSignals.has('deployed') ? 'checked' : ''} data-action="filter-signal" data-value="deployed">
-          <span>Has Deployed Projects</span>
-        </label>
-      </div>
+          <!-- Company Experience -->
+          <div class="sub-filter-block">
+            <label class="sub-filter-label">Company Experience</label>
+            <div class="filter-pills-row">
+              <button class="chip ${state.filters.companyTier === 'tier1' ? 'active' : ''}" data-action="filter-radio" data-category="companyTier" value="tier1">Tier-1 Tech / MAANG</button>
+              <button class="chip ${state.filters.companyTier === 'unicorn' ? 'active' : ''}" data-action="filter-radio" data-category="companyTier" value="unicorn">High-Growth Unicorns</button>
+            </div>
+          </div>
+
+          <!-- Education -->
+          <div class="sub-filter-block">
+            <label class="sub-filter-label">Education Background</label>
+            <div class="filter-pills-row">
+              <button class="chip ${state.filters.education === 'top_tier' ? 'active' : ''}" data-action="filter-radio" data-category="education" value="top_tier">Top CS Tier (IIT/BITS/NIT)</button>
+              <button class="chip ${state.filters.education === 'btech' ? 'active' : ''}" data-action="filter-radio" data-category="education" value="btech">B.Tech / B.E.</button>
+            </div>
+          </div>
+        </div>
+      </details>
+
+      <!-- Section 3: AI Intelligence & Ranks (AI Hiring Score, Challenge Rank, Project Rank) -->
+      <details class="filter-group-details" open>
+        <summary class="filter-group-summary">
+          <span class="group-title">🤖 AI EVALUATION & RANKS (Score, Challenge & Project Rank)</span>
+        </summary>
+        <div class="filter-group-body">
+          <!-- AI Hiring Score -->
+          <div class="sub-filter-block">
+            <label class="sub-filter-label">Min AI Hiring Score</label>
+            <div class="filter-pills-row">
+              <button class="chip ${state.filters.minAiScore === 90 ? 'active' : ''}" data-action="filter-radio" data-category="minAiScore" value="90">90+ Score</button>
+              <button class="chip ${state.filters.minAiScore === 80 ? 'active' : ''}" data-action="filter-radio" data-category="minAiScore" value="80">80+ Score</button>
+              <button class="chip ${!state.filters.minAiScore ? 'active' : ''}" data-action="filter-radio" data-category="minAiScore" value="">Any Score</button>
+            </div>
+          </div>
+
+          <!-- Challenge Rank -->
+          <div class="sub-filter-block">
+            <label class="sub-filter-label">Challenge Rank Percentile</label>
+            <div class="filter-pills-row">
+              <button class="chip ${state.filters.rankingPercentile === 5 ? 'active' : ''}" data-action="filter-radio" data-category="rankingPercentile" value="5">Top 5%</button>
+              <button class="chip ${state.filters.rankingPercentile === 10 ? 'active' : ''}" data-action="filter-radio" data-category="rankingPercentile" value="10">Top 10%</button>
+              <button class="chip ${state.filters.rankingPercentile === 25 ? 'active' : ''}" data-action="filter-radio" data-category="rankingPercentile" value="25">Top 25%</button>
+            </div>
+          </div>
+
+          <!-- Project Rank & Hackathon Winners -->
+          <div class="sub-filter-block">
+            <label class="sub-filter-label">Project Rank & Hackathon Proof</label>
+            <div class="filter-pills-row">
+              <button class="chip ${state.filters.builderSignals.has('hackathon') ? 'active' : ''}" data-action="filter-signal" data-value="hackathon">🏆 Hackathon Winner</button>
+              <button class="chip ${state.filters.builderSignals.has('deployed') ? 'active' : ''}" data-action="filter-signal" data-value="deployed">⚡ Deployed Apps</button>
+            </div>
+          </div>
+        </div>
+      </details>
+
+      <!-- Section 4: Capability & Behavioral Scores (Projects, Builder, Problem Solving, Comm, Lead) -->
+      <details class="filter-group-details">
+        <summary class="filter-group-summary">
+          <span class="group-title">⚡ CAPABILITY & SCORES (Projects, Problem Solving, Comm, Lead)</span>
+        </summary>
+        <div class="filter-group-body">
+          <!-- Projects Completed -->
+          <div class="sub-filter-block">
+            <label class="sub-filter-label">Min Projects Completed</label>
+            <div class="filter-pills-row">
+              <button class="chip ${state.filters.minProjects === 5 ? 'active' : ''}" data-action="filter-radio" data-category="minProjects" value="5">5+ Projects</button>
+              <button class="chip ${state.filters.minProjects === 3 ? 'active' : ''}" data-action="filter-radio" data-category="minProjects" value="3">3+ Projects</button>
+              <button class="chip ${state.filters.minProjects === 1 ? 'active' : ''}" data-action="filter-radio" data-category="minProjects" value="1">1+ Project</button>
+            </div>
+          </div>
+
+          <!-- Behavioral Scores: Builder, Problem Solving, Communication, Leadership -->
+          <div class="sub-filter-block">
+            <label class="sub-filter-label">Specialized Capability Scores</label>
+            <div class="filter-pills-row">
+              <button class="chip ${state.filters.builderSignals.has('builder_score') ? 'active' : ''}" data-action="filter-signal" data-value="builder_score">Builder 80+</button>
+              <button class="chip ${state.filters.builderSignals.has('problem_solving') ? 'active' : ''}" data-action="filter-signal" data-value="problem_solving">Problem Solving 85+</button>
+              <button class="chip ${state.filters.builderSignals.has('communication') ? 'active' : ''}" data-action="filter-signal" data-value="communication">Comm 80+</button>
+              <button class="chip ${state.filters.builderSignals.has('leadership') ? 'active' : ''}" data-action="filter-signal" data-value="leadership">Leadership 80+</button>
+            </div>
+          </div>
+        </div>
+      </details>
     </div>
   `;
 }

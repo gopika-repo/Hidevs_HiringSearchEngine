@@ -18,7 +18,13 @@ class Store {
         workMode: null,
         location: '',
         builderSignals: new Set(),
-        rankingPercentile: 100
+        rankingPercentile: 100,
+        noticePeriod: null,
+        salary: null,
+        companyTier: null,
+        education: null,
+        minAiScore: null,
+        minProjects: null
       },
       sortBy: 'Best Match',
       currentPage: 1,
@@ -81,7 +87,14 @@ class Store {
       this.state.filters.workMode = this.state.filters.workMode === value ? null : value;
     } else if (category === 'experienceLevel') {
       this.state.filters.experienceLevel = this.state.filters.experienceLevel === value ? null : value;
+    } else if (category === 'rankingPercentile') {
+      const numVal = parseInt(value, 10);
+      this.state.filters.rankingPercentile = this.state.filters.rankingPercentile === numVal ? 100 : numVal;
+    } else if (['noticePeriod', 'salary', 'companyTier', 'education', 'minAiScore', 'minProjects'].includes(category)) {
+      const valParsed = category === 'minAiScore' || category === 'minProjects' ? (value ? parseInt(value, 10) : null) : value;
+      this.state.filters[category] = this.state.filters[category] === valParsed ? null : valParsed;
     }
+    this.state.currentPage = 1;
     this.notify();
   }
 
@@ -150,6 +163,12 @@ class Store {
     this.state.filters.workMode = null;
     this.state.filters.location = '';
     this.state.filters.rankingPercentile = 100;
+    this.state.filters.noticePeriod = null;
+    this.state.filters.salary = null;
+    this.state.filters.companyTier = null;
+    this.state.filters.education = null;
+    this.state.filters.minAiScore = null;
+    this.state.filters.minProjects = null;
     this.state.filters.skills.clear();
     this.state.filters.roleTypes.clear();
     this.state.filters.builderSignals.clear();
@@ -259,7 +278,23 @@ class Store {
       }
 
       if (this.state.filters.builderSignals.has("hackathon") && cand.builderProof.hackathonWinsCount === 0) return false;
-      if (this.state.filters.builderSignals.has("deployed") && cand.builderProof.deployedProjectsCount === 0) return false;
+      if (this.state.filters.builderSignals.has("deployed") && (cand.builderProof.deployedProjectsCount === 0 && (!cand.projects || cand.projects.length === 0))) return false;
+
+      if (this.state.filters.noticePeriod) {
+        if (this.state.filters.noticePeriod === 'immediate' && cand.noticePeriodDays > 0) return false;
+        if (this.state.filters.noticePeriod === '15d' && cand.noticePeriodDays > 15) return false;
+        if (this.state.filters.noticePeriod === '30d' && cand.noticePeriodDays > 30) return false;
+      }
+
+      if (this.state.filters.minAiScore) {
+        const score = cand.interviewReadiness?.score || Math.min(98, 88 + (cand.experienceYears * 2));
+        if (score < this.state.filters.minAiScore) return false;
+      }
+
+      if (this.state.filters.minProjects) {
+        const projCount = cand.builderProof?.projectsCount ?? (cand.projects ? cand.projects.length : 0);
+        if (projCount < this.state.filters.minProjects) return false;
+      }
 
       return true;
     });
