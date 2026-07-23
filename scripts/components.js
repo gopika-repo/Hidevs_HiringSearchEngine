@@ -128,6 +128,40 @@ export function renderFilterSidebar(state) {
       </div>
     </div>
 
+    <!-- Experience Level -->
+    <div class="filter-section">
+      <div class="filter-section-title">Experience Level</div>
+      <div class="filter-options-list">
+        <label class="form-check">
+          <input type="radio" name="experienceLevel" value="0-2" ${state.filters.experienceLevel === '0-2' ? 'checked' : ''} data-action="filter-radio" data-category="experienceLevel">
+          <span>0-2 Years</span>
+        </label>
+        <label class="form-check">
+          <input type="radio" name="experienceLevel" value="3-5" ${state.filters.experienceLevel === '3-5' ? 'checked' : ''} data-action="filter-radio" data-category="experienceLevel">
+          <span>3-5 Years</span>
+        </label>
+        <label class="form-check">
+          <input type="radio" name="experienceLevel" value="6+" ${state.filters.experienceLevel === '6+' ? 'checked' : ''} data-action="filter-radio" data-category="experienceLevel">
+          <span>6+ Years</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Top AI Rank % -->
+    <div class="filter-section">
+      <div class="filter-section-title">
+        <span>Top AI Rank</span>
+        <span style="color: var(--color-accent-base); font-weight: 600; text-transform: none;">Top ${state.filters.rankingPercentile}%</span>
+      </div>
+      <div style="margin-top: 8px;">
+        <input type="range" min="5" max="100" step="5" value="${state.filters.rankingPercentile}" data-action="filter-rank-range" style="width: 100%; cursor: pointer; accent-color: var(--color-accent-base);">
+        <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--color-text-muted); margin-top: 4px;">
+          <span>Top 5%</span>
+          <span>Top 100%</span>
+        </div>
+      </div>
+    </div>
+
     <!-- Work Mode -->
     <div class="filter-section">
       <div class="filter-section-title">Work Mode</div>

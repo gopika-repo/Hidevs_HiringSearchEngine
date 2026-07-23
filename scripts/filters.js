@@ -26,4 +26,10 @@ export function initFilters() {
       store.toggleBuilderSignal(targetBtn.dataset.value);
     }
   });
+
+  document.addEventListener('input', (e) => {
+    if (e.target.dataset.action === 'filter-rank-range') {
+      store.setRankingPercentile(parseInt(e.target.value, 10));
+    }
+  });
 }

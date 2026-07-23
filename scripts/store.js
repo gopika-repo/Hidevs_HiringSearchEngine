@@ -77,7 +77,14 @@ class Store {
       this.state.filters.availability = this.state.filters.availability === value ? null : value;
     } else if (category === 'workMode') {
       this.state.filters.workMode = this.state.filters.workMode === value ? null : value;
+    } else if (category === 'experienceLevel') {
+      this.state.filters.experienceLevel = this.state.filters.experienceLevel === value ? null : value;
     }
+    this.notify();
+  }
+
+  setRankingPercentile(value) {
+    this.state.filters.rankingPercentile = value;
     this.notify();
   }
 
@@ -114,6 +121,7 @@ class Store {
     this.state.filters.availability = null;
     this.state.filters.experienceLevel = null;
     this.state.filters.workMode = null;
+    this.state.filters.rankingPercentile = 100;
     this.state.filters.skills.clear();
     this.state.filters.roleTypes.clear();
     this.state.filters.builderSignals.clear();
@@ -182,6 +190,18 @@ class Store {
       // Sidebar Filters
       if (this.state.filters.availability && cand.availability !== this.state.filters.availability) return false;
       if (this.state.filters.workMode && cand.workMode !== this.state.filters.workMode) return false;
+      
+      if (this.state.filters.experienceLevel) {
+        const exp = cand.experienceYears ?? 0;
+        if (this.state.filters.experienceLevel === '0-2' && !(exp <= 2)) return false;
+        if (this.state.filters.experienceLevel === '3-5' && !(exp >= 3 && exp <= 5)) return false;
+        if (this.state.filters.experienceLevel === '6+' && !(exp >= 6)) return false;
+      }
+
+      if (this.state.filters.rankingPercentile < 100) {
+        const rank = cand.builderProof?.aiRankPercentile ?? 100;
+        if (rank > this.state.filters.rankingPercentile) return false;
+      }
       
       if (this.state.filters.skills.size > 0) {
         const hasAllSkills = Array.from(this.state.filters.skills).every(s => cand.skills.includes(s));

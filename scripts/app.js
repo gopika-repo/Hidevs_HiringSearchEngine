@@ -113,7 +113,7 @@ class ApplicationController {
                   Showing <span>${candidates.length}</span> builder candidates
                 </div>
                 <div style="display: flex; align-items: center; gap: 16px;">
-                  <button class="btn btn-ghost btn-sm" data-action="clear-filters" style="${state.activeQuickFilters.size || state.searchQuery || state.filters.skills.size ? '' : 'display:none;'}">Clear all filters</button>
+                  <button class="btn btn-ghost btn-sm" data-action="clear-filters" style="${state.activeQuickFilters.size || state.searchQuery || state.filters.skills.size || state.filters.roleTypes.size || state.filters.availability || state.filters.workMode || state.filters.experienceLevel || state.filters.builderSignals.size || state.filters.rankingPercentile < 100 ? '' : 'display:none;'}">Clear all filters</button>
                   <div class="sort-container">
                     <span>Sort by:</span>
                     <select class="sort-select">
