@@ -5,6 +5,85 @@
 import { mockQuickFilters } from './mockData.js';
 import { icons, sanitizeHtml } from './utils.js';
 
+// --- Structured Hiring Brief Renderer ---
+export function renderStructuredBriefCard(cand) {
+  if (!cand) return '';
+
+  const verdict = cand.fitVerdict || {
+    status: "Good Fit",
+    reason: cand.aiSummary || "Strong candidate matching specified parameters."
+  };
+
+  const topReasons = cand.whyInterview && cand.whyInterview.length > 0
+    ? cand.whyInterview.slice(0, 3)
+    : [
+        { claim: `Top ${cand.builderProof?.aiRankPercentile ?? 10}% Rank`, evidence: `${cand.builderProof?.projectsCount ?? 3} projects built.` }
+      ];
+
+  const concerns = cand.potentialConcerns && cand.potentialConcerns.length > 0
+    ? cand.potentialConcerns
+    : ["Verify specific architecture preferences and leadership scope in interview."];
+
+  return `
+    <div class="structured-brief-card" style="background: var(--color-bg-base); border: 1px solid var(--color-border-subtle); border-radius: var(--radius-md); padding: 14px; margin: 12px 0;">
+      <!-- 1. Fit Verdict -->
+      <div style="margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid var(--color-border-subtle);">
+        <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--color-text-muted); margin-bottom: 4px; letter-spacing: 0.04em;">
+          RECRUITER HIRING BRIEF
+        </div>
+        <div style="display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap;">
+          <span class="badge ${verdict.status === 'Strong Fit' ? 'badge-open-to-work' : 'badge-open-select'}" style="font-weight: 700; font-size: 11px;">
+            ${sanitizeHtml(verdict.status)}
+          </span>
+          <span style="font-size: 13px; font-weight: 600; color: var(--color-text-primary);">
+            ${sanitizeHtml(verdict.reason)}
+          </span>
+        </div>
+      </div>
+
+      <!-- 2. Top 3 Evidence-Backed Reasons to Hire -->
+      <div style="margin-bottom: 10px;">
+        <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--color-text-muted); margin-bottom: 6px; letter-spacing: 0.04em;">
+          TOP EVIDENCE-BACKED REASONS TO HIRE
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 6px;">
+          ${topReasons.map(item => `
+            <div style="font-size: 12.5px; line-height: 1.4;">
+              <strong style="color: var(--color-text-primary);">✓ ${sanitizeHtml(item.claim)}:</strong>
+              <span style="color: var(--color-text-secondary);">${sanitizeHtml(item.evidence)}</span>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+
+      <!-- 3. Interview to Verify (Honest Concerns / Open Questions) -->
+      <div style="margin-bottom: 10px;">
+        <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--color-text-muted); margin-bottom: 6px; letter-spacing: 0.04em;">
+          INTERVIEW TO VERIFY
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 4px;">
+          ${concerns.map(concern => `
+            <div style="font-size: 12px; color: var(--color-text-muted); display: flex; gap: 6px;">
+              <span>🔍</span> <span>${sanitizeHtml(concern)}</span>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+
+      <!-- 4. Logistics at a Glance -->
+      <div style="display: flex; gap: 10px; flex-wrap: wrap; font-size: 11.5px; color: var(--color-text-secondary); padding-top: 8px; border-top: 1px solid var(--color-border-subtle); background: var(--color-bg-surface); padding: 8px 10px; border-radius: 4px; margin-top: 8px;">
+        <div><strong>Availability:</strong> ${sanitizeHtml(cand.availability)}</div>
+        <div>•</div>
+        <div><strong>Notice:</strong> ${cand.noticePeriodDays === 0 ? 'Immediate (0d)' : cand.noticePeriodDays + ' days'}</div>
+        <div>•</div>
+        <div><strong>Work Mode:</strong> ${sanitizeHtml(cand.workMode)}</div>
+        <div>•</div>
+        <div><strong>Location:</strong> ${sanitizeHtml(cand.location)}</div>
+      </div>
+    </div>
+  `;
+}
+
 // --- Candidate Card Renderer ---
 export function renderCandidateCard(cand, state) {
   const isShortlisted = state.shortlistedIds.has(cand.id);
@@ -41,9 +120,7 @@ export function renderCandidateCard(cand, state) {
         ⚡ ${cand.builderProof.projectsCount} Projects · 🏆 ${cand.builderProof.hackathonWinsCount} Hackathon Wins · ★ Top ${cand.builderProof.aiRankPercentile}% AI Rank
       </div>
 
-      <div class="ai-summary-box">
-        <strong>AI Summary:</strong> ${sanitizeHtml(cand.aiSummary)}
-      </div>
+      ${renderStructuredBriefCard(cand)}
 
       <div class="card-divider"></div>
 

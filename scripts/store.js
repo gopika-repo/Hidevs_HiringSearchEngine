@@ -218,9 +218,8 @@ class Store {
     this.notify();
   }
 
-  // --- Filter Selector ---
   getFilteredCandidates() {
-    return this.state.candidates.filter(cand => {
+    const result = this.state.candidates.filter(cand => {
       // Search Query
       if (this.state.searchQuery.trim()) {
         const q = this.state.searchQuery.toLowerCase();
