@@ -710,148 +710,171 @@
   border-radius: var(--radius-full);
 }
 
-/* --- Linear / Stripe Information Hierarchy Candidate Card Styles --- */
-.card-header-main {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: var(--space-2);
-  margin-bottom: var(--space-1-5);
-}
-
-.card-identity-group {
+/* --- Nielsen Usability 5-Second Candidate Card Styles --- */
+.card-top-row {
   display: flex;
   gap: var(--space-1-5);
   align-items: flex-start;
-  flex: 1;
+  margin-bottom: var(--space-1-5);
 }
 
-.identity-details {
+.avatar-col {
+  flex-shrink: 0;
+}
+
+.header-main-col {
+  flex: 1;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   gap: 2px;
 }
 
-.name-score-row {
+.name-role-line {
   display: flex;
-  align-items: center;
-  gap: var(--space-1-5);
+  align-items: baseline;
+  gap: var(--space-1);
   flex-wrap: wrap;
 }
 
-.ai-score-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 11px;
-  font-weight: 600;
-  background-color: var(--color-bg-subtle);
-  color: var(--color-text-primary);
-  border: 1px solid var(--color-border-default);
-  padding: 2px 8px;
-  border-radius: var(--radius-sm);
-  white-space: nowrap;
+.candidate-role {
+  font-size: var(--type-body-sm-size);
+  color: var(--color-text-secondary);
 }
 
-.card-status-group {
+.sub-meta-line {
+  font-size: var(--type-caption-size);
+  color: var(--color-text-muted);
+  display: flex;
+  gap: var(--space-1);
+  flex-wrap: wrap;
+  margin-top: 2px;
+}
+
+.scores-badge-col {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   gap: var(--space-1);
+  flex-shrink: 0;
 }
 
-.ai-summary-headline {
-  font-size: var(--type-body-sm-size);
-  line-height: 1.5;
+.ai-hiring-score-box {
+  background: var(--color-bg-subtle);
+  color: var(--color-accent-base);
+  border: 1px solid var(--color-border-strong);
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+  font-weight: 700;
+}
+
+.score-num {
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.score-label {
+  font-size: 9px;
+  opacity: 0.85;
+  text-transform: uppercase;
+}
+
+.percentile-pill {
+  background: var(--color-bg-subtle);
+  border: 1px solid var(--color-border-subtle);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
   color: var(--color-text-primary);
-  background-color: var(--color-bg-base);
+}
+
+.ai-summary-bar {
+  background: var(--color-bg-base);
   border-left: 3px solid var(--color-accent-base);
   border-radius: var(--radius-sm);
-  padding: var(--space-1-5) var(--space-2);
+  padding: var(--space-1) var(--space-1-5);
+  font-size: var(--type-body-sm-size);
+  line-height: 1.4;
+  color: var(--color-text-primary);
   margin-bottom: var(--space-1-5);
 }
 
-.metrics-bar {
+.skills-verified-row {
   display: flex;
   align-items: center;
   gap: var(--space-1);
-  font-size: var(--type-caption-size);
-  color: var(--color-text-muted);
   flex-wrap: wrap;
-  margin-top: var(--space-1);
   margin-bottom: var(--space-1-5);
 }
 
-.metric-item {
-  font-weight: 500;
-  color: var(--color-text-secondary);
-}
-
-.metric-dot {
-  color: var(--color-border-strong);
-}
-
-.popover-anchor {
-  position: relative;
-  display: inline-block;
-}
-
-.btn-metric-link {
-  background: none;
-  border: none;
-  padding: 0;
-  font-family: inherit;
-  font-size: var(--type-caption-size);
-  font-weight: 500;
-  color: var(--color-text-secondary);
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  transition: color var(--duration-fast);
-}
-
-.btn-metric-link:hover {
-  color: var(--color-accent-base);
-  text-decoration: underline;
-}
-
-.popover-header {
-  font-weight: 700;
+.skills-label {
   font-size: 11px;
+  font-weight: 700;
   text-transform: uppercase;
   color: var(--color-text-muted);
-  margin-bottom: var(--space-1);
 }
 
-.popover-item {
-  margin-bottom: var(--space-1);
-  font-size: var(--type-caption-size);
-}
-
-.popover-item-title {
+.chip-verified {
+  background: var(--color-bg-subtle);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border-subtle);
+  font-size: 11px;
   font-weight: 600;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+  background: var(--color-bg-base);
+  border: 1px solid var(--color-border-subtle);
+  padding: 8px;
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-1-5);
+  text-align: center;
+}
+
+.metric-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.m-val {
+  font-size: 13px;
+  font-weight: 700;
   color: var(--color-text-primary);
 }
 
-.popover-item-sub {
+.m-lbl {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
   color: var(--color-text-muted);
-  font-size: 11px;
-  margin-top: 2px;
+  margin-top: 1px;
 }
 
-.popover-cta {
-  width: 100%;
-  justify-content: center;
-  margin-top: var(--space-0-5);
-}
-
-.action-buttons-group {
+.card-footer-bar {
   display: flex;
-  gap: var(--space-1);
+  justify-content: space-between;
+  align-items: center;
+  padding-top: var(--space-1);
+  border-top: 1px solid var(--color-border-subtle);
 }
 
-.last-active-text {
+.active-status {
   font-size: var(--type-caption-size);
   color: var(--color-text-muted);
+}
+
+.cta-group {
+  display: flex;
+  gap: var(--space-1);
 }
