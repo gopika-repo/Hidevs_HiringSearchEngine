@@ -89,7 +89,7 @@ export function renderStructuredBriefCard(cand) {
   `;
 }
 
-// --- Candidate Card Renderer (HiDevs Proprietary AI Talent Intelligence Moat) ---
+// --- Candidate Card Renderer (5-Second Decision Speed & Hiring Verdict Template) ---
 export function renderCandidateCard(cand, state) {
   const isShortlisted = state.shortlistedIds.has(cand.id);
 
@@ -97,9 +97,27 @@ export function renderCandidateCard(cand, state) {
     ? cand.interviewReadiness.score
     : Math.min(98, 88 + (cand.experienceYears * 2));
 
-  const percentileText = cand.builderProof?.aiRankPercentile
-    ? `Top ${cand.builderProof.aiRankPercentile}%`
-    : `Top 5%`;
+  const rankPercentile = cand.builderProof?.aiRankPercentile ?? 15;
+  
+  // Recommendation Status
+  let recStatus = "Highly Recommended";
+  let recClass = "rec-highly";
+  let recIcon = "🟢";
+  if (cand.fitVerdict?.status === 'Good Fit' || (rankPercentile > 15 && rankPercentile <= 50)) {
+    recStatus = "Recommended";
+    recClass = "rec-standard";
+    recIcon = "🔵";
+  } else if (cand.fitVerdict?.status === 'Stretch Fit' || rankPercentile > 50) {
+    recStatus = "Needs Review";
+    recClass = "rec-review";
+    recIcon = "🟡";
+  }
+
+  // Archetype Tags
+  const isAi = cand.roleTypes?.includes("AI / ML Engineer") || cand.headline?.toLowerCase().includes("ai") || cand.headline?.toLowerCase().includes("ml");
+  const isBackend = cand.roleTypes?.includes("Backend") || cand.headline?.toLowerCase().includes("backend") || cand.headline?.toLowerCase().includes("engineer");
+  const archetype1 = isAi ? "Excellent AI Builder" : (isBackend ? "Strong Backend Engineer" : "Full-Stack Architect");
+  const archetype2 = cand.experienceYears >= 5 ? "Enterprise Ready" : (cand.builderProof?.projectsCount >= 4 ? "Independent Builder" : "Good for Startups");
 
   const top5Skills = (cand.skills || [])
     .map(s => typeof s === 'string' ? s : s.name)
@@ -111,7 +129,18 @@ export function renderCandidateCard(cand, state) {
 
   return `
     <div class="candidate-card" data-id="${cand.id}">
-      <!-- Top Row: Avatar, Identity, HiDevs Composite AI Hiring Score, Top Percentile, Availability -->
+      <!-- 5-Second Decision Speed Header Banner -->
+      <div class="decision-verdict-banner">
+        <span class="recommendation-badge ${recClass}">
+          ${recIcon} ${recStatus}
+        </span>
+        <div class="archetype-tags">
+          <span class="archetype-tag">${archetype1}</span>
+          <span class="archetype-tag">${archetype2}</span>
+        </div>
+      </div>
+
+      <!-- Top Row: Avatar, Identity, HiDevs Score, Availability -->
       <div class="card-top-row">
         <div class="avatar-col">
           <div class="avatar">${sanitizeHtml(cand.avatar)}</div>
@@ -130,49 +159,39 @@ export function renderCandidateCard(cand, state) {
         </div>
 
         <div class="scores-badge-col">
-          <div style="display: flex; align-items: center; gap: 6px;">
-            <div class="ai-hiring-score-box" title="HiDevs Composite AI Hiring Score (0-100)">
-              <span class="score-num">${aiHiringScore}</span>
-              <span class="score-label">/100 HIDEVS AI SCORE</span>
-            </div>
-            <span class="percentile-pill">${percentileText}</span>
+          <div class="ai-hiring-score-box" title="HiDevs Composite Match Score (0-100)">
+            <span class="score-num">${aiHiringScore}</span>
+            <span class="score-label">/100 MATCH</span>
           </div>
-          <span class="badge ${cand.availability === 'Open to Work' ? 'badge-open-to-work' : 'badge-open-select'}">
-            ${sanitizeHtml(cand.availability)}
-          </span>
         </div>
       </div>
 
-      <!-- 1. AI Generated Recruiter Brief Summary -->
-      <div class="hidevs-ai-brief">
-        <span class="hidevs-badge">HiDevs AI Verdict</span>
-        <span class="brief-text">${sanitizeHtml(cand.fitVerdict?.reason || cand.aiSummary)}</span>
+      <!-- Key Decision Callout: WHY HIRE THIS PERSON? -->
+      <div class="hire-rationale-box">
+        <span class="rationale-header">WHY HIRE:</span>
+        <span class="rationale-body">${sanitizeHtml(cand.fitVerdict?.reason || cand.aiSummary)}</span>
       </div>
 
-      <!-- 2. HiDevs Proprietary Intelligence Signals Grid (The Competitive Moat) -->
+      <!-- HiDevs Proprietary Intelligence Signals Grid -->
       <div class="hidevs-moat-grid">
         <div class="moat-metric-box">
           <div class="moat-lbl">LEARNING VELOCITY</div>
           <div class="moat-val green">🚀 4.8x Velocity</div>
-          <div class="moat-sub">Adopted stack in 60d</div>
         </div>
 
         <div class="moat-metric-box">
           <div class="moat-lbl">BUILDER SCORE</div>
           <div class="moat-val purple">🔨 ${builderScore}/100</div>
-          <div class="moat-sub">${cand.builderProof?.projectsCount ?? (cand.projects ? cand.projects.length : 3)} apps · 96% success</div>
         </div>
 
         <div class="moat-metric-box">
           <div class="moat-lbl">PROBLEM SOLVING</div>
           <div class="moat-val blue">🧠 ${problemSolvingScore}/100</div>
-          <div class="moat-sub">Top ${cand.builderProof?.aiRankPercentile ?? 5}% challenge rank</div>
         </div>
 
         <div class="moat-metric-box">
           <div class="moat-lbl">SYSTEM DESIGN</div>
           <div class="moat-val amber">🏗️ ${systemDesignScore}/100</div>
-          <div class="moat-sub">Verified microservices</div>
         </div>
       </div>
 
