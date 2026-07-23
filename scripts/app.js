@@ -150,6 +150,12 @@ class ApplicationController {
       container.innerHTML = renderFullProfileView(cand, state);
     }
 
+    // Sync search input if cleared externally
+    const searchInput = document.getElementById('global-search-input');
+    if (searchInput && state.searchQuery === '' && searchInput.value !== '') {
+      searchInput.value = '';
+    }
+
     // Handle Slide-Over Panel State
     const overlay = document.getElementById('preview-overlay');
     const panelContent = document.getElementById('preview-panel-content');
@@ -163,6 +169,10 @@ class ApplicationController {
   }
 
   bindGlobalEvents() {
+    document.addEventListener('search-query-changed', (e) => {
+      store.setSearchQuery(e.detail.query || '');
+    });
+
     document.addEventListener('click', (e) => {
       if (e.target.closest('#brand-home') || e.target.closest('#nav-search-engine')) {
         store.setView('search');
