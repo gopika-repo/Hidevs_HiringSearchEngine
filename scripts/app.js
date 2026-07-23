@@ -43,11 +43,12 @@ class ApplicationController {
         </div>
 
         <div class="header-search-container">
-          <div class="search-wrapper">
+          <div class="search-wrapper" style="position: relative; display: flex; align-items: center;">
             <span class="search-icon-svg">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
             </span>
-            <input type="text" id="global-search-input" class="global-search-input" placeholder="Search Python, FastAPI, Swiggy, Remote..." />
+            <input type="text" id="global-search-input" class="global-search-input" placeholder="Search 'Python developer in Bangalore', 'Top AI builders'..." style="padding-right: 60px;" />
+            <kbd style="position: absolute; right: 12px; font-size: 10px; font-weight: 700; background: var(--color-bg-subtle); color: var(--color-text-muted); border: 1px solid var(--color-border-subtle); border-radius: 4px; padding: 2px 6px; pointer-events: none;">⌘K</kbd>
             <div class="search-suggestions-dropdown" id="search-dropdown"></div>
           </div>
         </div>
