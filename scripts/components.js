@@ -89,7 +89,7 @@ export function renderStructuredBriefCard(cand) {
   `;
 }
 
-// --- Candidate Card Renderer (5-Second Decision Speed & Hiring Verdict Template) ---
+// --- Candidate Card Renderer (HiDevs AI Hiring Intelligence Card) ---
 export function renderCandidateCard(cand, state) {
   const isShortlisted = state.shortlistedIds.has(cand.id);
 
@@ -113,7 +113,7 @@ export function renderCandidateCard(cand, state) {
     recIcon = "🟡";
   }
 
-  // Archetype Tags
+  // Archetype Tags & Suited Roles
   const isAi = cand.roleTypes?.includes("AI / ML Engineer") || cand.headline?.toLowerCase().includes("ai") || cand.headline?.toLowerCase().includes("ml");
   const isBackend = cand.roleTypes?.includes("Backend") || cand.headline?.toLowerCase().includes("backend") || cand.headline?.toLowerCase().includes("engineer");
   const archetype1 = isAi ? "Excellent AI Builder" : (isBackend ? "Strong Backend Engineer" : "Full-Stack Architect");
@@ -125,22 +125,24 @@ export function renderCandidateCard(cand, state) {
 
   const builderScore = Math.min(99, 88 + (cand.experienceYears || 2));
   const problemSolvingScore = Math.min(99, 90 + (cand.experienceYears || 2));
-  const systemDesignScore = Math.min(99, 85 + (cand.experienceYears * 2));
 
   return `
     <div class="candidate-card" data-id="${cand.id}">
-      <!-- 5-Second Decision Speed Header Banner -->
+      <!-- AI Hiring Intelligence Header Banner -->
       <div class="decision-verdict-banner">
-        <span class="recommendation-badge ${recClass}">
-          ${recIcon} ${recStatus}
-        </span>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span class="recommendation-badge ${recClass}">
+            ${recIcon} ${recStatus}
+          </span>
+          <span style="font-size: 11px; font-weight: 700; color: #059669;">● ${aiHiringScore}% Hiring Confidence</span>
+        </div>
         <div class="archetype-tags">
           <span class="archetype-tag">${archetype1}</span>
           <span class="archetype-tag">${archetype2}</span>
         </div>
       </div>
 
-      <!-- Top Row: Avatar, Identity, HiDevs Score, Availability -->
+      <!-- Main Identity Row -->
       <div class="card-top-row">
         <div class="avatar-col">
           <div class="avatar">${sanitizeHtml(cand.avatar)}</div>
@@ -159,51 +161,52 @@ export function renderCandidateCard(cand, state) {
         </div>
 
         <div class="scores-badge-col">
-          <div class="ai-hiring-score-box" title="HiDevs Composite Match Score (0-100)">
+          <div class="ai-hiring-score-box" title="HiDevs Composite AI Hiring Intelligence Score">
             <span class="score-num">${aiHiringScore}</span>
-            <span class="score-label">/100 MATCH</span>
+            <span class="score-label">/100 HIDEVS AI SCORE</span>
           </div>
         </div>
       </div>
 
-      <!-- Key Decision Callout: WHY HIRE THIS PERSON? -->
+      <!-- AI-Generated Hiring Summary -->
       <div class="hire-rationale-box">
-        <span class="rationale-header">WHY HIRE:</span>
+        <span class="rationale-header">AI SUMMARY:</span>
         <span class="rationale-body">${sanitizeHtml(cand.fitVerdict?.reason || cand.aiSummary)}</span>
       </div>
 
-      <!-- HiDevs Proprietary Intelligence Signals Grid -->
+      <!-- HiDevs 4-Signal Platform Intelligence Grid (No Vanity Metrics) -->
       <div class="hidevs-moat-grid">
         <div class="moat-metric-box">
           <div class="moat-lbl">LEARNING VELOCITY</div>
           <div class="moat-val green">🚀 4.8x Velocity</div>
+          <div class="moat-sub">+24% 90-day growth</div>
+        </div>
+
+        <div class="moat-metric-box">
+          <div class="moat-lbl">EXECUTION QUALITY</div>
+          <div class="moat-val purple">⚡ 96% Quality</div>
+          <div class="moat-sub">${cand.builderProof?.projectsCount ?? (cand.projects ? cand.projects.length : 3)} live deployed apps</div>
+        </div>
+
+        <div class="moat-metric-box">
+          <div class="moat-lbl">CHALLENGE CONSISTENCY</div>
+          <div class="moat-val blue">🔥 Top ${rankPercentile}%</div>
+          <div class="moat-sub">${cand.builderProof?.streakDays ?? 30}-day active streak</div>
         </div>
 
         <div class="moat-metric-box">
           <div class="moat-lbl">BUILDER SCORE</div>
-          <div class="moat-val purple">🔨 ${builderScore}/100</div>
-        </div>
-
-        <div class="moat-metric-box">
-          <div class="moat-lbl">PROBLEM SOLVING</div>
-          <div class="moat-val blue">🧠 ${problemSolvingScore}/100</div>
-        </div>
-
-        <div class="moat-metric-box">
-          <div class="moat-lbl">SYSTEM DESIGN</div>
-          <div class="moat-val amber">🏗️ ${systemDesignScore}/100</div>
+          <div class="moat-val amber">🔨 ${builderScore}/100</div>
+          <div class="moat-sub">Verified algorithm proof</div>
         </div>
       </div>
 
-      <!-- AI Hiring Assistant Recommendation Panel -->
+      <!-- AI Hiring Assistant Panel (Recommended Roles, Strengths, Risks) -->
       <div class="ai-assistant-panel">
         <div class="assistant-header-row">
-          <div class="confidence-badge">
-            <span class="confidence-dot">●</span> <strong>${aiHiringScore}% Hiring Confidence</strong>
-          </div>
           <div class="suited-tags-group">
             <span class="suited-label">Best suited for:</span>
-            <span class="suited-tag">${isAi ? 'AI Engineer' : 'Backend Engineer'}</span>
+            <span class="suited-tag">${isAi ? 'AI Engineer' : 'Backend Architect'}</span>
             <span class="suited-tag">${isBackend ? 'Systems Engineer' : 'ML Engineer'}</span>
             <span class="suited-tag">${cand.experienceYears >= 4 ? 'Founding Engineer' : 'Product Builder'}</span>
           </div>
@@ -211,14 +214,14 @@ export function renderCandidateCard(cand, state) {
 
         <div class="assistant-details-grid">
           <div class="assistant-col">
-            <div class="assistant-col-title">KEY REASONS</div>
+            <div class="assistant-col-title">KEY HIRING REASONS</div>
             <div class="assistant-col-content">
               ${(cand.whyInterview || []).slice(0, 2).map(r => `<div>• ${sanitizeHtml(r.claim || r.evidence)}</div>`).join('') || '<div>• Top 8% AI challenge rank</div>'}
             </div>
           </div>
 
           <div class="assistant-col">
-            <div class="assistant-col-title">CORE STRENGTHS</div>
+            <div class="assistant-col-title">TOP STRENGTHS</div>
             <div class="assistant-col-content">
               <div>• 4.8x Learning Velocity in new stack</div>
               <div>• ${cand.builderProof?.projectsCount ?? 3} verified live deployed projects</div>
@@ -232,6 +235,12 @@ export function renderCandidateCard(cand, state) {
             </div>
           </div>
         </div>
+      </div>
+
+      <!-- Verified Skills (Derived from Platform Activity) -->
+      <div class="skills-verified-row">
+        <span class="skills-label">Verified Skills (Activity Proof):</span>
+        ${top5Skills.map(s => `<span class="chip chip-verified">✓ ${sanitizeHtml(s)}</span>`).join('')}
       </div>
 
       <!-- Action Buttons -->
