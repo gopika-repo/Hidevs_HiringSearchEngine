@@ -3,7 +3,7 @@
    ========================================================================== */
 
 import { mockQuickFilters } from './mockData.js';
-import { icons } from './utils.js';
+import { icons, sanitizeHtml } from './utils.js';
 
 // --- Candidate Card Renderer ---
 export function renderCandidateCard(cand, state) {
@@ -13,27 +13,27 @@ export function renderCandidateCard(cand, state) {
   return `
     <div class="candidate-card" data-id="${cand.id}">
       <div class="card-header-row">
-        <div class="avatar">${cand.avatar}</div>
+        <div class="avatar">${sanitizeHtml(cand.avatar)}</div>
         <div class="candidate-info">
-          <div class="candidate-name" data-action="open-preview" data-id="${cand.id}">${cand.name}</div>
-          <div class="candidate-headline">${cand.headline} · ${cand.company}</div>
+          <div class="candidate-name" data-action="open-preview" data-id="${cand.id}">${sanitizeHtml(cand.name)}</div>
+          <div class="candidate-headline">${sanitizeHtml(cand.headline)} · ${sanitizeHtml(cand.company)}</div>
           <div class="candidate-meta">
-            <span>${cand.location}</span> · 
-            <span>${cand.workMode}</span> · 
+            <span>${sanitizeHtml(cand.location)}</span> · 
+            <span>${sanitizeHtml(cand.workMode)}</span> · 
             <span>${cand.experienceYears} yrs exp</span> · 
             <span>${cand.noticePeriodDays === 0 ? 'Immediate' : cand.noticePeriodDays + 'd notice'}</span>
           </div>
         </div>
         <span class="badge ${cand.availability === 'Open to Work' ? 'badge-open-to-work' : 'badge-open-select'}">
-          ${cand.availability}
+          ${sanitizeHtml(cand.availability)}
         </span>
       </div>
 
       <div class="card-divider"></div>
 
       <div class="skills-row">
-        ${cand.primarySkills.map(s => `<span class="chip active">${s}</span>`).join('')}
-        ${cand.skills.filter(s => !cand.primarySkills.includes(s)).slice(0, 3).map(s => `<span class="chip">${s}</span>`).join('')}
+        ${cand.primarySkills.map(s => `<span class="chip active">${sanitizeHtml(s)}</span>`).join('')}
+        ${cand.skills.filter(s => !cand.primarySkills.includes(s)).slice(0, 3).map(s => `<span class="chip">${sanitizeHtml(s)}</span>`).join('')}
         ${cand.skills.length > 6 ? `<span class="chip">+${cand.skills.length - 6} more</span>` : ''}
       </div>
 
@@ -42,13 +42,13 @@ export function renderCandidateCard(cand, state) {
       </div>
 
       <div class="ai-summary-box">
-        <strong>AI Summary:</strong> ${cand.aiSummary}
+        <strong>AI Summary:</strong> ${sanitizeHtml(cand.aiSummary)}
       </div>
 
       <div class="card-divider"></div>
 
       <div class="card-footer">
-        <div>Active ${cand.lastActive}</div>
+        <div>Active ${sanitizeHtml(cand.lastActive)}</div>
         <div style="display: flex; gap: 8px;">
           <button class="btn btn-ghost btn-sm" data-action="compare" data-id="${cand.id}">
             ${isCompared ? '✓ Compared' : '+ Compare'}

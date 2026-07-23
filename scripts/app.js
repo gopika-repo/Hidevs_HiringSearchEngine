@@ -5,7 +5,7 @@
 import { store } from './store.js';
 import { mockRecruiterData } from './mockData.js';
 import { initGlobalSearch } from './search.js';
-import { initFilters } from './filters.js';
+import { initFilters, handleFilterClick } from './filters.js';
 import { 
   renderCandidateCard, 
   renderQuickFilters, 
@@ -194,10 +194,11 @@ class ApplicationController {
       const id = btn.dataset.id;
 
       if (action === 'shortlist') store.toggleShortlist(id);
-      if (action === 'compare') store.toggleCompare(id);
-      if (action === 'open-preview') store.openPreviewPanel(id);
-      if (action === 'close-preview') store.closePreviewPanel();
-      if (action === 'open-full-profile') store.setView('profile', id);
+      else if (action === 'compare') store.toggleCompare(id);
+      else if (action === 'open-preview') store.openPreviewPanel(id);
+      else if (action === 'close-preview') store.closePreviewPanel();
+      else if (action === 'open-full-profile') store.setView('profile', id);
+      else handleFilterClick(btn);
     });
 
     document.getElementById('preview-overlay')?.addEventListener('click', (e) => {
