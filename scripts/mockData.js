@@ -49,6 +49,16 @@ export const mockCandidates = [
     skills: ["Python", "FastAPI", "LangChain", "PyTorch", "Docker", "PostgreSQL", "LlamaIndex", "Redis", "AWS"],
     primarySkills: ["Python", "FastAPI", "LangChain"],
     roleTypes: ["AI / ML Engineer", "Backend"],
+    links: {
+      github: "https://github.com/arjunsharma-ml",
+      linkedin: "https://linkedin.com/in/arjunsharma-ml",
+      portfolio: "https://arjunsharma.dev"
+    },
+    interviewReadiness: {
+      completed: true,
+      score: 88,
+      assessedOn: "Jul 20, 2026"
+    },
     builderProof: {
       projectsCount: 6,
       deployedProjectsCount: 3,
@@ -137,6 +147,16 @@ export const mockCandidates = [
     skills: ["Python", "React", "TypeScript", "FastAPI", "OpenAI SDK", "Next.js", "Tailwind", "PostgreSQL"],
     primarySkills: ["React", "TypeScript", "Python", "FastAPI"],
     roleTypes: ["AI / ML Engineer", "Full Stack"],
+    links: {
+      github: "https://github.com/priyamehta-dev",
+      linkedin: "https://linkedin.com/in/priyamehta-dev",
+      portfolio: "https://priyamehta.io"
+    },
+    interviewReadiness: {
+      completed: true,
+      score: 82,
+      assessedOn: "Jul 18, 2026"
+    },
     builderProof: {
       projectsCount: 4,
       deployedProjectsCount: 3,
@@ -208,6 +228,16 @@ export const mockCandidates = [
     skills: ["Go", "Python", "Docker", "Kubernetes", "PostgreSQL", "Redis", "Kafka", "gRPC", "AWS"],
     primarySkills: ["Go", "Python", "Kubernetes", "Kafka"],
     roleTypes: ["Backend", "Platform Engineering"],
+    links: {
+      github: "https://github.com/rahulkumar-backend",
+      linkedin: "https://linkedin.com/in/rahulkumar-backend",
+      portfolio: "https://rahulkumar.tech"
+    },
+    interviewReadiness: {
+      completed: true,
+      score: 94,
+      assessedOn: "Jul 22, 2026"
+    },
     builderProof: {
       projectsCount: 8,
       deployedProjectsCount: 6,
@@ -276,6 +306,16 @@ export const mockCandidates = [
     skills: ["React", "TypeScript", "Next.js", "Tailwind", "GraphQL", "Python", "FastAPI"],
     primarySkills: ["React", "TypeScript", "Next.js"],
     roleTypes: ["Full Stack", "Backend"],
+    links: {
+      github: "https://github.com/ananya-verma",
+      linkedin: "https://linkedin.com/in/ananyaverma-ui",
+      portfolio: "https://ananya.design"
+    },
+    interviewReadiness: {
+      completed: true,
+      score: 91,
+      assessedOn: "Jul 21, 2026"
+    },
     builderProof: {
       projectsCount: 10,
       deployedProjectsCount: 8,
@@ -336,6 +376,15 @@ export const mockCandidates = [
     skills: ["Python", "FastAPI", "Kubernetes", "Docker", "PyTorch", "AWS", "PostgreSQL"],
     primarySkills: ["Python", "FastAPI", "Kubernetes"],
     roleTypes: ["AI / ML Engineer", "Platform Engineering"],
+    links: {
+      github: "https://github.com/devansh-patel",
+      linkedin: "https://linkedin.com/in/devansh-mlops"
+    },
+    interviewReadiness: {
+      completed: false,
+      score: 0,
+      assessedOn: ""
+    },
     builderProof: {
       projectsCount: 5,
       deployedProjectsCount: 4,
@@ -386,6 +435,16 @@ export const mockCandidates = [
     skills: ["Python", "PyTorch", "LangChain", "LlamaIndex", "FastAPI", "Docker", "PostgreSQL"],
     primarySkills: ["Python", "PyTorch", "LangChain", "LlamaIndex"],
     roleTypes: ["AI / ML Engineer"],
+    links: {
+      github: "https://github.com/sneha-reddy",
+      linkedin: "https://linkedin.com/in/snehareddy-ai",
+      portfolio: "https://snehareddy.ai"
+    },
+    interviewReadiness: {
+      completed: true,
+      score: 96,
+      assessedOn: "Jul 23, 2026"
+    },
     builderProof: {
       projectsCount: 9,
       deployedProjectsCount: 6,

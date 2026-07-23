@@ -15,10 +15,17 @@ export function renderStructuredBriefCard(cand) {
   };
 
   const topReasons = cand.whyInterview && cand.whyInterview.length > 0
-    ? cand.whyInterview.slice(0, 3)
+    ? [...cand.whyInterview.slice(0, 3)]
     : [
         { claim: `Top ${cand.builderProof?.aiRankPercentile ?? 10}% Rank`, evidence: `${cand.builderProof?.projectsCount ?? 3} projects built.` }
       ];
+
+  if (cand.interviewReadiness?.completed && cand.interviewReadiness.score >= 80) {
+    topReasons.unshift({
+      claim: `Verified Mock Interview (${cand.interviewReadiness.score}/100)`,
+      evidence: `Passed HiDevs technical interview simulation assessed on ${cand.interviewReadiness.assessedOn}.`
+    });
+  }
 
   const concerns = cand.potentialConcerns && cand.potentialConcerns.length > 0
     ? cand.potentialConcerns
@@ -47,7 +54,7 @@ export function renderStructuredBriefCard(cand) {
           TOP EVIDENCE-BACKED REASONS TO HIRE
         </div>
         <div style="display: flex; flex-direction: column; gap: 6px;">
-          ${topReasons.map(item => `
+          ${topReasons.slice(0, 3).map(item => `
             <div style="font-size: 12.5px; line-height: 1.4;">
               <strong style="color: var(--color-text-primary);">✓ ${sanitizeHtml(item.claim)}:</strong>
               <span style="color: var(--color-text-secondary);">${sanitizeHtml(item.evidence)}</span>
@@ -94,7 +101,16 @@ export function renderCandidateCard(cand, state) {
       <div class="card-header-row">
         <div class="avatar">${sanitizeHtml(cand.avatar)}</div>
         <div class="candidate-info">
-          <div class="candidate-name" data-action="open-preview" data-id="${cand.id}">${sanitizeHtml(cand.name)}</div>
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap;">
+            <div class="candidate-name" data-action="open-preview" data-id="${cand.id}">${sanitizeHtml(cand.name)}</div>
+            ${cand.links ? `
+              <div class="direct-links-row" style="display: flex; gap: 6px; align-items: center;">
+                ${cand.links.github ? `<a href="${sanitizeHtml(cand.links.github)}" target="_blank" rel="noopener noreferrer" style="font-size: 12px; text-decoration: none; color: var(--color-text-secondary); background: var(--color-bg-surface); border: 1px solid var(--color-border-subtle); padding: 2px 6px; border-radius: 4px; display: inline-flex; align-items: center; gap: 4px;" title="GitHub Profile" onclick="event.stopPropagation();">🐙 <span style="font-size: 11px;">GitHub</span></a>` : ''}
+                ${cand.links.linkedin ? `<a href="${sanitizeHtml(cand.links.linkedin)}" target="_blank" rel="noopener noreferrer" style="font-size: 12px; text-decoration: none; color: var(--color-text-secondary); background: var(--color-bg-surface); border: 1px solid var(--color-border-subtle); padding: 2px 6px; border-radius: 4px; display: inline-flex; align-items: center; gap: 4px;" title="LinkedIn Profile" onclick="event.stopPropagation();">💼 <span style="font-size: 11px;">LinkedIn</span></a>` : ''}
+                ${cand.links.portfolio ? `<a href="${sanitizeHtml(cand.links.portfolio)}" target="_blank" rel="noopener noreferrer" style="font-size: 12px; text-decoration: none; color: var(--color-text-secondary); background: var(--color-bg-surface); border: 1px solid var(--color-border-subtle); padding: 2px 6px; border-radius: 4px; display: inline-flex; align-items: center; gap: 4px;" title="Portfolio Website" onclick="event.stopPropagation();">🌐 <span style="font-size: 11px;">Portfolio</span></a>` : ''}
+              </div>
+            ` : ''}
+          </div>
           <div class="candidate-headline">${sanitizeHtml(cand.headline)} · ${sanitizeHtml(cand.company)}</div>
           <div class="candidate-meta">
             <span>${sanitizeHtml(cand.location)}</span> · 
@@ -116,8 +132,16 @@ export function renderCandidateCard(cand, state) {
         ${cand.skills.length > 6 ? `<span class="chip">+${cand.skills.length - 6} more</span>` : ''}
       </div>
 
-      <div class="builder-proof-line">
-        ⚡ ${cand.builderProof.projectsCount} Projects · 🏆 ${cand.builderProof.hackathonWinsCount} Hackathon Wins · ★ Top ${cand.builderProof.aiRankPercentile}% AI Rank
+      <div class="builder-proof-line" style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+        <div>
+          ⚡ ${cand.builderProof.projectsCount} Projects · 🏆 ${cand.builderProof.hackathonWinsCount} Hackathon Wins · ★ Top ${cand.builderProof.aiRankPercentile}% AI Rank
+        </div>
+        <div>
+          ${cand.interviewReadiness?.completed
+            ? `<span class="badge" style="background: #ECFDF5; color: #047857; border: 1px solid #A7F3D0; font-size: 11px; font-weight: 600;">✓ Mock interview completed — scored ${cand.interviewReadiness.score}/100</span>`
+            : `<span class="badge" style="background: #F3F4F6; color: #6B7280; border: 1px solid #E5E7EB; font-size: 11px; font-weight: 500;">Mock interview not yet taken</span>`
+          }
+        </div>
       </div>
 
       ${renderStructuredBriefCard(cand)}
