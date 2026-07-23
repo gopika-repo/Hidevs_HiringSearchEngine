@@ -215,50 +215,36 @@ export function renderPreviewPanel(cand, state) {
   return `
     <div class="preview-panel-header">
       <div style="display: flex; align-items: center; gap: 12px;">
-        <div class="avatar" style="width: 36px; height: 36px; font-size: 14px;">${cand.avatar}</div>
+        <div class="avatar" style="width: 36px; height: 36px; font-size: 14px;">${sanitizeHtml(cand.avatar)}</div>
         <div>
-          <div style="font-weight: 600; font-size: 15px; color: var(--color-text-primary);">${cand.name}</div>
-          <div style="font-size: 13px; color: var(--color-text-muted);">${cand.headline} · ${cand.company}</div>
+          <div style="font-weight: 600; font-size: 15px; color: var(--color-text-primary);">${sanitizeHtml(cand.name)}</div>
+          <div style="font-size: 13px; color: var(--color-text-muted);">${sanitizeHtml(cand.headline)} · ${sanitizeHtml(cand.company)}</div>
         </div>
       </div>
       <button class="btn-icon" data-action="close-preview">${icons.close}</button>
     </div>
 
     <div class="preview-panel-body">
-      <div class="ai-summary-box">
-        <strong>AI Decision Brief:</strong> ${cand.aiSummary}
-      </div>
+      ${renderStructuredBriefCard(cand)}
 
-      <div>
-        <div style="font-size: 12px; font-weight: 600; text-transform: uppercase; color: var(--color-text-muted); margin-bottom: 8px;">
-          WHY INTERVIEW THIS CANDIDATE
-        </div>
-        <div style="display: flex; flex-direction: column; gap: 8px;">
-          ${cand.whyInterview.map(item => `
-            <div style="font-size: 13px; background: var(--color-bg-base); padding: 8px 12px; border-radius: 6px;">
-              <div style="font-weight: 600; color: var(--color-text-primary);">✓ ${item.claim}</div>
-              <div style="color: var(--color-text-muted); margin-top: 2px;">${item.evidence}</div>
-            </div>
-          `).join('')}
-        </div>
-      </div>
-
-      <div>
-        <div style="font-size: 12px; font-weight: 600; text-transform: uppercase; color: var(--color-text-muted); margin-bottom: 8px;">
-          TOP PROJECTS
-        </div>
-        <div style="display: flex; flex-direction: column; gap: 8px;">
-          ${cand.projects.map(p => `
-            <div style="border: 1px solid var(--color-border-subtle); padding: 10px; border-radius: 6px;">
-              <div style="font-weight: 600; font-size: 14px;">${p.name} <span style="font-size: 12px; color: var(--color-accent-base); font-weight: 400;">(${p.usersCount})</span></div>
-              <div style="font-size: 13px; color: var(--color-text-muted); margin: 4px 0;">${p.description}</div>
-              <div class="skills-row">
-                ${p.techStack.map(t => `<span class="chip">${t}</span>`).join('')}
+      ${cand.projects && cand.projects.length > 0 ? `
+        <div>
+          <div style="font-size: 12px; font-weight: 600; text-transform: uppercase; color: var(--color-text-muted); margin-bottom: 8px;">
+            TOP PROJECTS
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            ${cand.projects.map(p => `
+              <div style="border: 1px solid var(--color-border-subtle); padding: 10px; border-radius: 6px;">
+                <div style="font-weight: 600; font-size: 14px;">${sanitizeHtml(p.name)} <span style="font-size: 12px; color: var(--color-accent-base); font-weight: 400;">(${sanitizeHtml(p.usersCount)})</span></div>
+                <div style="font-size: 13px; color: var(--color-text-muted); margin: 4px 0;">${sanitizeHtml(p.description)}</div>
+                <div class="skills-row">
+                  ${p.techStack.map(t => `<span class="chip">${sanitizeHtml(t)}</span>`).join('')}
+                </div>
               </div>
-            </div>
-          `).join('')}
+            `).join('')}
+          </div>
         </div>
-      </div>
+      ` : ''}
     </div>
 
     <div class="preview-panel-footer">
@@ -317,19 +303,8 @@ export function renderFullProfileView(cand, state) {
 
         <div style="display: flex; flex-direction: column; gap: 24px;">
           <div id="summary" style="background: var(--color-bg-surface); border: 1px solid var(--color-border-subtle); border-radius: 8px; padding: 24px;">
-            <h2 style="font-size: 18px; font-weight: 600; margin-bottom: 12px;">Hiring Summary</h2>
-            <div class="ai-summary-box" style="margin-bottom: 16px;">
-              <strong>AI Decision Brief:</strong> ${cand.aiSummary}
-            </div>
-            <div>
-              <div style="font-size: 13px; font-weight: 600; color: var(--color-text-muted); margin-bottom: 8px;">WHY INTERVIEW THIS CANDIDATE</div>
-              ${cand.whyInterview.map(item => `
-                <div style="margin-bottom: 8px; font-size: 14px;">
-                  <strong style="color: var(--color-text-primary);">✓ ${item.claim}</strong>
-                  <div style="color: var(--color-text-muted); font-size: 13px;">${item.evidence}</div>
-                </div>
-              `).join('')}
-            </div>
+            <h2 style="font-size: 18px; font-weight: 600; margin-bottom: 12px;">Recruiter Hiring Summary</h2>
+            ${renderStructuredBriefCard(cand)}
           </div>
 
           <div id="intelligence">

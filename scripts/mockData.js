@@ -58,24 +58,28 @@ export const mockCandidates = [
       streakDays: 23,
       monthsActiveCount: 10
     },
+    fitVerdict: {
+      status: "Strong Fit",
+      reason: "4 years building production ML APIs with FastAPI & LangChain; deployed 2 live AI agents with 340+ daily users."
+    },
     aiSummary: "Backend engineer with 4 years in production ML systems. Deployed 2 LLM agents with 340+ daily active users. Top 8% AI Challenge rank.",
     whyInterview: [
       {
-        claim: "Direct stack match: FastAPI + LangChain + Python",
-        evidence: "Built production AI agents & RAG pipelines with 340+ daily queries."
+        claim: "Top 8% AI Challenge Rank",
+        evidence: "Ranked #8 out of 100+ candidates in LLM Agent & RAG Deployment Benchmark."
       },
       {
-        claim: "Proven production delivery",
-        evidence: "6 of 8 projects are deployed live with active user traction."
+        claim: "Production API Velocity",
+        evidence: "Built TalentGraph AI & CodeReview bot handling 340+ daily production queries."
       },
       {
-        claim: "Competitive peer validation",
-        evidence: "Top 8% on HiDevs AI challenges, ranked above 340+ peers in LLM deployment track."
+        claim: "2-Time Hackathon Champion",
+        evidence: "Won 1st place in 2 Agentic AI Hackathons (2023, 2024)."
       }
     ],
     potentialConcerns: [
-      "No team leadership experience visible from profile data. Suitable for IC role; senior/lead role needs validation.",
-      "Frontend experience limited to React basics. Backend-only or full-stack role needs clarification."
+      "No visible team-lead experience — best suited for Senior IC role; team lead capability needs interview check.",
+      "Frontend scope limited to basic React components — verify full-stack depth if required."
     ],
     projects: [
       {
@@ -142,15 +146,28 @@ export const mockCandidates = [
       streakDays: 14,
       monthsActiveCount: 8
     },
+    fitVerdict: {
+      status: "Strong Fit",
+      reason: "Full-stack AI developer with 3 years experience combining Next.js frontend UI with FastAPI + OpenAI SDK backend."
+    },
     aiSummary: "Full-stack engineer building AI applications with React, Next.js, and OpenAI API. 3 deployed projects with responsive UI.",
     whyInterview: [
       {
-        claim: "Full-Stack AI capability",
-        evidence: "Combines modern Next.js frontend with FastAPI + OpenAI backend."
+        claim: "Proven Full-Stack AI Delivery",
+        evidence: "Shipped PromptCraft Workspace serving 150+ active monthly users."
+      },
+      {
+        claim: "Top 15% AI Challenge Rank",
+        evidence: "Ranked Top 15% in Full-Stack LLM Application Benchmark."
+      },
+      {
+        claim: "75% Deployment Ratio",
+        evidence: "3 out of 4 built projects are deployed live with verified user traffic."
       }
     ],
     potentialConcerns: [
-      "Deep ML infrastructure is limited compared to API-level LLM work."
+      "Custom ML model training experience is limited; primary strength is API-level LLM product integration.",
+      "30-day notice period — check if immediate joining is required."
     ],
     projects: [
       {
@@ -200,15 +217,27 @@ export const mockCandidates = [
       streakDays: 45,
       monthsActiveCount: 12
     },
+    fitVerdict: {
+      status: "Good Fit",
+      reason: "6 years at Amazon building high-throughput distributed Go & Python services; 0-day immediate joiner."
+    },
     aiSummary: "Distributed systems architect with 6 years experience in high-throughput Go and Python microservices at Amazon scale.",
     whyInterview: [
       {
-        claim: "Senior Systems Architect",
-        evidence: "6 years at Amazon building high-throughput event-driven microservices."
+        claim: "High-Scale Systems Architecture",
+        evidence: "Architected GoStream Event Pipeline handling 50k msgs/sec at Amazon scale."
+      },
+      {
+        claim: "Immediate 0-Day Joiner",
+        evidence: "Notice period is 0 days; available for instant onboarding."
+      },
+      {
+        claim: "Top 2% System Design Performance",
+        evidence: "Scored in Top 2% across Distributed Systems & Kubernetes architecture challenges."
       }
     ],
     potentialConcerns: [
-      "AI/LLM experience is foundational; primary strength is systems engineering."
+      "AI/LLM framework experience is foundational; core expertise is distributed systems engineering."
     ],
     projects: [
       {
@@ -256,14 +285,28 @@ export const mockCandidates = [
       streakDays: 60,
       monthsActiveCount: 14
     },
+    fitVerdict: {
+      status: "Strong Fit",
+      reason: "7 years UI architect at Flipkart building micro-frontend engines and design systems serving 1M+ daily users."
+    },
     aiSummary: "Frontend architect with 7 years specializing in high-performance web applications and design system engines.",
     whyInterview: [
       {
-        claim: "Top 5% Frontend Architect",
-        evidence: "Built Flipkart core design tokens and micro-frontend platform."
+        claim: "Top 5% Global UI Architect",
+        evidence: "Ranked Top 5% in Frontend Architecture & Performance benchmarks."
+      },
+      {
+        claim: "1M+ User Scale Impact",
+        evidence: "Created DesignSystem Engine adopted across Flipkart's web platform serving 1M+ users."
+      },
+      {
+        claim: "3-Time Hackathon Winner",
+        evidence: "Secured 1st place in 3 competitive Web Performance & React hackathons."
       }
     ],
-    potentialConcerns: [],
+    potentialConcerns: [
+      "Primarily frontend & UI architecture focused — test backend FastAPI capabilities during technical interview."
+    ],
     projects: [
       {
         name: "DesignSystem Engine",
@@ -302,14 +345,28 @@ export const mockCandidates = [
       streakDays: 18,
       monthsActiveCount: 6
     },
+    fitVerdict: {
+      status: "Good Fit",
+      reason: "2 years experience deploying PyTorch model pipelines on EKS with 80% project deployment ratio."
+    },
     aiSummary: "MLOps engineer focused on model deployment pipelines, Kubernetes orchestration, and GPU inference scaling.",
     whyInterview: [
       {
+        claim: "Top 12% MLOps Benchmark",
+        evidence: "Scored Top 12% in Kubernetes Model Deployment & GPU Inference challenges."
+      },
+      {
         claim: "Automated ML Deployments",
-        evidence: "Deployed 4 PyTorch inference pipelines on EKS."
+        evidence: "Deployed 4 PyTorch inference APIs on PhonePe Kubernetes infrastructure."
+      },
+      {
+        claim: "Hackathon Winner",
+        evidence: "Won 1st place in Cloud Native ML Infrastructure Challenge (2024)."
       }
     ],
-    potentialConcerns: [],
+    potentialConcerns: [
+      "2 years total experience — verify independent distributed system architecture capacity."
+    ],
     projects: [],
     aiAgents: [],
     intelligenceCards: []
@@ -338,14 +395,28 @@ export const mockCandidates = [
       streakDays: 90,
       monthsActiveCount: 18
     },
+    fitVerdict: {
+      status: "Strong Fit",
+      reason: "Top 3% AI Researcher with 5 years fine-tuning open-source LLMs and building RAG pipelines; 0-day joiner."
+    },
     aiSummary: "Top 3% AI Researcher specializing in fine-tuning open-source LLMs, RAG architectures, and custom embedding pipelines.",
     whyInterview: [
       {
-        claim: "Elite AI Practitioner",
-        evidence: "4 hackathon wins and Top 3% global AI Challenge ranking."
+        claim: "Top 3% Global AI Challenge Rank",
+        evidence: "Ranked #3 out of 100+ candidates in LLM Fine-Tuning & Vector Search benchmark."
+      },
+      {
+        claim: "4-Time Hackathon Champion",
+        evidence: "4 first-place wins across Generative AI & RAG Hackathons."
+      },
+      {
+        claim: "Immediate 0-Day Joiner",
+        evidence: "Notice period is 0 days; available for immediate remote hire."
       }
     ],
-    potentialConcerns: [],
+    potentialConcerns: [
+      "Deep specialization in AI research — confirm interest in day-to-day web application engineering."
+    ],
     projects: [],
     aiAgents: [],
     intelligenceCards: []
