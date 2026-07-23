@@ -19,6 +19,7 @@ class Store {
         builderSignals: new Set(),
         rankingPercentile: 100
       },
+      sortBy: 'Best Match',
       shortlistedIds: new Set(["cand-1"]),
       savedCollections: [
         { id: "col-1", name: "AI Engineers Q3", candidateIds: ["cand-1", "cand-2"] },
@@ -54,6 +55,11 @@ class Store {
   // --- Mutators ---
   setSearchQuery(query) {
     this.state.searchQuery = query;
+    this.notify();
+  }
+
+  setSortBy(sortBy) {
+    this.state.sortBy = sortBy;
     this.notify();
   }
 
@@ -192,6 +198,30 @@ class Store {
 
       return true;
     });
+
+    if (this.state.sortBy === 'Recent Activity') {
+      const parseLastActive = (str) => {
+        if (!str) return 9999;
+        const lower = str.toLowerCase().trim();
+        if (lower === 'today' || lower === 'just now') return 0;
+        if (lower === 'yesterday') return 1;
+        const match = lower.match(/^(\d+)\s+(day|week|month|year)s?\s+ago$/);
+        if (match) {
+          const num = parseInt(match[1], 10);
+          const unit = match[2];
+          if (unit === 'day') return num;
+          if (unit === 'week') return num * 7;
+          if (unit === 'month') return num * 30;
+          if (unit === 'year') return num * 365;
+        }
+        return 9999;
+      };
+      result.sort((a, b) => parseLastActive(a.lastActive) - parseLastActive(b.lastActive));
+    } else if (this.state.sortBy === 'AI Challenge Rank') {
+      result.sort((a, b) => (a.builderProof?.aiRankPercentile ?? 999) - (b.builderProof?.aiRankPercentile ?? 999));
+    }
+
+    return result;
   }
 }
 

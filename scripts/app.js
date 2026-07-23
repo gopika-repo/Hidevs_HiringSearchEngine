@@ -117,9 +117,9 @@ class ApplicationController {
                   <div class="sort-container">
                     <span>Sort by:</span>
                     <select class="sort-select">
-                      <option>Best Match</option>
-                      <option>Recent Activity</option>
-                      <option>AI Challenge Rank</option>
+                      <option value="Best Match" ${state.sortBy === 'Best Match' ? 'selected' : ''}>Best Match</option>
+                      <option value="Recent Activity" ${state.sortBy === 'Recent Activity' ? 'selected' : ''}>Recent Activity</option>
+                      <option value="AI Challenge Rank" ${state.sortBy === 'AI Challenge Rank' ? 'selected' : ''}>AI Challenge Rank</option>
                     </select>
                   </div>
                 </div>
@@ -171,6 +171,12 @@ class ApplicationController {
   bindGlobalEvents() {
     document.addEventListener('search-query-changed', (e) => {
       store.setSearchQuery(e.detail.query || '');
+    });
+
+    document.addEventListener('change', (e) => {
+      if (e.target.classList.contains('sort-select')) {
+        store.setSortBy(e.target.value);
+      }
     });
 
     document.addEventListener('click', (e) => {
