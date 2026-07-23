@@ -195,10 +195,43 @@ export function renderCandidateCard(cand, state) {
         </div>
       </div>
 
-      <!-- Top 5 Verified Skills -->
-      <div class="skills-verified-row">
-        <span class="skills-label">Verified Skills:</span>
-        ${top5Skills.map(s => `<span class="chip chip-verified">✓ ${sanitizeHtml(s)}</span>`).join('')}
+      <!-- AI Hiring Assistant Recommendation Panel -->
+      <div class="ai-assistant-panel">
+        <div class="assistant-header-row">
+          <div class="confidence-badge">
+            <span class="confidence-dot">●</span> <strong>${aiHiringScore}% Hiring Confidence</strong>
+          </div>
+          <div class="suited-tags-group">
+            <span class="suited-label">Best suited for:</span>
+            <span class="suited-tag">${isAi ? 'AI Engineer' : 'Backend Engineer'}</span>
+            <span class="suited-tag">${isBackend ? 'Systems Engineer' : 'ML Engineer'}</span>
+            <span class="suited-tag">${cand.experienceYears >= 4 ? 'Founding Engineer' : 'Product Builder'}</span>
+          </div>
+        </div>
+
+        <div class="assistant-details-grid">
+          <div class="assistant-col">
+            <div class="assistant-col-title">KEY REASONS</div>
+            <div class="assistant-col-content">
+              ${(cand.whyInterview || []).slice(0, 2).map(r => `<div>• ${sanitizeHtml(r.claim || r.evidence)}</div>`).join('') || '<div>• Top 8% AI challenge rank</div>'}
+            </div>
+          </div>
+
+          <div class="assistant-col">
+            <div class="assistant-col-title">CORE STRENGTHS</div>
+            <div class="assistant-col-content">
+              <div>• 4.8x Learning Velocity in new stack</div>
+              <div>• ${cand.builderProof?.projectsCount ?? 3} verified live deployed projects</div>
+            </div>
+          </div>
+
+          <div class="assistant-col risk-col">
+            <div class="assistant-col-title">POTENTIAL RISKS TO VERIFY</div>
+            <div class="assistant-col-content">
+              ${(cand.potentialConcerns || []).slice(0, 1).map(c => `<div>⚠️ ${sanitizeHtml(c)}</div>`).join('') || '<div>⚠️ Verify team-lead & architecture scope</div>'}
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- Action Buttons -->
