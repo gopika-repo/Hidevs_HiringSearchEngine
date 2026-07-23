@@ -82,16 +82,31 @@ export function renderFilterSidebar(state) {
   const skillsList = ["Python", "FastAPI", "LangChain", "React", "TypeScript", "Go", "Docker", "PyTorch"];
   const roleList = ["AI / ML Engineer", "Backend", "Full Stack", "Platform Engineering"];
 
+  const renderSectionHeader = (title, hasActive, sectionKey) => `
+    <div class="filter-section-title" style="display: flex; justify-content: space-between; align-items: center;">
+      <span>${title}</span>
+      ${hasActive ? `<button class="btn btn-ghost btn-sm" data-action="clear-section" data-section="${sectionKey}" style="padding:0; font-size:11px; color:var(--color-accent-base); font-weight:500;">Clear</button>` : ''}
+    </div>
+  `;
+
   return `
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
       <span style="font-weight: 600; font-size: 14px;">FILTERS</span>
       <button class="btn btn-ghost btn-sm" data-action="clear-filters" style="padding:0;">Clear All</button>
     </div>
 
+    <!-- Location -->
+    <div class="filter-section">
+      ${renderSectionHeader("Location", Boolean(state.filters.location), "location")}
+      <div style="margin-top: 8px;">
+        <input type="text" class="global-search-input" placeholder="e.g. Bangalore, Remote, Delhi..." value="${sanitizeHtml(state.filters.location || '')}" data-action="filter-location-input" style="width: 100%; height: 32px; padding: 0 10px; font-size: 13px;">
+      </div>
+    </div>
+
     <!-- Availability -->
     <div class="filter-section">
-      <div class="filter-section-title">Availability</div>
-      <div class="filter-options-list">
+      ${renderSectionHeader("Availability", Boolean(state.filters.availability), "availability")}
+      <div class="filter-options-list" style="margin-top: 6px;">
         <label class="form-check">
           <input type="radio" name="availability" value="Open to Work" ${state.filters.availability === 'Open to Work' ? 'checked' : ''} data-action="filter-radio" data-category="availability">
           <span>Open to Work</span>
@@ -105,8 +120,8 @@ export function renderFilterSidebar(state) {
 
     <!-- Role Type -->
     <div class="filter-section">
-      <div class="filter-section-title">Role Type</div>
-      <div class="filter-options-list">
+      ${renderSectionHeader("Role Type", state.filters.roleTypes.size > 0, "roleTypes")}
+      <div class="filter-options-list" style="margin-top: 6px;">
         ${roleList.map(r => `
           <label class="form-check">
             <input type="checkbox" ${state.filters.roleTypes.has(r) ? 'checked' : ''} data-action="filter-role" data-value="${r}">
@@ -118,7 +133,7 @@ export function renderFilterSidebar(state) {
 
     <!-- Skills -->
     <div class="filter-section">
-      <div class="filter-section-title">Skills & Stack</div>
+      ${renderSectionHeader("Skills & Stack", state.filters.skills.size > 0, "skills")}
       <div class="skills-row" style="margin-top: 8px;">
         ${skillsList.map(s => `
           <span class="chip ${state.filters.skills.has(s) ? 'active' : ''}" data-action="filter-skill" data-value="${s}">
@@ -130,8 +145,8 @@ export function renderFilterSidebar(state) {
 
     <!-- Experience Level -->
     <div class="filter-section">
-      <div class="filter-section-title">Experience Level</div>
-      <div class="filter-options-list">
+      ${renderSectionHeader("Experience Level", Boolean(state.filters.experienceLevel), "experienceLevel")}
+      <div class="filter-options-list" style="margin-top: 6px;">
         <label class="form-check">
           <input type="radio" name="experienceLevel" value="0-2" ${state.filters.experienceLevel === '0-2' ? 'checked' : ''} data-action="filter-radio" data-category="experienceLevel">
           <span>0-2 Years</span>
@@ -149,10 +164,7 @@ export function renderFilterSidebar(state) {
 
     <!-- Top AI Rank % -->
     <div class="filter-section">
-      <div class="filter-section-title">
-        <span>Top AI Rank</span>
-        <span style="color: var(--color-accent-base); font-weight: 600; text-transform: none;">Top ${state.filters.rankingPercentile}%</span>
-      </div>
+      ${renderSectionHeader(`Top AI Rank (${state.filters.rankingPercentile}%)`, state.filters.rankingPercentile < 100, "rankingPercentile")}
       <div style="margin-top: 8px;">
         <input type="range" min="5" max="100" step="5" value="${state.filters.rankingPercentile}" data-action="filter-rank-range" style="width: 100%; cursor: pointer; accent-color: var(--color-accent-base);">
         <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--color-text-muted); margin-top: 4px;">
@@ -164,8 +176,8 @@ export function renderFilterSidebar(state) {
 
     <!-- Work Mode -->
     <div class="filter-section">
-      <div class="filter-section-title">Work Mode</div>
-      <div class="filter-options-list">
+      ${renderSectionHeader("Work Mode", Boolean(state.filters.workMode), "workMode")}
+      <div class="filter-options-list" style="margin-top: 6px;">
         <label class="form-check">
           <input type="radio" name="workMode" value="Remote" ${state.filters.workMode === 'Remote' ? 'checked' : ''} data-action="filter-radio" data-category="workMode">
           <span>Remote Only</span>
@@ -179,10 +191,8 @@ export function renderFilterSidebar(state) {
 
     <!-- Builder Signals -->
     <div class="filter-section" style="border-bottom: none;">
-      <div class="filter-section-title" style="color: var(--color-accent-base);">
-        ★ BUILDER SIGNALS
-      </div>
-      <div class="filter-options-list">
+      ${renderSectionHeader("★ BUILDER SIGNALS", state.filters.builderSignals.size > 0, "builderSignals")}
+      <div class="filter-options-list" style="margin-top: 6px;">
         <label class="form-check">
           <input type="checkbox" ${state.filters.builderSignals.has('hackathon') ? 'checked' : ''} data-action="filter-signal" data-value="hackathon">
           <span>Hackathon Winner</span>

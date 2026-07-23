@@ -95,7 +95,27 @@ class ApplicationController {
     if (state.activeView === 'profile') document.getElementById('nav-profile')?.classList.add('active');
 
     if (state.activeView === 'search') {
-      const candidates = store.getFilteredCandidates();
+      const allFiltered = store.getFilteredCandidates();
+      const totalCandidates = allFiltered.length;
+      const pageSize = state.pageSize || 5;
+      const totalPages = Math.ceil(totalCandidates / pageSize) || 1;
+      const currentPage = Math.min(state.currentPage || 1, totalPages);
+      const startIndex = (currentPage - 1) * pageSize;
+      const paginatedCandidates = allFiltered.slice(startIndex, startIndex + pageSize);
+
+      const hasActiveFilters = Boolean(
+        state.activeQuickFilters.size || 
+        state.searchQuery || 
+        state.filters.skills.size || 
+        state.filters.roleTypes.size || 
+        state.filters.availability || 
+        state.filters.workMode || 
+        state.filters.location || 
+        state.filters.experienceLevel || 
+        state.filters.builderSignals.size || 
+        state.filters.rankingPercentile < 100
+      );
+
       container.innerHTML = `
         <div class="main-container fade-in">
           <aside class="filter-sidebar">
@@ -110,10 +130,10 @@ class ApplicationController {
 
               <div class="results-meta-bar">
                 <div class="result-count-label">
-                  Showing <span>${candidates.length}</span> builder candidates
+                  Showing <span>${totalCandidates > 0 ? startIndex + 1 : 0} - ${Math.min(startIndex + pageSize, totalCandidates)}</span> of <span>${totalCandidates}</span> builder candidates
                 </div>
                 <div style="display: flex; align-items: center; gap: 16px;">
-                  <button class="btn btn-ghost btn-sm" data-action="clear-filters" style="${state.activeQuickFilters.size || state.searchQuery || state.filters.skills.size || state.filters.roleTypes.size || state.filters.availability || state.filters.workMode || state.filters.experienceLevel || state.filters.builderSignals.size || state.filters.rankingPercentile < 100 ? '' : 'display:none;'}">Clear all filters</button>
+                  <button class="btn btn-ghost btn-sm" data-action="clear-filters" style="${hasActiveFilters ? '' : 'display:none;'}">Clear all filters</button>
                   <div class="sort-container">
                     <span>Sort by:</span>
                     <select class="sort-select">
@@ -127,8 +147,8 @@ class ApplicationController {
             </div>
 
             <div class="candidates-grid" style="display: flex; flex-direction: column; gap: 16px;">
-              ${candidates.length > 0
-                ? candidates.map(c => renderCandidateCard(c, state)).join('')
+              ${paginatedCandidates.length > 0
+                ? paginatedCandidates.map(c => renderCandidateCard(c, state)).join('')
                 : `
                   <div class="empty-search-state">
                     <div class="empty-state-icon">
@@ -136,10 +156,23 @@ class ApplicationController {
                     </div>
                     <h3 class="empty-state-title">No matching candidates found</h3>
                     <p class="empty-state-subtitle">Try adjusting your filters or search terms to broaden your search.</p>
+                    <button class="btn btn-primary btn-sm" data-action="clear-filters" style="margin-top: 8px;">Clear all filters</button>
                   </div>
                 `
               }
             </div>
+
+            ${totalCandidates > pageSize ? `
+              <div class="pagination-bar" style="display: flex; justify-content: space-between; align-items: center; margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--color-border-subtle);">
+                <div style="font-size: 13px; color: var(--color-text-muted);">
+                  Page ${currentPage} of ${totalPages}
+                </div>
+                <div style="display: flex; gap: 8px;">
+                  <button class="btn btn-secondary btn-sm" ${currentPage <= 1 ? 'disabled' : ''} data-action="prev-page">← Previous</button>
+                  <button class="btn btn-secondary btn-sm" ${currentPage >= totalPages ? 'disabled' : ''} data-action="next-page">Next →</button>
+                </div>
+              </div>
+            ` : ''}
           </main>
         </div>
       `;
@@ -198,6 +231,8 @@ class ApplicationController {
       else if (action === 'open-preview') store.openPreviewPanel(id);
       else if (action === 'close-preview') store.closePreviewPanel();
       else if (action === 'open-full-profile') store.setView('profile', id);
+      else if (action === 'prev-page') store.setPage(Math.max(1, (store.state.currentPage || 1) - 1));
+      else if (action === 'next-page') store.setPage((store.state.currentPage || 1) + 1);
       else handleFilterClick(btn);
     });
 

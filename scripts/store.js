@@ -16,10 +16,13 @@ class Store {
         roleTypes: new Set(),
         skills: new Set(),
         workMode: null,
+        location: '',
         builderSignals: new Set(),
         rankingPercentile: 100
       },
       sortBy: 'Best Match',
+      currentPage: 1,
+      pageSize: 5,
       shortlistedIds: new Set(["cand-1"]),
       savedCollections: [
         { id: "col-1", name: "AI Engineers Q3", candidateIds: ["cand-1", "cand-2"] },
@@ -115,16 +118,43 @@ class Store {
     this.notify();
   }
 
+  setLocationFilter(location) {
+    this.state.filters.location = location;
+    this.state.currentPage = 1;
+    this.notify();
+  }
+
+  setPage(page) {
+    this.state.currentPage = page;
+    this.notify();
+  }
+
+  clearFilterSection(section) {
+    if (section === 'availability') this.state.filters.availability = null;
+    else if (section === 'workMode') this.state.filters.workMode = null;
+    else if (section === 'experienceLevel') this.state.filters.experienceLevel = null;
+    else if (section === 'location') this.state.filters.location = '';
+    else if (section === 'rankingPercentile') this.state.filters.rankingPercentile = 100;
+    else if (section === 'roleTypes') this.state.filters.roleTypes.clear();
+    else if (section === 'skills') this.state.filters.skills.clear();
+    else if (section === 'builderSignals') this.state.filters.builderSignals.clear();
+    
+    this.state.currentPage = 1;
+    this.notify();
+  }
+
   clearAllFilters() {
     this.state.searchQuery = '';
     this.state.activeQuickFilters.clear();
     this.state.filters.availability = null;
     this.state.filters.experienceLevel = null;
     this.state.filters.workMode = null;
+    this.state.filters.location = '';
     this.state.filters.rankingPercentile = 100;
     this.state.filters.skills.clear();
     this.state.filters.roleTypes.clear();
     this.state.filters.builderSignals.clear();
+    this.state.currentPage = 1;
     this.notify();
   }
 
@@ -211,6 +241,13 @@ class Store {
       // Sidebar Filters
       if (this.state.filters.availability && cand.availability !== this.state.filters.availability) return false;
       if (this.state.filters.workMode && cand.workMode !== this.state.filters.workMode) return false;
+      
+      if (this.state.filters.location && this.state.filters.location.trim()) {
+        const locQuery = this.state.filters.location.toLowerCase().trim();
+        const candLoc = cand.location.toLowerCase();
+        const candWork = cand.workMode.toLowerCase();
+        if (!candLoc.includes(locQuery) && !candWork.includes(locQuery)) return false;
+      }
       
       if (this.state.filters.experienceLevel) {
         const exp = cand.experienceYears ?? 0;

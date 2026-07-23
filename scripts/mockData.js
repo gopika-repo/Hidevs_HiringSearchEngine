@@ -231,5 +231,123 @@ export const mockCandidates = [
         takeaway: "Ideal for senior backend or platform architecture roles."
       }
     ]
+  },
+  {
+    id: "cand-4",
+    name: "Ananya Verma",
+    avatar: "AV",
+    headline: "Lead Frontend & UI Architect",
+    company: "Flipkart",
+    location: "Delhi NCR",
+    workMode: "Hybrid",
+    experienceYears: 7,
+    noticePeriodDays: 15,
+    availability: "Open to Work",
+    lastActive: "Today",
+    skills: ["React", "TypeScript", "Next.js", "Tailwind", "GraphQL", "Python", "FastAPI"],
+    primarySkills: ["React", "TypeScript", "Next.js"],
+    roleTypes: ["Full Stack", "Backend"],
+    builderProof: {
+      projectsCount: 10,
+      deployedProjectsCount: 8,
+      hackathonWinsCount: 3,
+      challengesCount: 7,
+      aiRankPercentile: 5,
+      streakDays: 60,
+      monthsActiveCount: 14
+    },
+    aiSummary: "Frontend architect with 7 years specializing in high-performance web applications and design system engines.",
+    whyInterview: [
+      {
+        claim: "Top 5% Frontend Architect",
+        evidence: "Built Flipkart core design tokens and micro-frontend platform."
+      }
+    ],
+    potentialConcerns: [],
+    projects: [
+      {
+        name: "DesignSystem Engine",
+        description: "Cross-platform design token engine for e-commerce apps",
+        techStack: ["TypeScript", "React", "Next.js"],
+        usersCount: "1M+ daily users",
+        verified: true,
+        deployed: true,
+        links: { github: "github.com/ananya/design-engine" }
+      }
+    ],
+    aiAgents: [],
+    intelligenceCards: []
+  },
+  {
+    id: "cand-5",
+    name: "Devansh Patel",
+    avatar: "DP",
+    headline: "MLOps & Cloud Infrastructure Engineer",
+    company: "PhonePe",
+    location: "Hyderabad",
+    workMode: "Remote",
+    experienceYears: 2,
+    noticePeriodDays: 30,
+    availability: "Open to Select Roles",
+    lastActive: "2 days ago",
+    skills: ["Python", "FastAPI", "Kubernetes", "Docker", "PyTorch", "AWS", "PostgreSQL"],
+    primarySkills: ["Python", "FastAPI", "Kubernetes"],
+    roleTypes: ["AI / ML Engineer", "Platform Engineering"],
+    builderProof: {
+      projectsCount: 5,
+      deployedProjectsCount: 4,
+      hackathonWinsCount: 1,
+      challengesCount: 4,
+      aiRankPercentile: 12,
+      streakDays: 18,
+      monthsActiveCount: 6
+    },
+    aiSummary: "MLOps engineer focused on model deployment pipelines, Kubernetes orchestration, and GPU inference scaling.",
+    whyInterview: [
+      {
+        claim: "Automated ML Deployments",
+        evidence: "Deployed 4 PyTorch inference pipelines on EKS."
+      }
+    ],
+    potentialConcerns: [],
+    projects: [],
+    aiAgents: [],
+    intelligenceCards: []
+  },
+  {
+    id: "cand-6",
+    name: "Sneha Reddy",
+    avatar: "SR",
+    headline: "Senior AI Researcher & LLM Specialist",
+    company: "CRED",
+    location: "Pune",
+    workMode: "Remote Only",
+    experienceYears: 5,
+    noticePeriodDays: 0,
+    availability: "Open to Work",
+    lastActive: "Today",
+    skills: ["Python", "PyTorch", "LangChain", "LlamaIndex", "FastAPI", "Docker", "PostgreSQL"],
+    primarySkills: ["Python", "PyTorch", "LangChain", "LlamaIndex"],
+    roleTypes: ["AI / ML Engineer"],
+    builderProof: {
+      projectsCount: 9,
+      deployedProjectsCount: 6,
+      hackathonWinsCount: 4,
+      challengesCount: 8,
+      aiRankPercentile: 3,
+      streakDays: 90,
+      monthsActiveCount: 18
+    },
+    aiSummary: "Top 3% AI Researcher specializing in fine-tuning open-source LLMs, RAG architectures, and custom embedding pipelines.",
+    whyInterview: [
+      {
+        claim: "Elite AI Practitioner",
+        evidence: "4 hackathon wins and Top 3% global AI Challenge ranking."
+      }
+    ],
+    potentialConcerns: [],
+    projects: [],
+    aiAgents: [],
+    intelligenceCards: []
   }
 ];

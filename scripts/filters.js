@@ -12,6 +12,8 @@ export function handleFilterClick(targetBtn) {
     store.toggleQuickFilter(id);
   } else if (action === 'clear-filters') {
     store.clearAllFilters();
+  } else if (action === 'clear-section') {
+    store.clearFilterSection(targetBtn.dataset.section);
   } else if (action === 'filter-skill') {
     store.toggleSkillFilter(targetBtn.dataset.value);
   } else if (action === 'filter-role') {
@@ -27,6 +29,8 @@ export function initFilters() {
   document.addEventListener('input', (e) => {
     if (e.target.dataset.action === 'filter-rank-range') {
       store.setRankingPercentile(parseInt(e.target.value, 10));
+    } else if (e.target.dataset.action === 'filter-location-input') {
+      store.setLocationFilter(e.target.value);
     }
   });
 }
