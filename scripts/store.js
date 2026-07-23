@@ -167,6 +167,27 @@ class Store {
     this.notify();
   }
 
+  moveCandidatePipeline(candidateId, targetStage) {
+    if (!this.state.pipeline || !this.state.pipeline[targetStage]) return;
+
+    // Remove candidate from all stages
+    Object.keys(this.state.pipeline).forEach(stage => {
+      this.state.pipeline[stage] = this.state.pipeline[stage].filter(id => id !== candidateId);
+    });
+
+    // Push candidate to target stage
+    this.state.pipeline[targetStage].push(candidateId);
+
+    // Sync shortlistedIds Set
+    if (targetStage === 'shortlisted') {
+      this.state.shortlistedIds.add(candidateId);
+    } else {
+      this.state.shortlistedIds.delete(candidateId);
+    }
+
+    this.notify();
+  }
+
   // --- Filter Selector ---
   getFilteredCandidates() {
     return this.state.candidates.filter(cand => {

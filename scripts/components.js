@@ -352,34 +352,43 @@ export function renderWorkspaceView(state) {
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
         <div>
           <h1 style="font-size: 24px; font-weight: 700;">Recruiter Hiring Workspace</h1>
-          <div style="font-size: 14px; color: var(--color-text-muted);">Manage candidate pipelines and collections.</div>
+          <div style="font-size: 14px; color: var(--color-text-muted);">Manage candidate pipelines with drag-and-drop workflow stages.</div>
         </div>
       </div>
 
       <div class="kanban-board">
-        <div class="kanban-column">
+        <div class="kanban-column" data-stage="saved">
           <div class="kanban-column-header">SAVED <span>(${state.pipeline.saved.length})</span></div>
-          ${allCandidates.filter(c => state.pipeline.saved.includes(c.id)).map(c => renderKanbanCard(c)).join('')}
+          <div class="kanban-cards-container" style="display: flex; flex-direction: column; gap: 8px; flex: 1;">
+            ${state.pipeline.saved.map(id => allCandidates.find(c => c.id === id)).filter(Boolean).map(c => renderKanbanCard(c, 'saved')).join('')}
+          </div>
         </div>
-        <div class="kanban-column">
+        <div class="kanban-column" data-stage="shortlisted">
           <div class="kanban-column-header">SHORTLISTED <span>(${state.pipeline.shortlisted.length})</span></div>
-          ${allCandidates.filter(c => state.pipeline.shortlisted.includes(c.id)).map(c => renderKanbanCard(c)).join('')}
+          <div class="kanban-cards-container" style="display: flex; flex-direction: column; gap: 8px; flex: 1;">
+            ${state.pipeline.shortlisted.map(id => allCandidates.find(c => c.id === id)).filter(Boolean).map(c => renderKanbanCard(c, 'shortlisted')).join('')}
+          </div>
         </div>
-        <div class="kanban-column">
+        <div class="kanban-column" data-stage="interview">
           <div class="kanban-column-header">INTERVIEW PLANNED <span>(${state.pipeline.interview.length})</span></div>
-          ${allCandidates.filter(c => state.pipeline.interview.includes(c.id)).map(c => renderKanbanCard(c)).join('')}
+          <div class="kanban-cards-container" style="display: flex; flex-direction: column; gap: 8px; flex: 1;">
+            ${state.pipeline.interview.map(id => allCandidates.find(c => c.id === id)).filter(Boolean).map(c => renderKanbanCard(c, 'interview')).join('')}
+          </div>
         </div>
       </div>
     </div>
   `;
 }
 
-function renderKanbanCard(cand) {
+function renderKanbanCard(cand, stage) {
   return `
-    <div class="kanban-card" data-action="open-full-profile" data-id="${cand.id}">
-      <div style="font-weight: 600; font-size: 14px; color: var(--color-text-primary);">${cand.name}</div>
-      <div style="font-size: 12px; color: var(--color-text-muted);">${cand.headline}</div>
-      <div style="font-size: 11px; color: var(--color-accent-base); font-weight: 500;">★ Top ${cand.builderProof.aiRankPercentile}% AI Rank</div>
+    <div class="kanban-card" draggable="true" data-action="open-full-profile" data-id="${cand.id}" data-stage="${stage}">
+      <div style="font-weight: 600; font-size: 14px; color: var(--color-text-primary); margin-bottom: 2px;">${cand.name}</div>
+      <div style="font-size: 12px; color: var(--color-text-muted); margin-bottom: 6px;">${cand.headline}</div>
+      <div style="display: flex; justify-content: space-between; align-items: center; font-size: 11px;">
+        <span style="color: var(--color-accent-base); font-weight: 500;">★ Top ${cand.builderProof.aiRankPercentile}% AI Rank</span>
+        <span style="color: var(--color-text-muted);">⋮</span>
+      </div>
     </div>
   `;
 }

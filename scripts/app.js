@@ -207,6 +207,62 @@ class ApplicationController {
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') store.closePreviewPanel();
     });
+
+    // HTML5 Drag and Drop Handlers for Kanban Workspace
+    document.addEventListener('dragstart', (e) => {
+      const card = e.target.closest('.kanban-card');
+      if (card) {
+        const candidateId = card.dataset.id;
+        const sourceStage = card.dataset.stage;
+        e.dataTransfer.setData('text/plain', JSON.stringify({ candidateId, sourceStage }));
+        e.dataTransfer.effectAllowed = 'move';
+        card.classList.add('dragging');
+      }
+    });
+
+    document.addEventListener('dragend', (e) => {
+      const card = e.target.closest('.kanban-card');
+      if (card) {
+        card.classList.remove('dragging');
+      }
+      document.querySelectorAll('.kanban-column').forEach(col => col.classList.remove('drag-over'));
+    });
+
+    document.addEventListener('dragover', (e) => {
+      const col = e.target.closest('.kanban-column');
+      if (col) {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        col.classList.add('drag-over');
+      }
+    });
+
+    document.addEventListener('dragleave', (e) => {
+      const col = e.target.closest('.kanban-column');
+      if (col && !col.contains(e.relatedTarget)) {
+        col.classList.remove('drag-over');
+      }
+    });
+
+    document.addEventListener('drop', (e) => {
+      const col = e.target.closest('.kanban-column');
+      if (col) {
+        e.preventDefault();
+        col.classList.remove('drag-over');
+        const targetStage = col.dataset.stage;
+        try {
+          const raw = e.dataTransfer.getData('text/plain');
+          if (raw) {
+            const data = JSON.parse(raw);
+            if (data && data.candidateId && targetStage) {
+              store.moveCandidatePipeline(data.candidateId, targetStage);
+            }
+          }
+        } catch (err) {
+          console.error('Drag drop error:', err);
+        }
+      }
+    });
   }
 }
 
