@@ -1290,3 +1290,195 @@
   color: var(--color-border-strong);
   font-size: 12px;
 }
+
+/* ============================================================
+   Phase 2: Tech Stack Intelligence — Card Section
+   ============================================================ */
+
+.tech-stack-section {
+  margin: var(--space-2) 0 var(--space-1-5);
+  padding: var(--space-1-5) var(--space-2);
+  background: var(--color-bg-subtle);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+}
+
+.tech-stack-header {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: var(--space-1-5);
+  flex-wrap: wrap;
+}
+
+.tech-stack-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+}
+
+.tech-stack-note {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  font-style: italic;
+  line-height: 1.4;
+}
+
+/* Progress bar grid */
+.tech-bars-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin-bottom: var(--space-1-5);
+}
+
+.tech-bar-row {
+  display: grid;
+  grid-template-columns: 120px 1fr 36px;
+  align-items: center;
+  gap: 8px;
+}
+
+.tech-bar-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tech-bar-track {
+  height: 6px;
+  background: var(--color-border-subtle);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.tech-bar-fill {
+  height: 100%;
+  border-radius: 99px;
+  transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  opacity: 0.85;
+}
+
+.tech-bar-pct {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--color-text-secondary);
+  text-align: right;
+  min-width: 32px;
+}
+
+/* Additional skills row */
+.tech-additional-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: var(--space-1);
+}
+
+.tech-additional-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
+  flex-shrink: 0;
+  margin-right: 2px;
+}
+
+.chip.chip-secondary {
+  background: var(--color-bg-base);
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border-subtle);
+  font-size: 10px;
+  padding: 1px 6px;
+}
+
+/* ============================================================
+   Phase 2: Tech Stack Filter — Sidebar
+   ============================================================ */
+
+.chip.chip-tech {
+  font-size: 11px;
+  padding: 3px 9px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border-subtle);
+  background: var(--color-bg-base);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  font-weight: 500;
+  transition: border-color var(--duration-fast), background-color var(--duration-fast), color var(--duration-fast);
+}
+
+.chip.chip-tech:hover {
+  border-color: var(--color-accent-base);
+  color: var(--color-accent-base);
+  background: var(--color-bg-subtle);
+}
+
+.chip.chip-tech.active {
+  background: var(--color-accent-base);
+  color: #fff;
+  border-color: var(--color-accent-base);
+  font-weight: 600;
+}
+
+.tech-search-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 6px 10px;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-base);
+  color: var(--color-text-primary);
+  font-size: 12px;
+  font-family: var(--font-sans);
+  transition: border-color var(--duration-fast), box-shadow var(--duration-fast);
+  outline: none;
+}
+
+.tech-search-input:focus {
+  border-color: var(--color-accent-base);
+  box-shadow: 0 0 0 2px var(--color-accent-muted);
+}
+
+.tech-search-input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.active-tech-filters {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: var(--space-1-5);
+  padding: 6px 8px;
+  background: var(--color-bg-subtle);
+  border-radius: var(--radius-sm);
+  border: 1px dashed var(--color-accent-muted);
+}
+
+.active-tech-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-accent-base);
+  margin-right: 4px;
+}
+
+/* Responsive: collapse tech bars label on small screens */
+@media (max-width: 600px) {
+  .tech-bar-row {
+    grid-template-columns: 80px 1fr 32px;
+    gap: 6px;
+  }
+  .tech-bar-label {
+    font-size: 11px;
+  }
+}

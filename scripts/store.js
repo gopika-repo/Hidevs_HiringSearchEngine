@@ -26,7 +26,8 @@ class Store {
         minAiScore: null,
         minProjects: null,
         hasGithub: false,
-        hasLinkedin: false
+        hasLinkedin: false,
+        preferredTech: new Set()
       },
       sortBy: 'Best Match',
       currentPage: 1,
@@ -147,6 +148,16 @@ class Store {
     this.notify();
   }
 
+  togglePreferredTech(tech) {
+    if (this.state.filters.preferredTech.has(tech)) {
+      this.state.filters.preferredTech.delete(tech);
+    } else {
+      this.state.filters.preferredTech.add(tech);
+    }
+    this.state.currentPage = 1;
+    this.notify();
+  }
+
   clearFilterSection(section) {
     if (section === 'availability') this.state.filters.availability = null;
     else if (section === 'workMode') this.state.filters.workMode = null;
@@ -180,6 +191,7 @@ class Store {
     this.state.filters.skills.clear();
     this.state.filters.roleTypes.clear();
     this.state.filters.builderSignals.clear();
+    this.state.filters.preferredTech.clear();
     this.state.currentPage = 1;
     this.notify();
   }
@@ -307,6 +319,18 @@ class Store {
       // Profile Links Filters
       if (this.state.filters.hasGithub && !cand.links?.github) return false;
       if (this.state.filters.hasLinkedin && !cand.links?.linkedin) return false;
+
+      // Preferred Tech Stack Filter (any match across preferred stack + additional + primarySkills)
+      if (this.state.filters.preferredTech.size > 0) {
+        const preferredNames = (cand.techStack?.preferred || []).map(t => t.name.toLowerCase());
+        const additionalNames = (cand.techStack?.additional || []).map(a => a.toLowerCase());
+        const primaryNames = (cand.primarySkills || []).map(p => p.toLowerCase());
+        const allTech = [...preferredNames, ...additionalNames, ...primaryNames];
+        const hasAny = Array.from(this.state.filters.preferredTech).some(t =>
+          allTech.some(at => at.includes(t.toLowerCase()))
+        );
+        if (!hasAny) return false;
+      }
 
       return true;
     });

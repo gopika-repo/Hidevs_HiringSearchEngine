@@ -22,6 +22,8 @@ export function handleFilterClick(targetBtn) {
     store.setFilter(targetBtn.dataset.category, targetBtn.value);
   } else if (action === 'filter-signal') {
     store.toggleBuilderSignal(targetBtn.dataset.value);
+  } else if (action === 'filter-tech') {
+    store.togglePreferredTech(targetBtn.dataset.value);
   }
 }
 
@@ -31,6 +33,18 @@ export function initFilters() {
       store.setRankingPercentile(parseInt(e.target.value, 10));
     } else if (e.target.dataset.action === 'filter-location-input') {
       store.setLocationFilter(e.target.value);
+    }
+  });
+
+  // Tech stack search: press Enter or comma to add tech filter
+  document.addEventListener('keydown', (e) => {
+    if (e.target.dataset.action === 'filter-tech-search' && (e.key === 'Enter' || e.key === ',')) {
+      e.preventDefault();
+      const val = e.target.value.trim().replace(/,$/, '');
+      if (val.length > 1) {
+        store.togglePreferredTech(val);
+        e.target.value = '';
+      }
     }
   });
 }

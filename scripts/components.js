@@ -248,6 +248,34 @@ export function renderCandidateCard(cand, state) {
         ${top5Skills.map(s => `<span class="chip chip-verified">✓ ${sanitizeHtml(s)}</span>`).join('')}
       </div>
 
+      <!-- Tech Stack Intelligence Section -->
+      ${cand.techStack ? `
+      <div class="tech-stack-section">
+        <div class="tech-stack-header">
+          <span class="tech-stack-title">Tech Stack</span>
+          ${cand.techStack.notes ? `<span class="tech-stack-note">${sanitizeHtml(cand.techStack.notes)}</span>` : ''}
+        </div>
+
+        <!-- Preferred Stack Progress Bars -->
+        <div class="tech-bars-grid">
+          ${(cand.techStack.preferred || []).map(t => `
+          <div class="tech-bar-row">
+            <span class="tech-bar-label">${sanitizeHtml(t.name)}</span>
+            <div class="tech-bar-track">
+              <div class="tech-bar-fill" style="width:${t.pct}%; background:${sanitizeHtml(t.color)};"></div>
+            </div>
+            <span class="tech-bar-pct">${t.pct}%</span>
+          </div>`).join('')}
+        </div>
+
+        <!-- Additional Skills Chips -->
+        ${cand.techStack.additional && cand.techStack.additional.length > 0 ? `
+        <div class="tech-additional-row">
+          <span class="tech-additional-label">Also knows:</span>
+          ${cand.techStack.additional.map(a => `<span class="chip chip-secondary">${sanitizeHtml(a)}</span>`).join('')}
+        </div>` : ''}
+      </div>` : ''}
+
       <!-- Gated Contact Information (Authorized Recruiters Only) -->
       ${cand.contact ? `
       <div class="card-contact-row">
@@ -379,7 +407,79 @@ export function renderFilterSidebar(state) {
         </div>
       </details>
 
+      <!-- Section 1b: Tech Stack Filter (Phase 2) -->
+      <details class="filter-group-details" open>
+        <summary class="filter-group-summary">
+          <span class="group-title">🛠️ TECH STACK (Preferred Technologies)</span>
+        </summary>
+        <div class="filter-group-body">
+
+          <!-- Tech search input -->
+          <div class="sub-filter-block">
+            <label class="sub-filter-label">Search Technology</label>
+            <input
+              class="tech-search-input"
+              type="text"
+              placeholder="e.g. Python, React, Go…"
+              data-action="filter-tech-search"
+              autocomplete="off"
+              aria-label="Search by preferred technology"
+            />
+          </div>
+
+          <!-- Python / ML -->
+          <div class="sub-filter-block">
+            <label class="sub-filter-label">AI / ML</label>
+            <div class="filter-pills-row">
+              ${['Python', 'PyTorch', 'LangChain', 'LlamaIndex', 'HuggingFace', 'vLLM'].map(t =>
+                `<button class="chip chip-tech ${state.filters.preferredTech.has(t) ? 'active' : ''}" data-action="filter-tech" data-value="${t}">${t}</button>`
+              ).join('')}
+            </div>
+          </div>
+
+          <!-- Backend -->
+          <div class="sub-filter-block">
+            <label class="sub-filter-label">Backend</label>
+            <div class="filter-pills-row">
+              ${['FastAPI', 'Go', 'Kafka', 'Redis', 'gRPC', 'Docker', 'Kubernetes'].map(t =>
+                `<button class="chip chip-tech ${state.filters.preferredTech.has(t) ? 'active' : ''}" data-action="filter-tech" data-value="${t}">${t}</button>`
+              ).join('')}
+            </div>
+          </div>
+
+          <!-- Frontend -->
+          <div class="sub-filter-block">
+            <label class="sub-filter-label">Frontend</label>
+            <div class="filter-pills-row">
+              ${['React', 'TypeScript', 'Next.js', 'GraphQL', 'Storybook'].map(t =>
+                `<button class="chip chip-tech ${state.filters.preferredTech.has(t) ? 'active' : ''}" data-action="filter-tech" data-value="${t}">${t}</button>`
+              ).join('')}
+            </div>
+          </div>
+
+          <!-- Cloud / Infra -->
+          <div class="sub-filter-block">
+            <label class="sub-filter-label">Cloud / Infra</label>
+            <div class="filter-pills-row">
+              ${['AWS', 'Terraform', 'Prometheus', 'MLflow', 'Kubeflow'].map(t =>
+                `<button class="chip chip-tech ${state.filters.preferredTech.has(t) ? 'active' : ''}" data-action="filter-tech" data-value="${t}">${t}</button>`
+              ).join('')}
+            </div>
+          </div>
+
+          <!-- Active tech filters display -->
+          ${state.filters.preferredTech.size > 0 ? `
+          <div class="active-tech-filters">
+            <span class="active-tech-label">Active:</span>
+            ${Array.from(state.filters.preferredTech).map(t =>
+              `<span class="chip chip-tech active" data-action="filter-tech" data-value="${t}" style="cursor:pointer;">${t} ✕</span>`
+            ).join('')}
+          </div>` : ''}
+        </div>
+      </details>
+
       <!-- Section 2: Candidate Status & Background (Open to Work, Company Exp, Education) -->
+
       <details class="filter-group-details" open>
         <summary class="filter-group-summary">
           <span class="group-title">💼 RECRUITER STATUS (Availability, Company, Ed)</span>

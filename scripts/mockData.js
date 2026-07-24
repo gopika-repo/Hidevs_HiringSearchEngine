@@ -53,6 +53,16 @@ export const mockCandidates = [
       { name: "PyTorch", score: 82, basis: "Model fine-tuning benchmark assessment" }
     ],
     primarySkills: ["Python", "FastAPI", "LangChain"],
+    techStack: {
+      preferred: [
+        { name: "Python", pct: 94, color: "#3776AB" },
+        { name: "FastAPI", pct: 90, color: "#009688" },
+        { name: "LangChain", pct: 88, color: "#6E4FF2" },
+        { name: "PyTorch", pct: 82, color: "#EE4C2C" }
+      ],
+      additional: ["Redis", "PostgreSQL", "Docker", "AWS Lambda", "Celery", "Pinecone"],
+      notes: "Primary stack is Python ML APIs. Comfortable with async FastAPI patterns and RAG vector pipelines."
+    },
     roleTypes: ["AI / ML Engineer", "Backend"],
     contact: {
       email: "arjun.sharma@hidevs.io",
@@ -126,6 +136,16 @@ export const mockCandidates = [
       { name: "Python", score: 85, basis: "FastAPI & OpenAI API integration" }
     ],
     primarySkills: ["React", "TypeScript", "Python", "FastAPI"],
+    techStack: {
+      preferred: [
+        { name: "React", pct: 92, color: "#61DAFB" },
+        { name: "TypeScript", pct: 89, color: "#3178C6" },
+        { name: "Python", pct: 85, color: "#3776AB" },
+        { name: "FastAPI", pct: 80, color: "#009688" }
+      ],
+      additional: ["Next.js", "Tailwind CSS", "Prisma", "PostgreSQL", "OpenAI SDK", "Vercel"],
+      notes: "Strong UI-to-API product engineer. Prefers Next.js + FastAPI stack for AI product development."
+    },
     roleTypes: ["AI / ML Engineer", "Full Stack"],
     contact: { email: "priya.mehta@hidevs.io", phone: "+91 97301 22456" },
     links: { github: "https://github.com/priyamehta-dev", linkedin: "https://linkedin.com/in/priyamehta-dev", portfolio: "https://priyamehta.io" },
@@ -169,6 +189,16 @@ export const mockCandidates = [
       { name: "Python", score: 88, basis: "Backend API microservices" }
     ],
     primarySkills: ["Go", "Python", "Kubernetes", "Kafka"],
+    techStack: {
+      preferred: [
+        { name: "Go", pct: 96, color: "#00ACD7" },
+        { name: "Kubernetes", pct: 92, color: "#326CE5" },
+        { name: "Kafka", pct: 89, color: "#231F20" },
+        { name: "Python", pct: 88, color: "#3776AB" }
+      ],
+      additional: ["gRPC", "Terraform", "AWS EKS", "Prometheus", "Redis Streams", "Argo Workflows"],
+      notes: "Elite distributed systems engineer. Thrives in high-throughput event-driven backend infrastructure."
+    },
     roleTypes: ["Backend", "Platform Engineering"],
     contact: { email: "rahul.kumar@hidevs.io", phone: "+91 90001 78901" },
     links: { github: "https://github.com/rahulkumar-backend", linkedin: "https://linkedin.com/in/rahulkumar-backend", portfolio: "https://rahulkumar.tech" },
@@ -205,6 +235,16 @@ export const mockCandidates = [
       { name: "Next.js", score: 91, basis: "SSR web performance optimization" }
     ],
     primarySkills: ["React", "TypeScript", "Next.js"],
+    techStack: {
+      preferred: [
+        { name: "React", pct: 97, color: "#61DAFB" },
+        { name: "TypeScript", pct: 95, color: "#3178C6" },
+        { name: "Next.js", pct: 91, color: "#000000" },
+        { name: "CSS / Design Systems", pct: 93, color: "#663399" }
+      ],
+      additional: ["Storybook", "Radix UI", "Framer Motion", "GraphQL", "Figma Tokens", "Chromatic"],
+      notes: "Frontend architect specialising in component systems and rendering performance. Not a backend-first profile."
+    },
     roleTypes: ["Full Stack", "Backend"],
     contact: { email: "ananya.verma@hidevs.io", phone: "+91 88001 56789" },
     links: { github: "https://github.com/ananya-verma", linkedin: "https://linkedin.com/in/ananyaverma-ui", portfolio: "https://ananya.design" },
@@ -240,6 +280,16 @@ export const mockCandidates = [
       { name: "Kubernetes", score: 86, basis: "4 model inference deployments on EKS" }
     ],
     primarySkills: ["Python", "FastAPI", "Kubernetes"],
+    techStack: {
+      preferred: [
+        { name: "Python", pct: 82, color: "#3776AB" },
+        { name: "Kubernetes", pct: 86, color: "#326CE5" },
+        { name: "PyTorch", pct: 78, color: "#EE4C2C" },
+        { name: "FastAPI", pct: 74, color: "#009688" }
+      ],
+      additional: ["Kubeflow", "MLflow", "Argo Workflows", "Prometheus", "Grafana", "AWS EKS"],
+      notes: "MLOps & cloud infra focus. Strong on model serving pipelines, lighter on pure ML research."
+    },
     roleTypes: ["AI / ML Engineer", "Platform Engineering"],
     contact: { email: "devansh.patel@hidevs.io", phone: "+91 91500 34501" },
     links: { github: "https://github.com/devansh-patel", linkedin: "https://linkedin.com/in/devansh-mlops" },
@@ -276,6 +326,16 @@ export const mockCandidates = [
       { name: "LangChain", score: 92, basis: "Multi-agent graph architectures" }
     ],
     primarySkills: ["Python", "PyTorch", "LangChain", "LlamaIndex"],
+    techStack: {
+      preferred: [
+        { name: "Python", pct: 98, color: "#3776AB" },
+        { name: "PyTorch", pct: 95, color: "#EE4C2C" },
+        { name: "LangChain", pct: 92, color: "#6E4FF2" },
+        { name: "LlamaIndex", pct: 90, color: "#FF6B35" }
+      ],
+      additional: ["HuggingFace", "FAISS", "Qdrant", "vLLM", "LoRA / QLoRA", "Weights & Biases"],
+      notes: "Deep AI researcher. Best for LLM fine-tuning, embedding pipeline, and RAG-specialised AI roles."
+    },
     roleTypes: ["AI / ML Engineer"],
     contact: { email: "sneha.reddy@hidevs.io", phone: "+91 93300 12345" },
     links: { github: "https://github.com/sneha-reddy", linkedin: "https://linkedin.com/in/snehareddy-ai", portfolio: "https://snehareddy.ai" },
@@ -306,6 +366,18 @@ export const mockCandidates = [
     const availabilities = ["Open to Work", "Open to Select Roles", "Not Available"];
     const companies = ["Zomato", "Paytm", "MakeMyTrip", "Urban Company", "Ola Cabs", "Postman", "Groww", "Unacademy", "Nykaa", "InMobi"];
     const techStacks = [["Python", "FastAPI", "Docker"], ["React", "TypeScript", "Next.js"], ["Go", "Kubernetes", "Kafka"], ["PyTorch", "LangChain", "Python"]];
+    const stackColors = {
+      "Python": "#3776AB", "FastAPI": "#009688", "Docker": "#2496ED",
+      "React": "#61DAFB", "TypeScript": "#3178C6", "Next.js": "#000000",
+      "Go": "#00ACD7", "Kubernetes": "#326CE5", "Kafka": "#231F20",
+      "PyTorch": "#EE4C2C", "LangChain": "#6E4FF2"
+    };
+    const additionalSkillsMap = {
+      0: ["Redis", "PostgreSQL", "AWS Lambda", "Celery"],
+      1: ["Storybook", "GraphQL", "Figma", "Vercel"],
+      2: ["gRPC", "Terraform", "Prometheus", "Argo Workflows"],
+      3: ["HuggingFace", "FAISS", "vLLM", "Weights & Biases"]
+    };
     
     const roleSel = roles[i % roles.length];
     const locSel = locations[i % locations.length];
@@ -337,6 +409,15 @@ export const mockCandidates = [
         basis: `Assessed via ${s} code challenge benchmark`
       })),
       primarySkills: stackSel,
+      techStack: {
+        preferred: stackSel.map((s, si) => ({
+          name: s,
+          pct: Math.floor(70 + Math.random() * 26),
+          color: stackColors[s] || ['#6E4FF2','#00ACD7','#EE4C2C','#009688'][si % 4]
+        })),
+        additional: additionalSkillsMap[i % 4],
+        notes: `${expYrs} years building ${roleSel[0]} systems using ${stackSel.join(' & ')}.`
+      },
       roleTypes: roleSel,
       contact: {
         email: `candidate.${idx}@hidevs.io`,
