@@ -89,6 +89,145 @@ export function renderStructuredBriefCard(cand) {
   `;
 }
 
+// --- Left Navigation Sidebar Renderer ---
+export function renderSidebarNav(state) {
+  const activeView = state.activeView || 'search';
+  const shortlistCount = state.shortlistedIds ? state.shortlistedIds.size : 0;
+
+  return `
+    <div class="sidebar-brand-icon" id="brand-home" title="HiDevs Search Engine">
+      HD
+    </div>
+
+    <div class="sidebar-nav-menu">
+      <div class="nav-sidebar-item ${activeView === 'search' ? 'active' : ''}" id="nav-search-engine" title="Candidate Search Engine">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <span class="nav-label">Search</span>
+      </div>
+
+      <div class="nav-sidebar-item ${activeView === 'workspace' ? 'active' : ''}" id="nav-workspace" title="Recruiter Workspace Pipeline">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+        <span class="nav-label">Pipeline (${shortlistCount})</span>
+      </div>
+
+      <div class="nav-sidebar-item ${activeView === 'profile' ? 'active' : ''}" id="nav-profile" title="Detailed Profile Dossier">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+        <span class="nav-label">Profile</span>
+      </div>
+    </div>
+
+    <div class="sidebar-nav-menu">
+      <div class="nav-sidebar-item" title="Notifications">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+        <span class="nav-label">Alerts</span>
+      </div>
+    </div>
+  `;
+}
+
+// --- Top Navbar Renderer ---
+export function renderTopNavbar(user, state) {
+  return `
+    <div class="top-navbar-left">
+      <div class="top-navbar-brand">
+        <span>HiDevs</span>
+        <span class="badge-logo" style="font-size: 10px; padding: 1px 6px;">RECRUITER ENGINE</span>
+      </div>
+
+      <div class="header-search-container" style="margin: 0; flex: 1;">
+        <div class="search-wrapper" style="position: relative; display: flex; align-items: center;">
+          <span class="search-icon-svg" aria-hidden="true" style="left: 10px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          </span>
+          <input type="text" id="global-search-input" class="global-search-input" placeholder="Search 'Python developer in Bangalore', 'Top AI builders'..." style="padding-left: 32px; padding-right: 50px; height: 34px; font-size: 13px;" value="${sanitizeHtml(state.searchQuery || '')}" autocomplete="off" />
+          <kbd style="position: absolute; right: 8px; font-size: 9px; font-weight: 700; background: var(--color-bg-subtle); color: var(--color-text-muted); border: 1px solid var(--color-border-subtle); border-radius: 4px; padding: 1px 5px; pointer-events: none;">⌘K</kbd>
+          <div class="search-suggestions-dropdown" id="search-dropdown"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="top-navbar-right">
+      <button class="btn btn-ghost btn-sm" id="nav-workspace-pill" style="font-size: 12px; gap: 6px;">
+        <span>★ Pipeline</span>
+        <span class="badge-count" id="shortlist-count-badge">${state.shortlistedIds ? state.shortlistedIds.size : 0}</span>
+      </button>
+
+      <div class="user-profile-btn" tabindex="0" title="${user.name} (${user.role})">
+        <div class="user-profile-avatar" style="width: 26px; height: 26px; font-size: 11px;">${user.avatar}</div>
+        <span style="font-size: 12px; font-weight: 600;">${user.name.split(' ')[0]}</span>
+      </div>
+    </div>
+  `;
+}
+
+// --- Inline Section 3 Candidate Preview Renderer ---
+export function renderInlinePreview(cand, state) {
+  if (!cand) return `
+    <div style="padding: 32px 16px; text-align: center; color: var(--color-text-muted);">
+      <div style="font-size: 24px; margin-bottom: 8px;">👤</div>
+      <div style="font-weight: 600; font-size: 13px; margin-bottom: 4px;">No Candidate Selected</div>
+      <div style="font-size: 11px;">Click on any candidate card to open their quick recruiter dossier.</div>
+    </div>
+  `;
+
+  const isShortlisted = state.shortlistedIds.has(cand.id);
+
+  return `
+    <div style="padding: 14px 16px; border-bottom: 1px solid var(--color-border-subtle); display: flex; justify-content: space-between; align-items: flex-start; background: var(--color-bg-surface);">
+      <div style="display: flex; gap: 10px; align-items: center;">
+        <div class="avatar" style="width: 40px; height: 40px; font-size: 15px; font-weight: 700; flex-shrink: 0;">
+          ${sanitizeHtml(cand.avatar)}
+        </div>
+        <div>
+          <div style="font-weight: 700; font-size: 14px; color: var(--color-text-primary); line-height: 1.2;">
+            ${sanitizeHtml(cand.name)}
+          </div>
+          <div style="font-size: 11px; color: var(--color-text-secondary); margin-top: 2px;">
+            ${sanitizeHtml(cand.headline)} · ${sanitizeHtml(cand.company)}
+          </div>
+        </div>
+      </div>
+      <button class="btn-icon" data-action="close-preview" title="Close Preview" style="width: 24px; height: 24px;">×</button>
+    </div>
+
+    <div style="padding: 14px 16px; display: flex; flex-direction: column; gap: 12px; flex: 1; overflow-y: auto;">
+      ${renderStructuredBriefCard(cand)}
+
+      ${cand.projects && cand.projects.length > 0 ? `
+        <div style="background: var(--color-bg-surface); border: 1px solid var(--color-border-subtle); border-radius: var(--radius-md); padding: 12px;">
+          <div style="font-size: 10px; font-weight: 800; text-transform: uppercase; color: var(--color-text-muted); margin-bottom: 8px; letter-spacing: 0.04em;">
+            🚀 Top Production Projects
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            ${cand.projects.slice(0, 2).map(p => `
+              <div style="border: 1px solid var(--color-border-subtle); padding: 8px 10px; border-radius: var(--radius-sm); background: var(--color-bg-base);">
+                <div style="font-weight: 700; font-size: 12px; color: var(--color-text-primary); display: flex; justify-content: space-between;">
+                  <span>${sanitizeHtml(p.name)}</span>
+                  <span style="font-size: 10px; color: var(--color-accent-base); font-weight: 600;">${sanitizeHtml(p.usersCount || '')}</span>
+                </div>
+                <div style="font-size: 11px; color: var(--color-text-secondary); margin: 3px 0;">${sanitizeHtml(p.description)}</div>
+                <div class="skills-row" style="gap: 3px;">
+                  ${p.techStack.map(t => `<span class="chip" style="font-size: 9px; padding: 0 4px;">${sanitizeHtml(t)}</span>`).join('')}
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      ` : ''}
+    </div>
+
+    <div style="padding: 12px 16px; border-top: 1px solid var(--color-border-subtle); background: var(--color-bg-surface); display: flex; justify-content: space-between; align-items: center;">
+      <button class="btn ${isShortlisted ? 'btn-primary' : 'btn-secondary'} btn-xs" data-action="shortlist" data-id="${cand.id}">
+        ${isShortlisted ? '★ Shortlisted' : 'Shortlist'}
+      </button>
+      <button class="btn btn-primary btn-xs" data-action="open-full-profile" data-id="${cand.id}" style="font-weight: 600;">
+        Open Full Profile Dossier →
+      </button>
+    </div>
+  `;
+}
+
+
 // --- Candidate Card Renderer (Concise 13-Field Card) ---
 export function renderCandidateCard(cand, state) {
   const isShortlisted = state.shortlistedIds.has(cand.id);

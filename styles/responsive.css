@@ -1,59 +1,74 @@
 /* ==========================================================================
-   HiDevs Hiring Search Engine — Clean Responsive Breakpoints Stylesheet
+   HiDevs Hiring Search Engine — Dashboard Responsive Breakpoints
    ========================================================================== */
 
-/* Laptop (1024px) */
-@media (max-width: 1024px) {
-  .main-container {
-    padding: var(--space-3) var(--space-3);
-  }
-  .filter-sidebar {
-    width: 200px;
-  }
-  .preview-panel {
-    width: 80%;
-  }
-}
-
-/* Tablet (768px) */
-@media (max-width: 768px) {
-  .global-header {
-    padding: 0 var(--space-2);
-  }
-  .header-search-container {
-    margin: 0 var(--space-2);
-  }
-  .main-container {
-    flex-direction: column;
-  }
-  .filter-sidebar {
-    width: 100%;
-    position: static;
-    max-height: none;
-  }
-  .preview-panel {
-    width: 100%;
-  }
-}
-
-/* Mobile (640px) */
-@media (max-width: 640px) {
-  .global-header {
-    flex-wrap: wrap;
-    height: auto;
-    padding: var(--space-2);
-    gap: var(--space-2);
-  }
-  .header-search-container {
-    order: 3;
-    width: 100%;
-    max-width: 100%;
-    margin: 0;
-  }
-  .header-right-zone {
-    gap: var(--space-1);
-  }
-  .nav-link-item span:not(.badge-count) {
+/* Laptop & Narrow Desktop (<1280px): Hide inline preview right panel, show full results width */
+@media (max-width: 1280px) {
+  .dash-section-preview {
     display: none;
   }
 }
+
+/* Tablet (<992px): Stack filters or make collapsible drawer */
+@media (max-width: 992px) {
+  .dashboard-grid-container {
+    flex-direction: column;
+    height: auto;
+    overflow-y: auto;
+  }
+
+  .dash-section-filters {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid var(--color-border-subtle);
+  }
+
+  .dash-section-results {
+    width: 100%;
+    overflow-y: visible;
+  }
+}
+
+/* Mobile (<640px): Sidebar transforms into bottom navigation bar */
+@media (max-width: 640px) {
+  #app-root {
+    flex-direction: column-reverse;
+  }
+
+  .app-left-sidebar {
+    width: 100%;
+    height: 50px;
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 0 16px;
+    border-right: none;
+    border-top: 1px solid var(--sidebar-border);
+  }
+
+  .sidebar-brand-icon {
+    display: none;
+  }
+
+  .sidebar-nav-menu {
+    flex-direction: row;
+    width: auto;
+    gap: 16px;
+  }
+
+  .app-main-canvas {
+    height: calc(100vh - 50px);
+  }
+
+  .app-top-navbar {
+    padding: 0 12px;
+  }
+
+  .top-navbar-brand {
+    font-size: 13px;
+  }
+
+  .concise-ranks-row {
+    flex-wrap: wrap;
+  }
+}
+

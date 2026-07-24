@@ -10,7 +10,9 @@ import {
   renderCandidateCard, 
   renderQuickFilters, 
   renderFilterSidebar, 
-  renderPreviewPanel, 
+  renderInlinePreview,
+  renderSidebarNav,
+  renderTopNavbar,
   renderFullProfileView, 
   renderWorkspaceView 
 } from './components.js';
@@ -36,67 +38,34 @@ class ApplicationController {
   renderAppShell() {
     const user = mockRecruiterData.currentUser;
     this.appRoot.innerHTML = `
-      <!-- Global Header -->
-      <header class="global-header" role="banner">
-        <div class="header-left-zone">
-          <a class="header-brand" id="brand-home" href="#" aria-label="HiDevs Hiring Search Engine">
-            <span>HiDevs</span>
-            <span class="badge-logo">HIRING SEARCH</span>
-          </a>
-        </div>
+      <!-- Left Navigation Sidebar -->
+      <aside class="app-left-sidebar" id="sidebar-nav-container">
+        ${renderSidebarNav(store.state)}
+      </aside>
 
-        <div class="header-search-container" role="search">
-          <div class="search-wrapper" style="position: relative; display: flex; align-items: center;">
-            <span class="search-icon-svg" aria-hidden="true">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-            </span>
-            <input type="text" id="global-search-input" class="global-search-input" placeholder="Search 'Python developer in Bangalore', 'Top AI builders'..." style="padding-right: 60px;" aria-label="Global natural language recruiter candidate search" autocomplete="off" />
-            <kbd style="position: absolute; right: 12px; font-size: 10px; font-weight: 700; background: var(--color-bg-subtle); color: var(--color-text-muted); border: 1px solid var(--color-border-subtle); border-radius: 4px; padding: 2px 6px; pointer-events: none;" aria-hidden="true">⌘K</kbd>
-            <div class="search-suggestions-dropdown" id="search-dropdown" role="listbox" aria-label="Search Auto-Complete Suggestions"></div>
-          </div>
-        </div>
+      <!-- Main Canvas Shell -->
+      <div class="app-main-canvas">
+        <!-- Top Navbar -->
+        <header class="app-top-navbar" id="top-navbar-container">
+          ${renderTopNavbar(user, store.state)}
+        </header>
 
-        <div class="header-right-zone" role="navigation" aria-label="Main Navigation">
-          <a class="nav-link-item active" id="nav-search-engine" href="#" role="button" aria-current="page">
-            <span>Search Engine</span>
-          </a>
-          <a class="nav-link-item" id="nav-workspace" href="#" role="button">
-            <span>Workspace</span>
-            <span class="badge-count" id="shortlist-count-badge">0</span>
-          </a>
-          <a class="nav-link-item" id="nav-profile" href="#" role="button">
-            <span>Profile View</span>
-          </a>
-          <button class="btn-icon" title="Notifications" aria-label="Notifications">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
-          </button>
-          <div class="user-profile-btn" tabindex="0" aria-label="User Profile (${user.name})">
-            <div class="user-profile-avatar">${user.avatar}</div>
-            <span style="font-size: 13px; font-weight: 500;">${user.name.split(' ')[0]}</span>
-          </div>
-        </div>
-      </header>
-
-      <!-- Main Layout Mount Point -->
-      <div id="view-container"></div>
-
-      <!-- 60% Slide-Over Preview Panel -->
-      <div class="preview-panel-overlay" id="preview-overlay">
-        <div class="preview-panel" id="preview-panel-content"></div>
+        <!-- Main View Mount Point -->
+        <main id="view-container" style="flex: 1; display: flex; overflow: hidden; position: relative;"></main>
       </div>
     `;
   }
 
   renderView(state) {
     const container = document.getElementById('view-container');
-    const shortlistBadge = document.getElementById('shortlist-count-badge');
-    if (shortlistBadge) shortlistBadge.textContent = state.shortlistedIds.size;
+    const user = mockRecruiterData.currentUser;
 
-    // Active Tab Navigation
-    document.querySelectorAll('.nav-link-item').forEach(el => el.classList.remove('active'));
-    if (state.activeView === 'search') document.getElementById('nav-search-engine')?.classList.add('active');
-    if (state.activeView === 'workspace') document.getElementById('nav-workspace')?.classList.add('active');
-    if (state.activeView === 'profile') document.getElementById('nav-profile')?.classList.add('active');
+    // Update Top & Left nav active state
+    const sidebarNav = document.getElementById('sidebar-nav-container');
+    if (sidebarNav) sidebarNav.innerHTML = renderSidebarNav(state);
+
+    const topNav = document.getElementById('top-navbar-container');
+    if (topNav) topNav.innerHTML = renderTopNavbar(user, state);
 
     if (state.activeView === 'search') {
       const allFiltered = store.getFilteredCandidates();
@@ -120,13 +89,21 @@ class ApplicationController {
         state.filters.rankingPercentile < 100
       );
 
-      container.innerHTML = `
-        <div class="main-container fade-in">
-          <aside class="filter-sidebar">
-            ${renderFilterSidebar(state)}
-          </aside>
+      const previewCand = state.activePreviewCandidateId 
+        ? state.candidates.find(c => c.id === state.activePreviewCandidateId)
+        : (paginatedCandidates[0] || null);
 
-          <main class="results-area">
+      container.innerHTML = `
+        <div class="dashboard-grid-container fade-in">
+          
+          <!-- Section 1: Search Filters -->
+          <section class="dash-section-filters">
+            ${renderFilterSidebar(state)}
+          </section>
+
+          <!-- Section 2: Search Results -->
+          <section class="dash-section-results">
+            <!-- Header Band: Quick Filters + Meta Bar -->
             <div class="results-header-band">
               <div class="quick-filters-row">
                 ${renderQuickFilters(state)}
@@ -134,12 +111,12 @@ class ApplicationController {
 
               <div class="results-meta-bar">
                 <div class="result-count-label">
-                  Showing <span>${totalCandidates > 0 ? startIndex + 1 : 0} - ${Math.min(startIndex + pageSize, totalCandidates)}</span> of <span>${totalCandidates}</span> builder candidates
+                  Showing <span>${totalCandidates > 0 ? startIndex + 1 : 0} - ${Math.min(startIndex + pageSize, totalCandidates)}</span> of <span>${totalCandidates}</span> candidates
                 </div>
-                <div style="display: flex; align-items: center; gap: 16px;">
-                  <button class="btn btn-ghost btn-sm" data-action="clear-filters" style="${hasActiveFilters ? '' : 'display:none;'}">Clear all filters</button>
+                <div style="display: flex; align-items: center; gap: 12px;">
+                  <button class="btn btn-ghost btn-xs" data-action="clear-filters" style="${hasActiveFilters ? '' : 'display:none;'}">Clear all</button>
                   <div class="sort-container">
-                    <span>Sort by:</span>
+                    <span>Sort:</span>
                     <select class="sort-select">
                       <option value="Best Match" ${state.sortBy === 'Best Match' ? 'selected' : ''}>Best Match</option>
                       <option value="Recent Activity" ${state.sortBy === 'Recent Activity' ? 'selected' : ''}>Recent Activity</option>
@@ -150,7 +127,8 @@ class ApplicationController {
               </div>
             </div>
 
-            <div class="candidates-grid" style="display: flex; flex-direction: column; gap: 16px;">
+            <!-- Candidates Grid / List -->
+            <div class="candidates-grid" style="display: flex; flex-direction: column; gap: 12px;">
               ${paginatedCandidates.length > 0
                 ? paginatedCandidates.map(c => renderCandidateCard(c, state)).join('')
                 : `
@@ -166,18 +144,25 @@ class ApplicationController {
               }
             </div>
 
+            <!-- Pagination Bar -->
             ${totalCandidates > pageSize ? `
-              <div class="pagination-bar" style="display: flex; justify-content: space-between; align-items: center; margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--color-border-subtle);">
-                <div style="font-size: 13px; color: var(--color-text-muted);">
+              <div class="pagination-bar" style="display: flex; justify-content: space-between; align-items: center; margin-top: auto; padding-top: 12px; border-top: 1px solid var(--color-border-subtle);">
+                <div style="font-size: 12px; color: var(--color-text-muted);">
                   Page ${currentPage} of ${totalPages}
                 </div>
-                <div style="display: flex; gap: 8px;">
-                  <button class="btn btn-secondary btn-sm" ${currentPage <= 1 ? 'disabled' : ''} data-action="prev-page">← Previous</button>
-                  <button class="btn btn-secondary btn-sm" ${currentPage >= totalPages ? 'disabled' : ''} data-action="next-page">Next →</button>
+                <div style="display: flex; gap: 6px;">
+                  <button class="btn btn-secondary btn-xs" ${currentPage <= 1 ? 'disabled' : ''} data-action="prev-page">← Prev</button>
+                  <button class="btn btn-secondary btn-xs" ${currentPage >= totalPages ? 'disabled' : ''} data-action="next-page">Next →</button>
                 </div>
               </div>
             ` : ''}
-          </main>
+          </section>
+
+          <!-- Section 3: Candidate Preview (Inline Right Column) -->
+          <section class="dash-section-preview">
+            ${renderInlinePreview(previewCand, state)}
+          </section>
+
         </div>
       `;
     } else if (state.activeView === 'workspace') {
@@ -187,23 +172,10 @@ class ApplicationController {
       container.innerHTML = renderFullProfileView(cand, state);
     }
 
-    // Sync search input if cleared externally
-    const searchInput = document.getElementById('global-search-input');
-    if (searchInput && state.searchQuery === '' && searchInput.value !== '') {
-      searchInput.value = '';
-    }
-
-    // Handle Slide-Over Panel State
-    const overlay = document.getElementById('preview-overlay');
-    const panelContent = document.getElementById('preview-panel-content');
-    if (state.activePreviewCandidateId) {
-      const previewCand = state.candidates.find(c => c.id === state.activePreviewCandidateId);
-      panelContent.innerHTML = renderPreviewPanel(previewCand, state);
-      overlay.classList.add('active');
-    } else {
-      overlay.classList.remove('active');
-    }
+    // Re-bind global search listener to top navbar input
+    initGlobalSearch();
   }
+
 
   bindGlobalEvents() {
     document.addEventListener('search-query-changed', (e) => {
@@ -219,7 +191,7 @@ class ApplicationController {
     document.addEventListener('click', (e) => {
       if (e.target.closest('#brand-home') || e.target.closest('#nav-search-engine')) {
         store.setView('search');
-      } else if (e.target.closest('#nav-workspace')) {
+      } else if (e.target.closest('#nav-workspace') || e.target.closest('#nav-workspace-pill')) {
         store.setView('workspace');
       } else if (e.target.closest('#nav-profile')) {
         store.setView('profile');

@@ -1,115 +1,169 @@
 /* ==========================================================================
-   HiDevs Hiring Search Engine — Design System Tokens (Phase 9 Specification)
+   HiDevs Hiring Search Engine — Unified Design System Tokens
    ========================================================================== */
 
 :root {
-  /* --- Color System: Surface & Canvas --- */
-  --color-bg-base: #F9F9FB;
-  --color-bg-surface: #FFFFFF;
-  --color-bg-subtle: #F3F4F6;
-  --color-bg-inverse: #0F1117;
+  /* ─── Brand Colors ─────────────────────────────────────────────────────── */
+  --brand-blue:         #2563EB;
+  --brand-blue-hover:   #1D4ED8;
+  --brand-blue-press:   #1E40AF;
+  --brand-blue-subtle:  #EFF6FF;
+  --brand-blue-muted:   #BFDBFE;
 
-  /* --- Color System: Borders --- */
-  --color-border-subtle: #EBEBED;
+  /* ─── Surface & Canvas ─────────────────────────────────────────────────── */
+  --color-bg-base:      #F4F5F7;
+  --color-bg-surface:   #FFFFFF;
+  --color-bg-subtle:    #F8F9FA;
+  --color-bg-hover:     #F1F3F5;
+  --color-bg-inverse:   #0F1117;
+
+  /* ─── Sidebar ──────────────────────────────────────────────────────────── */
+  --sidebar-bg:         #0F172A;
+  --sidebar-text:       #94A3B8;
+  --sidebar-text-hover: #E2E8F0;
+  --sidebar-active-bg:  rgba(37, 99, 235, 0.15);
+  --sidebar-active-text:#60A5FA;
+  --sidebar-border:     rgba(255, 255, 255, 0.06);
+
+  /* ─── Borders ───────────────────────────────────────────────────────────── */
+  --color-border-subtle:  #E5E7EB;
   --color-border-default: #D1D5DB;
-  --color-border-strong: #9CA3AF;
+  --color-border-strong:  #9CA3AF;
 
-  /* --- Color System: Typography --- */
-  --color-text-primary: #111827;
+  /* ─── Typography Colors ─────────────────────────────────────────────────── */
+  --color-text-primary:   #111827;
   --color-text-secondary: #374151;
-  --color-text-muted: #6B7280;
-  --color-text-disabled: #9CA3AF;
-  --color-text-inverse: #FFFFFF;
-  --color-text-link: #2563EB;
+  --color-text-muted:     #6B7280;
+  --color-text-disabled:  #9CA3AF;
+  --color-text-inverse:   #FFFFFF;
+  --color-text-link:      #2563EB;
 
-  /* --- Color System: Accent --- */
-  --color-accent-base: #2563EB;
-  --color-accent-hover: #1D4ED8;
-  --color-accent-pressed: #1E40AF;
-  --color-accent-subtle: #EFF6FF;
-  --color-accent-muted: #BFDBFE;
+  /* ─── Accent ────────────────────────────────────────────────────────────── */
+  --color-accent-base:    var(--brand-blue);
+  --color-accent-hover:   var(--brand-blue-hover);
+  --color-accent-pressed: var(--brand-blue-press);
+  --color-accent-subtle:  var(--brand-blue-subtle);
+  --color-accent-muted:   var(--brand-blue-muted);
 
-  /* --- Color System: Semantics --- */
-  --color-success-base: #16A34A;
+  /* ─── Semantic Colors ───────────────────────────────────────────────────── */
+  --color-success-base:   #16A34A;
   --color-success-subtle: #F0FDF4;
-  --color-success-text: #15803D;
+  --color-success-text:   #15803D;
 
-  --color-warning-base: #D97706;
+  --color-warning-base:   #D97706;
   --color-warning-subtle: #FFFBEB;
-  --color-warning-text: #B45309;
+  --color-warning-text:   #B45309;
 
-  --color-error-base: #DC2626;
-  --color-error-subtle: #FEF2F2;
-  --color-error-text: #B91C1C;
+  --color-error-base:     #DC2626;
+  --color-error-subtle:   #FEF2F2;
+  --color-error-text:     #B91C1C;
 
-  --color-info-base: #2563EB;
-  --color-info-subtle: #EFF6FF;
+  --color-info-base:      #2563EB;
+  --color-info-subtle:    #EFF6FF;
 
-  /* --- Interactive States --- */
-  --color-hover-bg: #F3F4F6;
-  --color-focus-ring: rgba(37, 99, 235, 0.35);
-  --color-selected-bg: #EFF6FF;
-  --color-selected-border: #2563EB;
+  /* ─── Interactive States ────────────────────────────────────────────────── */
+  --color-hover-bg:       #F3F4F6;
+  --color-focus-ring:     rgba(37, 99, 235, 0.30);
+  --color-selected-bg:    #EFF6FF;
+  --color-selected-border:#2563EB;
 
-  /* --- Typography Scale --- */
+  /* ─── Typography Scale ──────────────────────────────────────────────────── */
   --font-family-base: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-family-mono: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
 
-  --type-display-size: 2.25rem;   /* 36px */
-  --type-h1-size: 1.875rem;       /* 30px */
-  --type-h2-size: 1.5rem;          /* 24px */
-  --type-h3-size: 1.25rem;         /* 20px */
-  --type-body-lg-size: 1.0625rem;  /* 17px */
-  --type-body-size: 0.9375rem;     /* 15px */
-  --type-body-sm-size: 0.875rem;   /* 14px */
-  --type-caption-size: 0.8125rem;  /* 13px */
-  --type-label-size: 0.75rem;      /* 12px */
+  /* Font sizes */
+  --text-xs:   11px;
+  --text-sm:   12px;
+  --text-base: 14px;
+  --text-md:   15px;
+  --text-lg:   17px;
+  --text-xl:   20px;
+  --text-2xl:  24px;
 
-  /* --- Spacing System --- */
-  --space-0-5: 4px;
-  --space-1: 8px;
-  --space-1-5: 12px;
-  --space-2: 16px;
-  --space-2-5: 20px;
-  --space-3: 24px;
-  --space-4: 32px;
-  --space-5: 40px;
-  --space-6: 48px;
-  --space-8: 64px;
+  /* Legacy Aliases */
+  --type-display-size:  2.25rem;
+  --type-h1-size:       1.875rem;
+  --type-h2-size:       1.5rem;
+  --type-h3-size:       1.25rem;
+  --type-body-lg-size:  var(--text-lg);
+  --type-body-size:     var(--text-md);
+  --type-body-sm-size:  var(--text-base);
+  --type-caption-size:  var(--text-sm);
+  --type-label-size:    var(--text-xs);
 
-  /* --- Border Radius Scale --- */
+  /* ─── Spacing System (8px Grid) ────────────────────────────────────────── */
+  --s0:  4px;
+  --s1:  8px;
+  --s1h: 12px;
+  --s2:  16px;
+  --s2h: 20px;
+  --s3:  24px;
+  --s4:  32px;
+  --s5:  40px;
+  --s6:  48px;
+  --s8:  64px;
+
+  /* Legacy Aliases */
+  --space-0-5: var(--s0);
+  --space-1:   var(--s1);
+  --space-1-5: var(--s1h);
+  --space-2:   var(--s2);
+  --space-2-5: var(--s2h);
+  --space-3:   var(--s3);
+  --space-4:   var(--s4);
+  --space-5:   var(--s5);
+  --space-6:   var(--s6);
+  --space-8:   var(--s8);
+
+  /* ─── Component Heights ─────────────────────────────────────────────────── */
+  --btn-h-xs:   24px;
+  --btn-h-sm:   28px;
+  --btn-h-md:   34px;
+  --btn-h-lg:   40px;
+  --input-h:    34px;
+  --input-h-sm: 28px;
+
+  /* ─── Border Radius ─────────────────────────────────────────────────────── */
   --radius-none: 0px;
-  --radius-xs: 2px;
-  --radius-sm: 4px;
-  --radius-md: 6px;
-  --radius-lg: 8px;
-  --radius-xl: 12px;
-  --radius-2xl: 16px;
+  --radius-xs:   2px;
+  --radius-sm:   4px;
+  --radius-md:   6px;
+  --radius-lg:   8px;
+  --radius-xl:   12px;
+  --radius-2xl:  16px;
   --radius-full: 9999px;
 
-  /* --- Elevation / Shadows --- */
+  /* ─── Elevation / Shadows ───────────────────────────────────────────────── */
   --shadow-none: none;
-  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.05);
-  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.08), 0 4px 6px rgba(0, 0, 0, 0.05);
-  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.08), 0 10px 10px rgba(0, 0, 0, 0.04);
+  --shadow-xs:   0 1px 2px rgba(0,0,0,0.05);
+  --shadow-sm:   0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-md:   0 4px 6px rgba(0,0,0,0.07), 0 2px 4px rgba(0,0,0,0.04);
+  --shadow-lg:   0 10px 15px rgba(0,0,0,0.08), 0 4px 6px rgba(0,0,0,0.04);
+  --shadow-xl:   0 20px 25px rgba(0,0,0,0.08), 0 10px 10px rgba(0,0,0,0.03);
   --shadow-focus: 0 0 0 3px var(--color-focus-ring);
 
-  /* --- Motion & Timing --- */
+  /* ─── Motion ────────────────────────────────────────────────────────────── */
   --duration-instant: 50ms;
-  --duration-fast: 100ms;
-  --duration-normal: 200ms;
-  --duration-slow: 280ms;
+  --duration-fast:    100ms;
+  --duration-normal:  200ms;
+  --duration-slow:    280ms;
 
-  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-standard:   cubic-bezier(0.4, 0, 0.2, 1);
   --ease-decelerate: cubic-bezier(0, 0, 0.2, 1);
   --ease-accelerate: cubic-bezier(0.4, 0, 1, 1);
-  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring:     cubic-bezier(0.16, 1, 0.3, 1);
 
-  /* --- Layout Bounds --- */
-  --container-max-width: 1280px;
-  --header-height: 56px;
-  --sidebar-width: 240px;
-  --preview-panel-width: 60%;
+  /* ─── Layout Dimensions ─────────────────────────────────────────────────── */
+  --container-max-width:    1440px;
+  --sidebar-nav-width:      56px;
+  --sidebar-nav-expanded:   200px;
+  --top-bar-height:         52px;
+  --filter-panel-width:     224px;
+  --preview-inline-width:   380px;
+
+  /* Legacy Aliases */
+  --header-height:          var(--top-bar-height);
+  --sidebar-width:          var(--filter-panel-width);
+  --preview-panel-width:    var(--preview-inline-width);
 }
+

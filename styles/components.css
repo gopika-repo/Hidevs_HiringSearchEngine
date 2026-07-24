@@ -76,6 +76,13 @@
   font-size: var(--type-caption-size);
 }
 
+.btn-xs {
+  height: 24px;
+  padding: 0 var(--s1);
+  font-size: var(--text-xs);
+  border-radius: var(--radius-sm);
+}
+
 /* --- Badges & Chips --- */
 .badge {
   display: inline-flex;
