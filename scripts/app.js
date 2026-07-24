@@ -15,12 +15,15 @@ import {
   renderWorkspaceView 
 } from './components.js';
 
+import { searchIndexer } from './api.js';
+
 class ApplicationController {
   constructor() {
     this.appRoot = document.getElementById('app-root');
   }
 
   init() {
+    searchIndexer.buildIndex(store.state.candidates);
     this.renderAppShell();
     initGlobalSearch();
     initFilters();
