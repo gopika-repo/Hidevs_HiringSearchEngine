@@ -89,27 +89,10 @@ export function renderStructuredBriefCard(cand) {
   `;
 }
 
-// --- Candidate Card Renderer (HiDevs AI Hiring Intelligence Card) ---
+// --- Candidate Card Renderer (Concise 13-Field Card) ---
 export function renderCandidateCard(cand, state) {
   const isShortlisted = state.shortlistedIds.has(cand.id);
 
-  const aiHiringScore = cand.interviewReadiness?.completed && cand.interviewReadiness.score
-    ? cand.interviewReadiness.score
-    : Math.min(98, 88 + (cand.experienceYears * 2));
-
-  const rankPercentile = cand.builderProof?.aiRankPercentile ?? 15;
-  
-  // Recommendation Status
-  let recStatus = "Highly Recommended";
-  let recClass = "rec-highly";
-  let recIcon = "🟢";
-  if (cand.fitVerdict?.status === 'Good Fit' || (rankPercentile > 15 && rankPercentile <= 50)) {
-    recStatus = "Recommended";
-    recClass = "rec-standard";
-    recIcon = "🔵";
-  } else if (cand.fitVerdict?.status === 'Stretch Fit' || rankPercentile > 50) {
-    recStatus = "Needs Review";
-    recClass = "rec-review";
   // Normalize Top 5 Skills
   const top5Skills = (cand.skills || [])
     .map(s => typeof s === 'string' ? s : (s.name || String(s)))
@@ -117,10 +100,10 @@ export function renderCandidateCard(cand, state) {
 
   const builderScore = cand.builderProof?.builderScore || Math.min(99, 88 + (cand.experienceYears || 2));
   const aiHiringScore = cand.aiHiringScore || Math.min(99, 85 + (cand.experienceYears || 2));
-  
+
   const challengeRank = cand.rankPercentile ? `Top ${cand.rankPercentile}%` : (cand.fitVerdict?.status || 'Top 10%');
   const projectRank = cand.projects?.[0]?.verified ? 'Top 5% Verified Project' : `${cand.projects?.length || 3}+ Live Apps`;
-  const bestSuitedRole = cand.bestSuitedFor?.[0] || (cand.skills?.[0] ? `${cand.skills[0]} Specialist` : 'Software Engineer');
+  const bestSuitedRole = cand.bestSuitedFor?.[0] || (cand.skills?.[0] ? `${typeof cand.skills[0] === 'string' ? cand.skills[0] : cand.skills[0].name} Specialist` : 'Software Engineer');
 
   return `
     <div class="candidate-card concise-card" data-id="${cand.id}">
@@ -196,6 +179,7 @@ export function renderCandidateCard(cand, state) {
     </div>
   `;
 }
+
 
 // --- Quick Filters Bar Renderer ---
 export function renderQuickFilters(state) {
