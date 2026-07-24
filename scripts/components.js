@@ -17,13 +17,13 @@ export function renderStructuredBriefCard(cand) {
   const topReasons = cand.whyInterview && cand.whyInterview.length > 0
     ? [...cand.whyInterview.slice(0, 3)]
     : [
-        { claim: `Top ${cand.builderProof?.aiRankPercentile ?? 10}% Rank`, evidence: `${cand.builderProof?.projectsCount ?? 3} projects built.` }
+        { claim: `Top ${cand.builderProof?.aiRankPercentile ?? 10}% AI Rank`, evidence: `High verified code execution & problem-solving assessment score.` }
       ];
 
   if (cand.interviewReadiness?.completed && cand.interviewReadiness.score >= 80) {
     topReasons.unshift({
-      claim: `Verified Mock Interview (${cand.interviewReadiness.score}/100)`,
-      evidence: `Passed HiDevs technical interview simulation assessed on ${cand.interviewReadiness.assessedOn}.`
+      claim: `Verified Technical Assessment (${cand.interviewReadiness.score}/100)`,
+      evidence: `Passed HiDevs technical simulation assessed on ${cand.interviewReadiness.assessedOn}.`
     });
   }
 
@@ -192,28 +192,6 @@ export function renderInlinePreview(cand, state) {
 
     <div style="padding: 14px 16px; display: flex; flex-direction: column; gap: 12px; flex: 1; overflow-y: auto;">
       ${renderStructuredBriefCard(cand)}
-
-      ${cand.projects && cand.projects.length > 0 ? `
-        <div style="background: var(--color-bg-surface); border: 1px solid var(--color-border-subtle); border-radius: var(--radius-md); padding: 12px;">
-          <div style="font-size: 10px; font-weight: 800; text-transform: uppercase; color: var(--color-text-muted); margin-bottom: 8px; letter-spacing: 0.04em;">
-            🚀 Top Production Projects
-          </div>
-          <div style="display: flex; flex-direction: column; gap: 8px;">
-            ${cand.projects.slice(0, 2).map(p => `
-              <div style="border: 1px solid var(--color-border-subtle); padding: 8px 10px; border-radius: var(--radius-sm); background: var(--color-bg-base);">
-                <div style="font-weight: 700; font-size: 12px; color: var(--color-text-primary); display: flex; justify-content: space-between;">
-                  <span>${sanitizeHtml(p.name)}</span>
-                  <span style="font-size: 10px; color: var(--color-accent-base); font-weight: 600;">${sanitizeHtml(p.usersCount || '')}</span>
-                </div>
-                <div style="font-size: 11px; color: var(--color-text-secondary); margin: 3px 0;">${sanitizeHtml(p.description)}</div>
-                <div class="skills-row" style="gap: 3px;">
-                  ${p.techStack.map(t => `<span class="chip" style="font-size: 9px; padding: 0 4px;">${sanitizeHtml(t)}</span>`).join('')}
-                </div>
-              </div>
-            `).join('')}
-          </div>
-        </div>
-      ` : ''}
     </div>
 
     <div style="padding: 12px 16px; border-top: 1px solid var(--color-border-subtle); background: var(--color-bg-surface); display: flex; justify-content: space-between; align-items: center;">
@@ -226,6 +204,7 @@ export function renderInlinePreview(cand, state) {
     </div>
   `;
 }
+
 
 
 // --- Candidate Card Renderer (Concise 13-Field Card) ---
@@ -916,7 +895,7 @@ export function renderFullProfileView(cand, state) {
             </div>
             <div style="display: flex; flex-direction: column; gap: 12px;">
               ${(cand.experience || [
-                { title: `${cand.experienceYears > 5 ? 'Senior' : 'Software'} Engineer`, company: cand.company, duration: "2023 - Present", highlights: [`Built core ${cand.skills[0] || 'engineering'} features.`, `Improved pipeline efficiency by 25%.`] }
+                { title: `${cand.experienceYears > 5 ? 'Senior' : 'Software'} Engineer`, company: cand.company, duration: "2023 - Present", highlights: [`Built core high-throughput production features.`, `Improved pipeline efficiency by 25%.`] }
               ]).map(e => `
                 <div style="padding: 10px 12px; background: var(--color-bg-subtle); border-radius: var(--radius-sm); border: 1px solid var(--color-border-subtle);">
                   <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px;">
@@ -953,7 +932,7 @@ export function renderFullProfileView(cand, state) {
             </div>
             <div style="display: flex; flex-direction: column; gap: 10px;">
               ${(cand.projects || [
-                { name: `Production ML Pipeline`, description: `High-throughput asynchronous inference engine`, techStack: cand.skills || ['Python'], usersCount: '500+ daily active users', verified: true }
+                { name: `Production ML Pipeline`, description: `High-throughput asynchronous inference engine`, techStack: ['Python', 'FastAPI'], usersCount: '500+ daily active users', verified: true }
               ]).map(p => `
                 <div style="padding: 10px 12px; background: var(--color-bg-subtle); border-radius: var(--radius-sm); border: 1px solid var(--color-border-subtle);">
                   <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
@@ -1050,7 +1029,7 @@ export function renderFullProfileView(cand, state) {
                 <div class="sw-block">
                   <div class="sw-title">Verified Key Strengths</div>
                   <ul class="sw-list">
-                    ${(cand.evaluationReport?.strengths || [`Proven production experience in ${typeof cand.skills?.[0] === 'string' ? cand.skills[0] : (cand.skills?.[0]?.name || 'backend')} systems.`]).map(st => `<li>🟢 ${sanitizeHtml(st)}</li>`).join('')}
+                    ${(cand.evaluationReport?.strengths || [`Proven production experience in complex backend & distributed systems.`]).map(st => `<li>🟢 ${sanitizeHtml(st)}</li>`).join('')}
                   </ul>
                 </div>
                 <div class="sw-block">
@@ -1115,7 +1094,7 @@ export function renderFullProfileView(cand, state) {
               <div class="info-cell">
                 <span class="cell-lbl">Key Hiring Reasons</span>
                 <ul style="margin: 0; padding-left: 14px; font-size: 11px; color: var(--color-text-secondary);">
-                  ${(cand.whyInterview || [{ claim: `Proven ${cand.company} tenure`, evidence: `Built production ${typeof cand.skills?.[0] === 'string' ? cand.skills[0] : (cand.skills?.[0]?.name || 'backend')} services.` }]).map(w => `<li><strong>${sanitizeHtml(w.claim)}:</strong> ${sanitizeHtml(w.evidence)}</li>`).join('')}
+                  ${(cand.whyInterview || [{ claim: `Proven ${cand.company} tenure`, evidence: `Built high-throughput production services.` }]).map(w => `<li><strong>${sanitizeHtml(w.claim)}:</strong> ${sanitizeHtml(w.evidence)}</li>`).join('')}
                 </ul>
               </div>
             </div>
@@ -1129,7 +1108,7 @@ export function renderFullProfileView(cand, state) {
               <div class="info-cell">
                 <span class="cell-lbl">Suggested Interview Focus Areas</span>
                 <ul style="margin: 0; padding-left: 14px; font-size: 11px; color: var(--color-text-secondary);">
-                  <li>Evaluate ${typeof cand.skills?.[0] === 'string' ? cand.skills[0] : (cand.skills?.[0]?.name || 'core stack')} system architecture depth.</li>
+                  <li>Evaluate core system architecture and engineering depth.</li>
                   <li>Verify production throughput and deployment velocity.</li>
                 </ul>
               </div>
