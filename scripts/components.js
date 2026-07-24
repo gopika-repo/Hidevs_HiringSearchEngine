@@ -304,6 +304,44 @@ export function renderCandidateCard(cand, state) {
         ${cand.education.cgpa ? `<span class="cgpa-badge" title="Verified Academic Performance">CGPA: ${cand.education.cgpa}/10</span>` : ''}
       </div>` : ''}
 
+      <!-- Phase 5: Developer Performance Dashboard & Competency Matrix -->
+      <div class="dev-performance-dashboard">
+        <div class="perf-dashboard-header">
+          <span class="perf-title">📊 DEVELOPER PERFORMANCE DASHBOARD</span>
+          <span class="exp-band-badge" title="Verified Experience Banding">
+            🏷️ Band: ${cand.performanceDashboard?.experienceBand || (cand.experienceYears <= 2 ? 'Early Career' : cand.experienceYears <= 5 ? 'Mid-Senior' : 'Lead / Staff')}
+          </span>
+        </div>
+
+        <div class="competency-matrix-grid">
+          <div class="matrix-card">
+            <span class="matrix-lbl">Problem Solving</span>
+            <div class="matrix-bar"><div class="matrix-fill" style="width: ${cand.performanceDashboard?.competencyMatrix?.problemSolving || 90}%;"></div></div>
+            <span class="matrix-score">${cand.performanceDashboard?.competencyMatrix?.problemSolving || 90}</span>
+          </div>
+          <div class="matrix-card">
+            <span class="matrix-lbl">Execution Quality</span>
+            <div class="matrix-bar"><div class="matrix-fill purple" style="width: ${cand.performanceDashboard?.competencyMatrix?.executionScore || 94}%;"></div></div>
+            <span class="matrix-score">${cand.performanceDashboard?.competencyMatrix?.executionScore || 94}</span>
+          </div>
+          <div class="matrix-card">
+            <span class="matrix-lbl">System Design</span>
+            <div class="matrix-bar"><div class="matrix-fill blue" style="width: ${cand.performanceDashboard?.competencyMatrix?.systemDesign || 86}%;"></div></div>
+            <span class="matrix-score">${cand.performanceDashboard?.competencyMatrix?.systemDesign || 86}</span>
+          </div>
+          <div class="matrix-card">
+            <span class="matrix-lbl">Communication</span>
+            <div class="matrix-bar"><div class="matrix-fill green" style="width: ${cand.performanceDashboard?.competencyMatrix?.communication || 88}%;"></div></div>
+            <span class="matrix-score">${cand.performanceDashboard?.competencyMatrix?.communication || 88}</span>
+          </div>
+          <div class="matrix-card">
+            <span class="matrix-lbl">Reliability Score</span>
+            <div class="matrix-bar"><div class="matrix-fill amber" style="width: ${cand.performanceDashboard?.competencyMatrix?.reliabilityScore || 92}%;"></div></div>
+            <span class="matrix-score">${cand.performanceDashboard?.competencyMatrix?.reliabilityScore || 92}</span>
+          </div>
+        </div>
+      </div>
+
       <!-- Gated Contact Information (Authorized Recruiters Only) -->
       ${cand.contact ? `
       <div class="card-contact-row">

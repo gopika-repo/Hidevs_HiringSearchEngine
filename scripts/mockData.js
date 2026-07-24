@@ -133,6 +133,16 @@ export const mockCandidates = [
       college: "IIT Bombay",
       graduationYear: 2020,
       cgpa: 8.7
+    },
+    performanceDashboard: {
+      experienceBand: "Mid-Senior (3-5 Yrs)",
+      competencyMatrix: {
+        problemSolving: 92,
+        executionScore: 95,
+        systemDesign: 88,
+        communication: 86,
+        reliabilityScore: 94
+      }
     }
   },
   {
@@ -568,6 +578,16 @@ export const mockCandidates = [
         college: ["IIT Madras", "NIT Trichy", "IIIT Hyderabad", "DTU Delhi", "PES University"][i % 5],
         graduationYear: 2024 - expYrs,
         cgpa: parseFloat((7.2 + (i % 25) * 0.11).toFixed(1))
+      },
+      performanceDashboard: {
+        experienceBand: expYrs <= 2 ? "Early Career (0-2 Yrs)" : expYrs <= 5 ? "Mid-Senior (3-5 Yrs)" : "Lead / Staff (6+ Yrs)",
+        competencyMatrix: {
+          problemSolving: Math.floor(75 + (i % 23)),
+          executionScore: Math.floor(78 + (i % 21)),
+          systemDesign: Math.floor(70 + (i % 27)),
+          communication: Math.floor(80 + (i % 18)),
+          reliabilityScore: Math.floor(82 + (i % 17))
+        }
       }
     };
   })

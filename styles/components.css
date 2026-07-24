@@ -1705,3 +1705,90 @@
   flex-shrink: 0;
 }
 
+/* ============================================================
+   Phase 5: Developer Performance Dashboard & Competency Matrix
+   ============================================================ */
+
+.dev-performance-dashboard {
+  margin: var(--space-2) 0 var(--space-1-5);
+  padding: var(--space-1-5) var(--space-2);
+  background: #FAF5FF;
+  border: 1px solid #E9D5FF;
+  border-radius: var(--radius-md);
+}
+
+.perf-dashboard-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-1-5);
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.perf-title {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: #6B21A8;
+}
+
+.exp-band-badge {
+  font-size: 11px;
+  font-weight: 700;
+  color: #581C87;
+  background: #F3E8FF;
+  border: 1px solid #D8B4FE;
+  padding: 2px 8px;
+  border-radius: 99px;
+}
+
+.competency-matrix-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 8px;
+}
+
+.matrix-card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 6px 8px;
+  background: #FFFFFF;
+  border: 1px solid #E9D5FF;
+  border-radius: var(--radius-sm);
+}
+
+.matrix-lbl {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.matrix-bar {
+  height: 5px;
+  background: #F3E8FF;
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.matrix-fill {
+  height: 100%;
+  background: #7C3AED;
+  border-radius: 99px;
+  transition: width 0.5s ease-out;
+}
+
+.matrix-fill.purple { background: #9333EA; }
+.matrix-fill.blue { background: #2563EB; }
+.matrix-fill.green { background: #059669; }
+.matrix-fill.amber { background: #D97706; }
+
+.matrix-score {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--color-text-primary);
+  text-align: right;
+}
+
