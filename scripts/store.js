@@ -27,7 +27,11 @@ class Store {
         minProjects: null,
         hasGithub: false,
         hasLinkedin: false,
-        preferredTech: new Set()
+        preferredTech: new Set(),
+        employmentType: new Set(),
+        culturePrefs: new Set(),
+        willingToRelocate: false,
+        openToContract: false
       },
       sortBy: 'Best Match',
       currentPage: 1,
@@ -158,6 +162,26 @@ class Store {
     this.notify();
   }
 
+  toggleEmploymentType(type) {
+    if (this.state.filters.employmentType.has(type)) {
+      this.state.filters.employmentType.delete(type);
+    } else {
+      this.state.filters.employmentType.add(type);
+    }
+    this.state.currentPage = 1;
+    this.notify();
+  }
+
+  toggleCulturePref(pref) {
+    if (this.state.filters.culturePrefs.has(pref)) {
+      this.state.filters.culturePrefs.delete(pref);
+    } else {
+      this.state.filters.culturePrefs.add(pref);
+    }
+    this.state.currentPage = 1;
+    this.notify();
+  }
+
   clearFilterSection(section) {
     if (section === 'availability') this.state.filters.availability = null;
     else if (section === 'workMode') this.state.filters.workMode = null;
@@ -192,6 +216,10 @@ class Store {
     this.state.filters.roleTypes.clear();
     this.state.filters.builderSignals.clear();
     this.state.filters.preferredTech.clear();
+    this.state.filters.employmentType.clear();
+    this.state.filters.culturePrefs.clear();
+    this.state.filters.willingToRelocate = false;
+    this.state.filters.openToContract = false;
     this.state.currentPage = 1;
     this.notify();
   }
@@ -320,7 +348,7 @@ class Store {
       if (this.state.filters.hasGithub && !cand.links?.github) return false;
       if (this.state.filters.hasLinkedin && !cand.links?.linkedin) return false;
 
-      // Preferred Tech Stack Filter (any match across preferred stack + additional + primarySkills)
+      // Preferred Tech Stack Filter
       if (this.state.filters.preferredTech.size > 0) {
         const preferredNames = (cand.techStack?.preferred || []).map(t => t.name.toLowerCase());
         const additionalNames = (cand.techStack?.additional || []).map(a => a.toLowerCase());
@@ -331,6 +359,26 @@ class Store {
         );
         if (!hasAny) return false;
       }
+
+      // Employment Type Filter
+      if (this.state.filters.employmentType.size > 0) {
+        const candTypes = cand.employment?.types || [];
+        const hasAnyType = Array.from(this.state.filters.employmentType).some(t => candTypes.includes(t));
+        if (!hasAnyType) return false;
+      }
+
+      // Culture Prefs Filter (any match)
+      if (this.state.filters.culturePrefs.size > 0) {
+        const candPrefs = (cand.employment?.culturePrefs || []).map(p => p.toLowerCase());
+        const hasAnyPref = Array.from(this.state.filters.culturePrefs).some(p =>
+          candPrefs.some(cp => cp.includes(p.toLowerCase()))
+        );
+        if (!hasAnyPref) return false;
+      }
+
+      // Relocation / Contract filters
+      if (this.state.filters.willingToRelocate && !cand.employment?.willingToRelocate) return false;
+      if (this.state.filters.openToContract && !cand.employment?.openToContract) return false;
 
       return true;
     });

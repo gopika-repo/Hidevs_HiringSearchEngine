@@ -46,6 +46,17 @@ export const mockCandidates = [
     noticePeriodDays: 15,
     availability: "Open to Work",
     lastActive: "3 days ago",
+    employment: {
+      types: ["Full-time"],
+      openToWork: true,
+      noticePeriodDays: 15,
+      salaryRange: { min: 30, max: 50, currency: "LPA" },
+      culturePrefs: ["Small team (< 20)", "Remote-first", "High ownership", "Fast-moving startup"],
+      preferredCompanySize: "Startup / Series A-B",
+      preferredIndustry: ["AI / ML", "Developer Tools", "FinTech"],
+      willingToRelocate: false,
+      openToContract: false
+    },
     skills: [
       { name: "Python", score: 94, basis: "Assessed via 6 production FastAPI services + Top 5% Python LeetPrompt" },
       { name: "FastAPI", score: 90, basis: "4 years production API deployment at Swiggy scale" },
@@ -130,6 +141,17 @@ export const mockCandidates = [
     noticePeriodDays: 30,
     availability: "Open to Select Roles",
     lastActive: "1 day ago",
+    employment: {
+      types: ["Full-time", "Contract"],
+      openToWork: true,
+      noticePeriodDays: 30,
+      salaryRange: { min: 25, max: 40, currency: "LPA" },
+      culturePrefs: ["Product-driven culture", "Design + Engineering parity", "Collaborative"],
+      preferredCompanySize: "Series B-D / Growth Stage",
+      preferredIndustry: ["FinTech", "AI Products", "SaaS"],
+      willingToRelocate: true,
+      openToContract: true
+    },
     skills: [
       { name: "React", score: 92, basis: "3 years building enterprise Next.js & React dashboards" },
       { name: "TypeScript", score: 89, basis: "Strong type-safe application architecture" },
@@ -183,6 +205,17 @@ export const mockCandidates = [
     noticePeriodDays: 0,
     availability: "Open to Work",
     lastActive: "Today",
+    employment: {
+      types: ["Full-time"],
+      openToWork: true,
+      noticePeriodDays: 0,
+      salaryRange: { min: 50, max: 90, currency: "LPA" },
+      culturePrefs: ["Engineering-first culture", "High technical bar", "Zero-to-one problems"],
+      preferredCompanySize: "Enterprise or FAANG-scale",
+      preferredIndustry: ["Cloud Infrastructure", "Developer Tools", "Platform Engineering"],
+      willingToRelocate: false,
+      openToContract: false
+    },
     skills: [
       { name: "Go", score: 96, basis: "Architected GoStream event broker handling 50k msgs/sec at Amazon" },
       { name: "Kubernetes", score: 92, basis: "Production EKS deployment & cloud infra" },
@@ -229,6 +262,17 @@ export const mockCandidates = [
     noticePeriodDays: 15,
     availability: "Open to Work",
     lastActive: "Today",
+    employment: {
+      types: ["Full-time"],
+      openToWork: true,
+      noticePeriodDays: 15,
+      salaryRange: { min: 40, max: 70, currency: "LPA" },
+      culturePrefs: ["Design-centric", "Cross-functional teams", "Structured processes"],
+      preferredCompanySize: "Mid-size (200-2000)",
+      preferredIndustry: ["E-commerce", "Consumer Tech", "SaaS"],
+      willingToRelocate: false,
+      openToContract: true
+    },
     skills: [
       { name: "React", score: 97, basis: "Built Flipkart core design token engine for 1M+ daily users" },
       { name: "TypeScript", score: 95, basis: "7 years enterprise UI architecture" },
@@ -275,6 +319,17 @@ export const mockCandidates = [
     noticePeriodDays: 30,
     availability: "Open to Select Roles",
     lastActive: "2 days ago",
+    employment: {
+      types: ["Full-time", "Internship"],
+      openToWork: true,
+      noticePeriodDays: 30,
+      salaryRange: { min: 15, max: 28, currency: "LPA" },
+      culturePrefs: ["Learning culture", "Mentorship access", "Cloud-native teams"],
+      preferredCompanySize: "Startup or Hyperscaler",
+      preferredIndustry: ["AI / ML", "Cloud", "FinTech"],
+      willingToRelocate: true,
+      openToContract: false
+    },
     skills: [
       { name: "Python", score: 82, basis: "PyTorch model training scripts" },
       { name: "Kubernetes", score: 86, basis: "4 model inference deployments on EKS" }
@@ -320,6 +375,17 @@ export const mockCandidates = [
     noticePeriodDays: 0,
     availability: "Open to Work",
     lastActive: "Today",
+    employment: {
+      types: ["Full-time", "Contract"],
+      openToWork: true,
+      noticePeriodDays: 0,
+      salaryRange: { min: 45, max: 80, currency: "LPA" },
+      culturePrefs: ["Research-driven", "Academic + industry hybrid", "Autonomous work"],
+      preferredCompanySize: "AI-focused lab or Series B+",
+      preferredIndustry: ["AI Research", "LLM Products", "Healthcare AI"],
+      willingToRelocate: false,
+      openToContract: true
+    },
     skills: [
       { name: "Python", score: 98, basis: "Fine-tuned Llama 3 & Mistral 7B for financial RAG" },
       { name: "PyTorch", score: 95, basis: "5 years deep learning & embedding pipeline development" },
@@ -403,6 +469,29 @@ export const mockCandidates = [
       noticePeriodDays: noticeDays,
       availability: avSel,
       lastActive: `${(i % 7) + 1} days ago`,
+      employment: {
+        types: i % 5 === 0 ? ["Full-time", "Contract"] : i % 3 === 0 ? ["Full-time", "Internship"] : ["Full-time"],
+        openToWork: avSel !== "Not Available",
+        noticePeriodDays: noticeDays,
+        salaryRange: { min: 10 + expYrs * 3, max: 20 + expYrs * 6, currency: "LPA" },
+        culturePrefs: [
+          ["Fast-moving startup", "High ownership", "Remote-first"],
+          ["Collaborative culture", "Clear processes", "Mentorship"],
+          ["Engineering-first", "High autonomy", "No micro-management"],
+          ["Research-driven", "Data-informed decisions", "Inclusive"],
+          ["Product-driven", "Cross-functional teams", "Design + Dev parity"]
+        ][i % 5],
+        preferredCompanySize: ["Startup / Series A-B", "Series B-D", "Mid-size (200-2000)", "Enterprise", "AI-focused lab"][i % 5],
+        preferredIndustry: [
+          ["AI / ML", "Developer Tools"],
+          ["FinTech", "SaaS"],
+          ["E-commerce", "Consumer Tech"],
+          ["Healthcare AI", "EdTech"],
+          ["Cloud", "Platform Engineering"]
+        ][i % 5],
+        willingToRelocate: i % 3 === 0,
+        openToContract: i % 4 === 0
+      },
       skills: stackSel.map(s => ({
         name: s,
         score: Math.floor(70 + Math.random() * 25),

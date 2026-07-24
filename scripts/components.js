@@ -163,6 +163,18 @@ export function renderCandidateCard(cand, state) {
             ${cand.links?.github ? `<a class="card-link-btn card-link-github" href="${sanitizeHtml(cand.links.github)}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()" aria-label="GitHub profile">${icons.github} GitHub</a>` : ''}
             ${cand.links?.linkedin ? `<a class="card-link-btn card-link-linkedin" href="${sanitizeHtml(cand.links.linkedin)}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()" aria-label="LinkedIn profile">${icons.linkedin} LinkedIn</a>` : ''}
           </div>
+
+          <!-- Employment Badges Row -->
+          ${cand.employment ? `
+          <div class="employment-badges-row">
+            ${cand.employment.openToWork ? `<span class="emp-badge emp-badge-open" title="Actively seeking new opportunities">● Open to Work</span>` : `<span class="emp-badge emp-badge-passive" title="Not actively searching">◌ Passive</span>`}
+            ${(cand.employment.types || []).map(t => {
+              const typeClass = t === 'Full-time' ? 'emp-type-fulltime' : t === 'Contract' ? 'emp-type-contract' : t === 'Internship' ? 'emp-type-intern' : 'emp-type-other';
+              return `<span class="emp-type-badge ${typeClass}">${sanitizeHtml(t)}</span>`;
+            }).join('')}
+            ${cand.employment.willingToRelocate ? `<span class="emp-badge emp-badge-relocate" title="Open to relocation">📍 Relocation OK</span>` : ''}
+            ${cand.employment.openToContract ? `<span class="emp-badge emp-badge-contract" title="Open to contract/freelance">📄 Contract OK</span>` : ''}
+          </div>` : ''}
         </div>
 
         <div class="scores-badge-col">
@@ -172,6 +184,14 @@ export function renderCandidateCard(cand, state) {
           </div>
         </div>
       </div>
+
+      <!-- Culture Preferences (inline compact strip) -->
+      ${cand.employment?.culturePrefs && cand.employment.culturePrefs.length > 0 ? `
+      <div class="culture-prefs-row">
+        <span class="culture-label">Culture fit:</span>
+        ${cand.employment.culturePrefs.map(p => `<span class="chip chip-culture">${sanitizeHtml(p)}</span>`).join('')}
+        ${cand.employment.salaryRange ? `<span class="salary-range-chip">${cand.employment.salaryRange.min}–${cand.employment.salaryRange.max} ${cand.employment.salaryRange.currency}</span>` : ''}
+      </div>` : ''}
 
       <!-- AI-Generated Hiring Summary -->
       <div class="hire-rationale-box">
@@ -548,6 +568,58 @@ export function renderFilterSidebar(state) {
               <button class="chip ${state.filters.builderSignals.has('deployed') ? 'active' : ''}" data-action="filter-signal" data-value="deployed">⚡ Deployed Apps</button>
             </div>
           </div>
+        </div>
+      </details>
+
+      <!-- Section 3b: Employment Preferences (Phase 3) -->
+      <details class="filter-group-details" open>
+        <summary class="filter-group-summary">
+          <span class="group-title">💼 EMPLOYMENT PREFERENCES (Type, Culture, Relocation)</span>
+        </summary>
+        <div class="filter-group-body">
+
+          <!-- Employment Type -->
+          <div class="sub-filter-block">
+            <label class="sub-filter-label">Employment Type</label>
+            <div class="filter-pills-row">
+              ${['Full-time', 'Contract', 'Internship'].map(t => `
+                <button class="chip chip-emp-type ${state.filters.employmentType.has(t) ? 'active' : ''}" data-action="filter-employment" data-value="${t}">${
+                  t === 'Full-time' ? '🏢' : t === 'Contract' ? '📄' : '🎓'
+                } ${t}</button>
+              `).join('')}
+            </div>
+          </div>
+
+          <!-- Open to Work — quick check -->
+          <div class="sub-filter-block">
+            <label class="sub-filter-label">Availability & Mobility</label>
+            <div class="filter-pills-row">
+              <button class="chip ${state.filters.availability === 'Open to Work' ? 'active' : ''}" data-action="filter-radio" data-category="availability" value="Open to Work">● Open to Work</button>
+              <button class="chip ${state.filters.willingToRelocate ? 'active' : ''}" data-action="filter-relocate">📍 Willing to Relocate</button>
+              <button class="chip ${state.filters.openToContract ? 'active' : ''}" data-action="filter-contract">📄 Open to Contract</button>
+            </div>
+          </div>
+
+          <!-- Culture Preferences -->
+          <div class="sub-filter-block">
+            <label class="sub-filter-label">Culture Preferences</label>
+            <div class="filter-pills-row">
+              ${['Remote-first', 'Startup', 'High ownership', 'Mentorship', 'Research-driven', 'Product-driven', 'Engineering-first', 'Collaborative'].map(p => `
+                <button class="chip chip-culture-filter ${state.filters.culturePrefs.has(p) ? 'active' : ''}" data-action="filter-culture" data-value="${p}">${p}</button>
+              `).join('')}
+            </div>
+          </div>
+
+          <!-- Salary Range quick filter -->
+          <div class="sub-filter-block">
+            <label class="sub-filter-label">Salary Expectation (LPA)</label>
+            <div class="filter-pills-row">
+              <button class="chip ${state.filters.salary === '<20L' ? 'active' : ''}" data-action="filter-radio" data-category="salary" value="<20L">&lt; 20 LPA</button>
+              <button class="chip ${state.filters.salary === '20-35L' ? 'active' : ''}" data-action="filter-radio" data-category="salary" value="20-35L">20–35 LPA</button>
+              <button class="chip ${state.filters.salary === '35L+' ? 'active' : ''}" data-action="filter-radio" data-category="salary" value="35L+">35+ LPA</button>
+            </div>
+          </div>
+
         </div>
       </details>
 

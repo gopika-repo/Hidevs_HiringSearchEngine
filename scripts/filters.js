@@ -24,6 +24,18 @@ export function handleFilterClick(targetBtn) {
     store.toggleBuilderSignal(targetBtn.dataset.value);
   } else if (action === 'filter-tech') {
     store.togglePreferredTech(targetBtn.dataset.value);
+  } else if (action === 'filter-employment') {
+    store.toggleEmploymentType(targetBtn.dataset.value);
+  } else if (action === 'filter-culture') {
+    store.toggleCulturePref(targetBtn.dataset.value);
+  } else if (action === 'filter-relocate') {
+    store.state.filters.willingToRelocate = !store.state.filters.willingToRelocate;
+    store.state.currentPage = 1;
+    store.notify();
+  } else if (action === 'filter-contract') {
+    store.state.filters.openToContract = !store.state.filters.openToContract;
+    store.state.currentPage = 1;
+    store.notify();
   }
 }
 
