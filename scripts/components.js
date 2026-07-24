@@ -110,372 +110,89 @@ export function renderCandidateCard(cand, state) {
   } else if (cand.fitVerdict?.status === 'Stretch Fit' || rankPercentile > 50) {
     recStatus = "Needs Review";
     recClass = "rec-review";
-    recIcon = "🟡";
-  }
-
-  // Archetype Tags & Suited Roles
-  const isAi = cand.roleTypes?.includes("AI / ML Engineer") || cand.headline?.toLowerCase().includes("ai") || cand.headline?.toLowerCase().includes("ml");
-  const isBackend = cand.roleTypes?.includes("Backend") || cand.headline?.toLowerCase().includes("backend") || cand.headline?.toLowerCase().includes("engineer");
-  const archetype1 = isAi ? "Excellent AI Builder" : (isBackend ? "Strong Backend Engineer" : "Full-Stack Architect");
-  const archetype2 = cand.experienceYears >= 5 ? "Enterprise Ready" : (cand.builderProof?.projectsCount >= 4 ? "Independent Builder" : "Good for Startups");
-
+  // Normalize Top 5 Skills
   const top5Skills = (cand.skills || [])
-    .map(s => typeof s === 'string' ? s : s.name)
+    .map(s => typeof s === 'string' ? s : (s.name || String(s)))
     .slice(0, 5);
 
-  const builderScore = Math.min(99, 88 + (cand.experienceYears || 2));
-  const problemSolvingScore = Math.min(99, 90 + (cand.experienceYears || 2));
+  const builderScore = cand.builderProof?.builderScore || Math.min(99, 88 + (cand.experienceYears || 2));
+  const aiHiringScore = cand.aiHiringScore || Math.min(99, 85 + (cand.experienceYears || 2));
+  
+  const challengeRank = cand.rankPercentile ? `Top ${cand.rankPercentile}%` : (cand.fitVerdict?.status || 'Top 10%');
+  const projectRank = cand.projects?.[0]?.verified ? 'Top 5% Verified Project' : `${cand.projects?.length || 3}+ Live Apps`;
+  const bestSuitedRole = cand.bestSuitedFor?.[0] || (cand.skills?.[0] ? `${cand.skills[0]} Specialist` : 'Software Engineer');
 
   return `
-    <div class="candidate-card" data-id="${cand.id}">
-      <!-- AI Hiring Intelligence Header Banner -->
-      <div class="decision-verdict-banner">
-        <div style="display: flex; align-items: center; gap: 8px;">
-          <span class="recommendation-badge ${recClass}">
-            ${recIcon} ${recStatus}
-          </span>
-          <span style="font-size: 11px; font-weight: 700; color: #059669;">● ${aiHiringScore}% Hiring Confidence</span>
+    <div class="candidate-card concise-card" data-id="${cand.id}">
+      
+      <!-- Top Row: Photo, Identity & Scores -->
+      <div class="concise-card-top">
+        <div class="avatar" style="width: 44px; height: 44px; font-size: 16px; font-weight: 700; flex-shrink: 0;">
+          ${sanitizeHtml(cand.avatar)}
         </div>
-        <div class="archetype-tags">
-          <span class="archetype-tag">${archetype1}</span>
-          <span class="archetype-tag">${archetype2}</span>
-        </div>
-      </div>
-
-      <!-- Main Identity Row -->
-      <div class="card-top-row">
-        <div class="avatar-col">
-          <div class="avatar">${sanitizeHtml(cand.avatar)}</div>
-        </div>
-
-        <div class="header-main-col">
-          <div class="name-role-line">
+        
+        <div class="concise-identity-col">
+          <div class="concise-name-row">
             <span class="candidate-name" data-action="open-preview" data-id="${cand.id}">${sanitizeHtml(cand.name)}</span>
-            <span class="candidate-role">${sanitizeHtml(cand.headline)} · <strong>${sanitizeHtml(cand.company)}</strong></span>
+            <span class="badge ${cand.availability === 'Open to Work' ? 'badge-open-to-work' : 'badge-open-select'}" style="font-size: 10px; padding: 1px 6px;">
+              ● ${sanitizeHtml(cand.availability)}
+            </span>
+            ${cand.employment?.openToWork !== false ? `<span class="emp-badge emp-badge-open" style="font-size: 9px; padding: 1px 5px;">Open to Work</span>` : ''}
           </div>
-          <div class="sub-meta-line">
+          <div class="concise-role-line">
+            <strong>${sanitizeHtml(cand.headline)}</strong> · ${sanitizeHtml(cand.company)}
+          </div>
+          <div class="concise-meta-line">
             <span>📍 ${sanitizeHtml(cand.location)}</span> · 
-            <span>💼 ${cand.experienceYears} yrs exp</span> · 
-            <span>⏳ ${cand.noticePeriodDays === 0 ? 'Immediate Joiner' : cand.noticePeriodDays + 'd notice'}</span>
+            <span>💼 ${cand.experienceYears} yrs exp</span>
           </div>
-          <!-- Profile Links inline on card -->
-          <div class="card-profile-links">
-            ${cand.links?.github ? `<a class="card-link-btn card-link-github" href="${sanitizeHtml(cand.links.github)}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()" aria-label="GitHub profile">${icons.github} GitHub</a>` : ''}
-            ${cand.links?.linkedin ? `<a class="card-link-btn card-link-linkedin" href="${sanitizeHtml(cand.links.linkedin)}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()" aria-label="LinkedIn profile">${icons.linkedin} LinkedIn</a>` : ''}
-          </div>
-
-          <!-- Employment Badges Row -->
-          ${cand.employment ? `
-          <div class="employment-badges-row">
-            ${cand.employment.openToWork ? `<span class="emp-badge emp-badge-open" title="Actively seeking new opportunities">● Open to Work</span>` : `<span class="emp-badge emp-badge-passive" title="Not actively searching">◌ Passive</span>`}
-            ${(cand.employment.types || []).map(t => {
-              const typeClass = t === 'Full-time' ? 'emp-type-fulltime' : t === 'Contract' ? 'emp-type-contract' : t === 'Internship' ? 'emp-type-intern' : 'emp-type-other';
-              return `<span class="emp-type-badge ${typeClass}">${sanitizeHtml(t)}</span>`;
-            }).join('')}
-            ${cand.employment.willingToRelocate ? `<span class="emp-badge emp-badge-relocate" title="Open to relocation">📍 Relocation OK</span>` : ''}
-            ${cand.employment.openToContract ? `<span class="emp-badge emp-badge-contract" title="Open to contract/freelance">📄 Contract OK</span>` : ''}
-          </div>` : ''}
         </div>
 
-        <div class="scores-badge-col">
-          <div class="ai-hiring-score-box" title="HiDevs Composite AI Hiring Intelligence Score">
-            <span class="score-num">${aiHiringScore}</span>
-            <span class="score-label">/100 HIDEVS AI SCORE</span>
+        <!-- Scores Column -->
+        <div class="concise-scores-col">
+          <div class="ai-hiring-score-box" style="padding: 2px 6px;">
+            <span class="score-num" style="font-size: 13px;">${aiHiringScore}</span>
+            <span class="score-label" style="font-size: 8px;">HiDevs AI</span>
+          </div>
+          <div class="ai-hiring-score-box" style="padding: 2px 6px; background: #FAF5FF; border-color: #D8B4FE; color: #6B21A8;">
+            <span class="score-num" style="font-size: 13px;">${builderScore}</span>
+            <span class="score-label" style="font-size: 8px;">Builder Score</span>
           </div>
         </div>
       </div>
 
-      <!-- Culture Preferences (inline compact strip) -->
-      ${cand.employment?.culturePrefs && cand.employment.culturePrefs.length > 0 ? `
-      <div class="culture-prefs-row">
-        <span class="culture-label">Culture fit:</span>
-        ${cand.employment.culturePrefs.map(p => `<span class="chip chip-culture">${sanitizeHtml(p)}</span>`).join('')}
-        ${cand.employment.salaryRange ? `<span class="salary-range-chip">${cand.employment.salaryRange.min}–${cand.employment.salaryRange.max} ${cand.employment.salaryRange.currency}</span>` : ''}
-      </div>` : ''}
-
-      <!-- AI-Generated Hiring Summary -->
-      <div class="hire-rationale-box">
-        <span class="rationale-header">AI SUMMARY:</span>
-        <span class="rationale-body">${sanitizeHtml(cand.fitVerdict?.reason || cand.aiSummary)}</span>
-      </div>
-
-      <!-- HiDevs 4-Signal Platform Intelligence Grid (No Vanity Metrics) -->
-      <div class="hidevs-moat-grid">
-        <div class="moat-metric-box">
-          <div class="moat-lbl">LEARNING VELOCITY</div>
-          <div class="moat-val green">🚀 4.8x Velocity</div>
-          <div class="moat-sub">+24% 90-day growth</div>
+      <!-- Middle Metrics Row: Ranks & Best Suited Role -->
+      <div class="concise-ranks-row">
+        <div class="concise-rank-pill">
+          <span class="rank-lbl">CHALLENGE RANK</span>
+          <span class="rank-val purple">${sanitizeHtml(challengeRank)}</span>
         </div>
-
-        <div class="moat-metric-box">
-          <div class="moat-lbl">EXECUTION QUALITY</div>
-          <div class="moat-val purple">⚡ 96% Quality</div>
-          <div class="moat-sub">${cand.builderProof?.projectsCount ?? (cand.projects ? cand.projects.length : 3)} live deployed apps</div>
+        <div class="concise-rank-pill">
+          <span class="rank-lbl">PROJECT RANK</span>
+          <span class="rank-val green">${sanitizeHtml(projectRank)}</span>
         </div>
-
-        <div class="moat-metric-box">
-          <div class="moat-lbl">CHALLENGE CONSISTENCY</div>
-          <div class="moat-val blue">🔥 Top ${rankPercentile}%</div>
-          <div class="moat-sub">${cand.builderProof?.streakDays ?? 30}-day active streak</div>
-        </div>
-
-        <div class="moat-metric-box">
-          <div class="moat-lbl">BUILDER SCORE</div>
-          <div class="moat-val amber">🔨 ${builderScore}/100</div>
-          <div class="moat-sub">Verified algorithm proof</div>
+        <div class="concise-rank-pill flex-fill">
+          <span class="rank-lbl">BEST SUITED ROLE</span>
+          <span class="rank-val blue">${sanitizeHtml(bestSuitedRole)}</span>
         </div>
       </div>
 
-      <!-- Phase 7: Coding Activity Metrics & Trend Visualization -->
-      <div class="coding-activity-panel">
-        <div class="coding-activity-header">
-          <span class="coding-activity-title">⚡ CODING ACTIVITY METRICS (HiDevs Platform)</span>
-          <span class="coding-activity-sub">Verified Code Execution & Prompt Benchmarks</span>
-        </div>
-
-        <div class="coding-metrics-grid">
-          <div class="coding-metric-card">
-            <span class="metric-icon">🎯</span>
-            <div class="metric-details">
-              <span class="metric-count">${cand.builderProof?.codeQuestCompleted || 42}</span>
-              <span class="metric-lbl-text">CodeQuest Completed</span>
-            </div>
-          </div>
-
-          <div class="coding-metric-card">
-            <span class="metric-icon">🤖</span>
-            <div class="metric-details">
-              <span class="metric-count">${cand.builderProof?.leetZPromptsCompleted || 128}</span>
-              <span class="metric-lbl-text">LeetZ Prompts Completed</span>
-            </div>
-          </div>
-
-          <div class="coding-metric-card trend-card">
-            <div class="trend-header">
-              <span class="metric-lbl-text">Historical Activity Trend (6 Mos)</span>
-              <span class="trend-badge">↑ Active Growth</span>
-            </div>
-            <div class="trend-sparkline-row">
-              ${(cand.builderProof?.monthlyTrend || [12, 18, 24, 31, 38, 42]).map(val => {
-                const maxVal = Math.max(...(cand.builderProof?.monthlyTrend || [12, 18, 24, 31, 38, 42]));
-                const pct = Math.max(15, Math.min(100, Math.round((val / maxVal) * 100)));
-                return `<div class="sparkline-bar" style="height:${pct}%;" title="Month activity: ${val} completions"></div>`;
-              }).join('')}
-            </div>
-          </div>
-        </div>
+      <!-- Skills Chips Row (Top 5 Skills) -->
+      <div class="concise-skills-row">
+        <span class="skills-lbl">Top Skills:</span>
+        ${top5Skills.map(s => `<span class="chip chip-verified" style="font-size: 10px; padding: 1px 6px;">${sanitizeHtml(s)}</span>`).join('')}
       </div>
 
-      <!-- AI Hiring Assistant Panel (Recommended Roles, Strengths, Risks) -->
-      <div class="ai-assistant-panel">
-        <div class="assistant-header-row">
-          <div class="suited-tags-group">
-            <span class="suited-label">Best suited for:</span>
-            <span class="suited-tag">${isAi ? 'AI Engineer' : 'Backend Architect'}</span>
-            <span class="suited-tag">${isBackend ? 'Systems Engineer' : 'ML Engineer'}</span>
-            <span class="suited-tag">${cand.experienceYears >= 4 ? 'Founding Engineer' : 'Product Builder'}</span>
-          </div>
-        </div>
-
-        <div class="assistant-details-grid">
-          <div class="assistant-col">
-            <div class="assistant-col-title">KEY HIRING REASONS</div>
-            <div class="assistant-col-content">
-              ${(cand.whyInterview || []).slice(0, 2).map(r => `<div>• ${sanitizeHtml(r.claim || r.evidence)}</div>`).join('') || '<div>• Top 8% AI challenge rank</div>'}
-            </div>
-          </div>
-
-          <div class="assistant-col">
-            <div class="assistant-col-title">TOP STRENGTHS</div>
-            <div class="assistant-col-content">
-              <div>• 4.8x Learning Velocity in new stack</div>
-              <div>• ${cand.builderProof?.projectsCount ?? 3} verified live deployed projects</div>
-            </div>
-          </div>
-
-          <div class="assistant-col risk-col">
-            <div class="assistant-col-title">POTENTIAL RISKS TO VERIFY</div>
-            <div class="assistant-col-content">
-              ${(cand.potentialConcerns || []).slice(0, 1).map(c => `<div>⚠️ ${sanitizeHtml(c)}</div>`).join('') || '<div>⚠️ Verify team-lead & architecture scope</div>'}
-            </div>
-          </div>
-        </div>
+      <!-- Action Footer -->
+      <div class="concise-card-footer">
+        <button class="btn ${isShortlisted ? 'btn-primary' : 'btn-secondary'} btn-xs" data-action="shortlist" data-id="${cand.id}">
+          ${isShortlisted ? '★ Shortlisted' : 'Shortlist'}
+        </button>
+        <button class="btn btn-primary btn-xs" data-action="open-preview" data-id="${cand.id}" style="font-weight: 600;">
+          View Full Profile →
+        </button>
       </div>
 
-      <!-- Verified Skills (Derived from Platform Activity) -->
-      <div class="skills-verified-row">
-        <span class="skills-label">Verified Skills (Activity Proof):</span>
-        ${top5Skills.map(s => `<span class="chip chip-verified">✓ ${sanitizeHtml(s)}</span>`).join('')}
-      </div>
-
-      <!-- Tech Stack Intelligence Section -->
-      ${cand.techStack ? `
-      <div class="tech-stack-section">
-        <div class="tech-stack-header">
-          <span class="tech-stack-title">Tech Stack</span>
-          ${cand.techStack.notes ? `<span class="tech-stack-note">${sanitizeHtml(cand.techStack.notes)}</span>` : ''}
-        </div>
-
-        <!-- Preferred Stack Progress Bars -->
-        <div class="tech-bars-grid">
-          ${(cand.techStack.preferred || []).map(t => `
-          <div class="tech-bar-row">
-            <span class="tech-bar-label">${sanitizeHtml(t.name)}</span>
-            <div class="tech-bar-track">
-              <div class="tech-bar-fill" style="width:${t.pct}%; background:${sanitizeHtml(t.color)};"></div>
-            </div>
-            <span class="tech-bar-pct">${t.pct}%</span>
-          </div>`).join('')}
-        </div>
-
-        <!-- Additional Skills Chips -->
-        ${cand.techStack.additional && cand.techStack.additional.length > 0 ? `
-        <div class="tech-additional-row">
-          <span class="tech-additional-label">Also knows:</span>
-          ${cand.techStack.additional.map(a => `<span class="chip chip-secondary">${sanitizeHtml(a)}</span>`).join('')}
-        </div>` : ''}
-      </div>` : ''}
-
-      <!-- Academic & Education Row (Phase 4) -->
-      ${cand.education ? `
-      <div class="education-card-row">
-        <span class="edu-icon">🎓</span>
-        <span class="edu-text"><strong>${sanitizeHtml(cand.education.degree)}</strong> · ${sanitizeHtml(cand.education.college)} ('${cand.education.graduationYear})</span>
-        ${cand.education.cgpa ? `<span class="cgpa-badge" title="Verified Academic Performance">CGPA: ${cand.education.cgpa}/10</span>` : ''}
-      </div>` : ''}
-
-      <!-- Phase 5: Developer Performance Dashboard & Competency Matrix -->
-      <div class="dev-performance-dashboard">
-        <div class="perf-dashboard-header">
-          <span class="perf-title">📊 DEVELOPER PERFORMANCE DASHBOARD</span>
-          <span class="exp-band-badge" title="Verified Experience Banding">
-            🏷️ Band: ${cand.performanceDashboard?.experienceBand || (cand.experienceYears <= 2 ? 'Early Career' : cand.experienceYears <= 5 ? 'Mid-Senior' : 'Lead / Staff')}
-          </span>
-        </div>
-
-        <div class="competency-matrix-grid">
-          <div class="matrix-card">
-            <span class="matrix-lbl">Problem Solving</span>
-            <div class="matrix-bar"><div class="matrix-fill" style="width: ${cand.performanceDashboard?.competencyMatrix?.problemSolving || 90}%;"></div></div>
-            <span class="matrix-score">${cand.performanceDashboard?.competencyMatrix?.problemSolving || 90}</span>
-          </div>
-          <div class="matrix-card">
-            <span class="matrix-lbl">Execution Quality</span>
-            <div class="matrix-bar"><div class="matrix-fill purple" style="width: ${cand.performanceDashboard?.competencyMatrix?.executionScore || 94}%;"></div></div>
-            <span class="matrix-score">${cand.performanceDashboard?.competencyMatrix?.executionScore || 94}</span>
-          </div>
-          <div class="matrix-card">
-            <span class="matrix-lbl">System Design</span>
-            <div class="matrix-bar"><div class="matrix-fill blue" style="width: ${cand.performanceDashboard?.competencyMatrix?.systemDesign || 86}%;"></div></div>
-            <span class="matrix-score">${cand.performanceDashboard?.competencyMatrix?.systemDesign || 86}</span>
-          </div>
-          <div class="matrix-card">
-            <span class="matrix-lbl">Communication</span>
-            <div class="matrix-bar"><div class="matrix-fill green" style="width: ${cand.performanceDashboard?.competencyMatrix?.communication || 88}%;"></div></div>
-            <span class="matrix-score">${cand.performanceDashboard?.competencyMatrix?.communication || 88}</span>
-          </div>
-          <div class="matrix-card">
-            <span class="matrix-lbl">Reliability Score</span>
-            <div class="matrix-bar"><div class="matrix-fill amber" style="width: ${cand.performanceDashboard?.competencyMatrix?.reliabilityScore || 92}%;"></div></div>
-            <span class="matrix-score">${cand.performanceDashboard?.competencyMatrix?.reliabilityScore || 92}</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Phase 6: AI Evaluation Report -->
-      <div class="ai-eval-report-section">
-        <div class="eval-report-header">
-          <div class="eval-report-title-group">
-            <span class="eval-report-title">📋 HIDEVS AI EVALUATION REPORT</span>
-            <span class="eval-verified-badge">✓ Verified Assessment</span>
-          </div>
-          <button class="btn btn-ghost btn-xs download-pdf-btn" data-action="download-pdf" data-name="${sanitizeHtml(cand.name)}" onclick="event.stopPropagation(); window.print();">
-            📥 Download PDF Report
-          </button>
-        </div>
-
-        <div class="eval-exec-summary">
-          <strong>Executive Summary:</strong> ${sanitizeHtml(cand.evaluationReport?.executiveSummary || cand.aiSummary)}
-        </div>
-
-        <div class="eval-tables-grid">
-          <div class="eval-table-container">
-            <div class="eval-table-title">WEIGHTED CRITERIA ASSESSMENT</div>
-            <table class="weighted-criteria-table">
-              <thead>
-                <tr>
-                  <th>Criteria</th>
-                  <th>Weight</th>
-                  <th>Score</th>
-                  <th>Rating</th>
-                </tr>
-              </thead>
-              <tbody>
-                ${(cand.evaluationReport?.weightedCriteria || [
-                  { criterion: "System Architecture", weight: "30%", score: "92/100", status: "Exceptional" },
-                  { criterion: "Execution Velocity", weight: "25%", score: "95/100", status: "Top 5%" },
-                  { criterion: "Code Quality", weight: "20%", score: "88/100", status: "Strong" },
-                  { criterion: "Problem Solving", weight: "25%", score: "90/100", status: "High" }
-                ]).map(row => `
-                  <tr>
-                    <td>${sanitizeHtml(row.criterion)}</td>
-                    <td><span class="weight-chip">${sanitizeHtml(row.weight)}</span></td>
-                    <td><strong>${sanitizeHtml(row.score)}</strong></td>
-                    <td><span class="status-badge ${row.status.toLowerCase().includes('top') ? 'badge-green' : 'badge-neutral'}">${sanitizeHtml(row.status)}</span></td>
-                  </tr>
-                `).join('')}
-              </tbody>
-            </table>
-          </div>
-
-          <div class="eval-sw-container">
-            <div class="sw-block strengths-block">
-              <div class="sw-title">Key Strengths</div>
-              <ul class="sw-list">
-                ${(cand.evaluationReport?.strengths || [
-                  "High execution speed in production environments.",
-                  "Consistent benchmark performer."
-                ]).map(s => `<li>🟢 ${sanitizeHtml(s)}</li>`).join('')}
-              </ul>
-            </div>
-
-            <div class="sw-block improvements-block">
-              <div class="sw-title">Areas for Improvement</div>
-              <ul class="sw-list">
-                ${(cand.evaluationReport?.areasForImprovement || [
-                  "Can expand leadership experience."
-                ]).map(a => `<li>🎯 ${sanitizeHtml(a)}</li>`).join('')}
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Gated Contact Information (Authorized Recruiters Only) -->
-      ${cand.contact ? `
-      <div class="card-contact-row">
-        <span class="contact-gate-label">Recruiter Access:</span>
-        <a class="card-contact-item" href="mailto:${sanitizeHtml(cand.contact.email)}" onclick="event.stopPropagation()" aria-label="Email ${sanitizeHtml(cand.name)}">
-          ${icons.email} ${sanitizeHtml(cand.contact.email)}
-        </a>
-        <span class="contact-divider">·</span>
-        <a class="card-contact-item" href="tel:${sanitizeHtml(cand.contact.phone)}" onclick="event.stopPropagation()" aria-label="Call ${sanitizeHtml(cand.name)}">
-          ${icons.phone} ${sanitizeHtml(cand.contact.phone)}
-        </a>
-      </div>` : ''}
-
-      <!-- Action Buttons -->
-      <div class="card-footer-bar">
-        <div class="active-status">Active ${sanitizeHtml(cand.lastActive)}</div>
-        <div class="cta-group">
-          <button class="btn ${isShortlisted ? 'btn-secondary' : 'btn-ghost'} btn-sm" data-action="shortlist" data-id="${cand.id}">
-            ${isShortlisted ? '★ Shortlisted' : 'Shortlist'}
-          </button>
-          <button class="btn btn-primary btn-sm" data-action="open-preview" data-id="${cand.id}" style="font-weight: 600;">
-            View Profile →
-          </button>
-        </div>
-      </div>
     </div>
   `;
 }
