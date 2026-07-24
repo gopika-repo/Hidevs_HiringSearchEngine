@@ -970,159 +970,205 @@ export function renderFullProfileView(cand, state) {
         </div>
       </div>
 
-      <div style="display: grid; grid-template-columns: 200px 1fr; gap: 24px;">
-        <!-- In-Page Anchor Nav -->
+      <div style="display: grid; grid-template-columns: 220px 1fr; gap: 24px;">
+        <!-- In-Page Accordion & Anchor Navigation -->
         <div style="position: sticky; top: 80px; height: fit-content;">
-          <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--color-text-muted); margin-bottom: 12px; letter-spacing: 0.04em;">DOSSIER SECTIONS</div>
-          <div style="display: flex; flex-direction: column; gap: 8px; font-size: 13px;">
-            <a href="#about" class="nav-link">● Candidate Bio</a>
-            <a href="#brief" class="nav-link">● Recruiter Brief</a>
-            <a href="#experience" class="nav-link">● Work Experience</a>
-            <a href="#skills" class="nav-link">● Skill Distribution</a>
-            <a href="#projects" class="nav-link">● Projects & Demos</a>
-            <a href="#hackathons" class="nav-link">● Hackathon Wins</a>
-            <a href="#readiness" class="nav-link">● Interview Readiness</a>
-            <a href="#intelligence" class="nav-link">● Intelligence Cards</a>
+          <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--color-text-muted); margin-bottom: 12px; letter-spacing: 0.04em;">PROFILE DOSSIER SECTIONS</div>
+          <div class="dossier-nav-menu">
+            <a href="#contact-info" class="nav-link">📞 Contact Information</a>
+            <a href="#pro-links" class="nav-link">🌐 Professional Links</a>
+            <a href="#emp-prefs" class="nav-link">💼 Employment Preferences</a>
+            <a href="#tech-skills" class="nav-link">🛠️ Technical Skills & Stack</a>
+            <a href="#academic" class="nav-link">🎓 Academic Details & CGPA</a>
+            <a href="#dev-perf" class="nav-link">📊 Developer Performance</a>
+            <a href="#ai-eval" class="nav-link">📋 AI Evaluation Report</a>
+            <a href="#coding-act" class="nav-link">⚡ Coding Activity Metrics</a>
+            <a href="#experience" class="nav-link">💼 Work Experience</a>
+            <a href="#projects" class="nav-link">🚀 Projects & Hackathons</a>
           </div>
         </div>
 
-        <div style="display: flex; flex-direction: column; gap: 24px;">
-          <!-- 2. Candidate Bio / About -->
-          <div id="about" class="candidate-card" style="padding: 20px;">
-            <div class="brief-title">CANDIDATE NARRATIVE</div>
-            <p style="font-size: 14px; line-height: 1.6; color: var(--color-text-secondary); margin-top: 8px;">
-              ${cand.about ? sanitizeHtml(cand.about) : `${sanitizeHtml(cand.name)} is a ${sanitizeHtml(cand.headline)} with ${cand.experienceYears} years of engineering experience. Known for rapid execution velocity, active open-source activity, and deploying production-tested code.`}
-            </p>
-          </div>
-
-          <!-- 3. Recruiter Hiring Brief -->
-          <div id="brief">
-            <h2 style="font-size: 16px; font-weight: 700; margin-bottom: 8px; color: var(--color-text-primary);">Recruiter Decision Brief</h2>
-            ${renderStructuredBriefCard(cand)}
-          </div>
-
-          <!-- 4. Work Experience -->
-          <div id="experience" class="candidate-card" style="padding: 24px;">
-            <div class="brief-title" style="margin-bottom: 16px;">WORK EXPERIENCE HISTORY</div>
-            ${cand.experience && cand.experience.length > 0 ? cand.experience.map(exp => `
-              <div style="margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--color-border-subtle);">
-                <div style="display: flex; justify-content: space-between; align-items: baseline;">
-                  <strong style="font-size: 15px; color: var(--color-text-primary);">${sanitizeHtml(exp.title)}</strong>
-                  <span style="font-size: 12px; color: var(--color-text-muted);">${sanitizeHtml(exp.duration)}</span>
+        <div style="display: flex; flex-direction: column; gap: 20px;">
+          <!-- 1. Contact Information Section -->
+          <details id="contact-info" class="profile-section-details" open>
+            <summary class="profile-section-summary">
+              <span class="sec-title">📞 Contact Information (Authorized Recruiter Access)</span>
+            </summary>
+            <div class="profile-section-body">
+              <div class="info-grid-2col">
+                <div class="info-cell">
+                  <span class="cell-lbl">Email Address</span>
+                  <a href="mailto:${sanitizeHtml(cand.contact?.email || 'recruiter@hidevs.io')}" class="cell-val link-val">${icons.email} ${sanitizeHtml(cand.contact?.email || 'N/A')}</a>
                 </div>
-                <div style="font-size: 13px; color: var(--color-accent-base); font-weight: 600; margin: 2px 0 8px 0;">${sanitizeHtml(exp.company)}</div>
-                <ul style="padding-left: 18px; margin: 0; font-size: 13px; color: var(--color-text-secondary); display: flex; flex-direction: column; gap: 4px;">
-                  ${(exp.highlights || []).map(h => `<li>${sanitizeHtml(h)}</li>`).join('')}
-                </ul>
+                <div class="info-cell">
+                  <span class="cell-lbl">Phone Number</span>
+                  <a href="tel:${sanitizeHtml(cand.contact?.phone || '+91 90000 00000')}" class="cell-val link-val">${icons.phone} ${sanitizeHtml(cand.contact?.phone || 'N/A')}</a>
+                </div>
               </div>
-            `).join('') : `
-              <div style="font-size: 13px; color: var(--color-text-muted);">
-                Currently at <strong>${sanitizeHtml(cand.company)}</strong> as <strong>${sanitizeHtml(cand.headline)}</strong> (${cand.experienceYears} years active industry tenure).
-              </div>
-            `}
-          </div>
+            </div>
+          </details>
 
-          <!-- 5. Skill Score Distribution Table -->
-          <div id="skills" class="candidate-card" style="padding: 24px;">
-            <div class="brief-title" style="margin-bottom: 16px;">ASSESSED SKILL DISTRIBUTION</div>
-            <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
-              <thead>
-                <tr style="border-bottom: 1px solid var(--color-border-subtle); text-align: left; color: var(--color-text-muted); font-size: 11px;">
-                  <th style="padding: 8px 0; font-weight: 700;">SKILL</th>
-                  <th style="padding: 8px 0; font-weight: 700; width: 140px;">SCORE</th>
-                  <th style="padding: 8px 0; font-weight: 700;">ASSESSMENT BASIS</th>
-                </tr>
-              </thead>
-              <tbody>
-                ${normalizedSkills.map(sk => `
-                  <tr style="border-bottom: 1px solid var(--color-border-subtle);">
-                    <td style="padding: 10px 0; font-weight: 600; color: var(--color-text-primary);">${sanitizeHtml(sk.name)}</td>
-                    <td style="padding: 10px 0;">
-                      <div style="display: flex; align-items: center; gap: 8px;">
-                        <div style="flex: 1; height: 6px; background: var(--color-bg-subtle); border-radius: 3px; overflow: hidden;">
-                          <div style="width: ${sk.score}%; height: 100%; background: var(--color-accent-base);"></div>
-                        </div>
-                        <span style="font-weight: 600; font-size: 12px; color: var(--color-text-primary); width: 28px;">${sk.score}%</span>
-                      </div>
-                    </td>
-                    <td style="padding: 10px 0; color: var(--color-text-muted); font-size: 12px;">${sanitizeHtml(sk.basis)}</td>
-                  </tr>
+          <!-- 2. Professional Links Section -->
+          <details id="pro-links" class="profile-section-details" open>
+            <summary class="profile-section-summary">
+              <span class="sec-title">🌐 Professional Links</span>
+            </summary>
+            <div class="profile-section-body">
+              <div class="links-row-flex">
+                ${cand.links?.github ? `<a href="${sanitizeHtml(cand.links.github)}" target="_blank" class="pro-link-card">${icons.github} GitHub Profile</a>` : ''}
+                ${cand.links?.linkedin ? `<a href="${sanitizeHtml(cand.links.linkedin)}" target="_blank" class="pro-link-card">${icons.linkedin} LinkedIn Profile</a>` : ''}
+                ${cand.links?.portfolio ? `<a href="${sanitizeHtml(cand.links.portfolio)}" target="_blank" class="pro-link-card">${icons.portfolio} Portfolio Site</a>` : ''}
+              </div>
+            </div>
+          </details>
+
+          <!-- 3. Employment Preferences Section -->
+          <details id="emp-prefs" class="profile-section-details" open>
+            <summary class="profile-section-summary">
+              <span class="sec-title">💼 Employment Preferences & Mobility</span>
+            </summary>
+            <div class="profile-section-body">
+              <div class="info-grid-3col">
+                <div class="info-cell">
+                  <span class="cell-lbl">Employment Types</span>
+                  <div class="cell-val-tags">
+                    ${(cand.employment?.types || ['Full-time']).map(t => `<span class="emp-type-badge emp-type-fulltime">${sanitizeHtml(t)}</span>`).join('')}
+                  </div>
+                </div>
+                <div class="info-cell">
+                  <span class="cell-lbl">Open to Work Status</span>
+                  <span class="cell-val">${cand.availability || 'Open to Work'} (${cand.noticePeriodDays === 0 ? 'Immediate 0d' : cand.noticePeriodDays + 'd notice'})</span>
+                </div>
+                <div class="info-cell">
+                  <span class="cell-lbl">Expected Salary Range</span>
+                  <span class="cell-val green-text">${cand.employment?.salaryRange ? `${cand.employment.salaryRange.min}–${cand.employment.salaryRange.max} ${cand.employment.salaryRange.currency}` : '30-50 LPA'}</span>
+                </div>
+              </div>
+              <div style="margin-top: 12px;">
+                <span class="cell-lbl">Culture Preferences</span>
+                <div class="culture-chips-flex" style="margin-top: 4px;">
+                  ${(cand.employment?.culturePrefs || ['Remote-first', 'Startup', 'High ownership']).map(cp => `<span class="chip chip-culture">${sanitizeHtml(cp)}</span>`).join('')}
+                </div>
+              </div>
+            </div>
+          </details>
+
+          <!-- 4. Technical Skills & Stack Section -->
+          <details id="tech-skills" class="profile-section-details" open>
+            <summary class="profile-section-summary">
+              <span class="sec-title">🛠️ Technical Skills & Preferred Stack</span>
+            </summary>
+            <div class="profile-section-body">
+              <div class="tech-bars-grid" style="margin-bottom: 12px;">
+                ${(cand.techStack?.preferred || [
+                  { name: "Python", pct: 94, color: "#3776AB" },
+                  { name: "FastAPI", pct: 90, color: "#009688" }
+                ]).map(t => `
+                  <div class="tech-bar-row">
+                    <span class="tech-bar-label">${sanitizeHtml(t.name)}</span>
+                    <div class="tech-bar-track"><div class="tech-bar-fill" style="width:${t.pct}%; background:${sanitizeHtml(t.color)};"></div></div>
+                    <span class="tech-bar-pct">${t.pct}%</span>
+                  </div>
                 `).join('')}
-              </tbody>
-            </table>
-          </div>
-
-          <!-- 6. Projects List -->
-          <div id="projects" class="candidate-card" style="padding: 24px;">
-            <div class="brief-title" style="margin-bottom: 16px;">VERIFIED PROJECTS & DEMOS</div>
-            <div style="display: flex; flex-direction: column; gap: 16px;">
-              ${cand.projects && cand.projects.length > 0 ? cand.projects.map(p => `
-                <div style="border: 1px solid var(--color-border-subtle); padding: 16px; border-radius: 8px; background: var(--color-bg-base);">
-                  <div style="display: flex; justify-content: space-between; align-items: baseline;">
-                    <strong style="font-size: 15px; color: var(--color-text-primary);">${sanitizeHtml(p.name)}</strong>
-                    <span style="font-size: 12px; color: var(--color-accent-base); font-weight: 600;">${sanitizeHtml(p.usersCount || 'Verified App')}</span>
-                  </div>
-                  <div style="font-size: 13px; color: var(--color-text-secondary); margin: 6px 0 10px 0;">${sanitizeHtml(p.description)}</div>
-                  <div class="skills-row" style="margin-bottom: 8px;">
-                    ${(p.techStack || []).map(t => `<span class="chip">${sanitizeHtml(t)}</span>`).join('')}
-                  </div>
-                </div>
-              `).join('') : '<div style="font-size: 13px; color: var(--color-text-muted);">No external demo links provided</div>'}
+              </div>
+              <div class="tech-additional-row">
+                <span class="tech-additional-label">Additional Tech Skills:</span>
+                ${(cand.techStack?.additional || ['Redis', 'PostgreSQL', 'Docker']).map(a => `<span class="chip chip-secondary">${sanitizeHtml(a)}</span>`).join('')}
+              </div>
             </div>
-          </div>
+          </details>
 
-          <!-- 7. Hackathons & Benchmarks -->
-          <div id="hackathons" class="candidate-card" style="padding: 24px;">
-            <div class="brief-title" style="margin-bottom: 16px;">HACKATHONS & BENCHMARK AWARDS</div>
-            <div style="display: flex; flex-direction: column; gap: 12px;">
-              ${cand.hackathons && cand.hackathons.length > 0 ? cand.hackathons.map(h => `
-                <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; background: var(--color-bg-base); border: 1px solid var(--color-border-subtle); border-radius: 6px;">
-                  <div>
-                    <strong style="font-size: 13px; color: var(--color-text-primary);">🏆 ${sanitizeHtml(h.name)}</strong>
-                    <div style="font-size: 12px; color: var(--color-text-muted); margin-top: 2px;">Rank Achieved: ${sanitizeHtml(h.rank)}</div>
-                  </div>
-                  <span style="font-size: 12px; color: var(--color-text-muted);">${sanitizeHtml(h.date)}</span>
-                </div>
-              `).join('') : `<div style="font-size: 13px; color: var(--color-text-muted);">${cand.builderProof?.hackathonWinsCount ?? 0} verified hackathon wins on record</div>`}
+          <!-- 5. Academic Details Section -->
+          <details id="academic" class="profile-section-details" open>
+            <summary class="profile-section-summary">
+              <span class="sec-title">🎓 Academic Details & CGPA</span>
+            </summary>
+            <div class="profile-section-body">
+              <div class="education-card-row" style="margin: 0;">
+                <span class="edu-icon">🎓</span>
+                <span class="edu-text"><strong>${sanitizeHtml(cand.education?.degree || 'B.Tech CS')}</strong> · ${sanitizeHtml(cand.education?.college || 'IIT')} ('${cand.education?.graduationYear || 2020})</span>
+                ${cand.education?.cgpa ? `<span class="cgpa-badge">CGPA: ${cand.education.cgpa}/10</span>` : ''}
+              </div>
             </div>
-          </div>
+          </details>
 
-          <!-- 8. Interview Readiness -->
-          <div id="readiness" class="candidate-card" style="padding: 24px;">
-            <div class="brief-title" style="margin-bottom: 12px;">INTERVIEW READINESS ASSESSMENT</div>
-            ${cand.interviewReadiness?.completed ? `
-              <div style="display: flex; align-items: center; gap: 16px; background: var(--color-success-subtle); border: 1px solid var(--color-border-subtle); padding: 16px; border-radius: 8px;">
-                <div style="font-size: 24px; font-weight: 700; color: var(--color-success-text);">${cand.interviewReadiness.score}/100</div>
-                <div>
-                  <strong style="font-size: 14px; color: var(--color-success-text);">✓ Mock Technical Interview Completed</strong>
-                  <div style="font-size: 12px; color: var(--color-text-secondary); margin-top: 2px;">Evaluated on ${cand.interviewReadiness.assessedOn} covering System Design, Coding Velocity, and Architecture.</div>
+          <!-- 6. Developer Performance Section -->
+          <details id="dev-perf" class="profile-section-details" open>
+            <summary class="profile-section-summary">
+              <span class="sec-title">📊 Developer Performance & Competency Matrix</span>
+            </summary>
+            <div class="profile-section-body">
+              <div class="competency-matrix-grid">
+                <div class="matrix-card">
+                  <span class="matrix-lbl">Problem Solving</span>
+                  <div class="matrix-bar"><div class="matrix-fill" style="width: ${cand.performanceDashboard?.competencyMatrix?.problemSolving || 90}%;"></div></div>
+                  <span class="matrix-score">${cand.performanceDashboard?.competencyMatrix?.problemSolving || 90}</span>
+                </div>
+                <div class="matrix-card">
+                  <span class="matrix-lbl">Execution Quality</span>
+                  <div class="matrix-bar"><div class="matrix-fill purple" style="width: ${cand.performanceDashboard?.competencyMatrix?.executionScore || 94}%;"></div></div>
+                  <span class="matrix-score">${cand.performanceDashboard?.competencyMatrix?.executionScore || 94}</span>
+                </div>
+                <div class="matrix-card">
+                  <span class="matrix-lbl">System Design</span>
+                  <div class="matrix-bar"><div class="matrix-fill blue" style="width: ${cand.performanceDashboard?.competencyMatrix?.systemDesign || 86}%;"></div></div>
+                  <span class="matrix-score">${cand.performanceDashboard?.competencyMatrix?.systemDesign || 86}</span>
                 </div>
               </div>
-            ` : `
-              <div style="background: var(--color-bg-subtle); border: 1px solid var(--color-border-subtle); padding: 14px; border-radius: 8px; font-size: 13px; color: var(--color-text-muted);">
-                Mock technical interview not yet taken for this candidate.
-              </div>
-            `}
-          </div>
-
-          <!-- 9. Intelligence Cards -->
-          <div id="intelligence">
-            <h2 style="font-size: 16px; font-weight: 700; margin-bottom: 12px; color: var(--color-text-primary);">HiDevs Exclusive Intelligence Cards</h2>
-            <div style="display: flex; flex-direction: column; gap: 12px;">
-              ${cand.intelligenceCards && cand.intelligenceCards.length > 0 ? cand.intelligenceCards.map(c => `
-                <div class="intel-card">
-                  <div class="intel-card-header">
-                    <span class="intel-card-title">${sanitizeHtml(c.title)}</span>
-                    <span class="intel-signal-tag">${sanitizeHtml(c.signal)}</span>
-                  </div>
-                  <div class="intel-observation">${sanitizeHtml(c.observation)}</div>
-                  <div class="intel-takeaway">${sanitizeHtml(c.takeaway)}</div>
-                </div>
-              `).join('') : '<div class="candidate-card" style="padding:16px; font-size:13px; color:var(--color-text-muted);">No additional intelligence signals generated.</div>'}
             </div>
-          </div>
+          </details>
+
+          <!-- 7. AI Evaluation Report Section -->
+          <details id="ai-eval" class="profile-section-details" open>
+            <summary class="profile-section-summary">
+              <span class="sec-title">📋 AI Evaluation Report</span>
+            </summary>
+            <div class="profile-section-body">
+              <div class="eval-exec-summary">
+                <strong>Executive Summary:</strong> ${sanitizeHtml(cand.evaluationReport?.executiveSummary || cand.aiSummary)}
+              </div>
+              <table class="weighted-criteria-table">
+                <thead>
+                  <tr><th>Criteria</th><th>Weight</th><th>Score</th><th>Rating</th></tr>
+                </thead>
+                <tbody>
+                  ${(cand.evaluationReport?.weightedCriteria || []).map(r => `
+                    <tr><td>${sanitizeHtml(r.criterion)}</td><td><span class="weight-chip">${sanitizeHtml(r.weight)}</span></td><td><strong>${sanitizeHtml(r.score)}</strong></td><td><span class="status-badge badge-green">${sanitizeHtml(r.status)}</span></td></tr>
+                  `).join('')}
+                </tbody>
+              </table>
+            </div>
+          </details>
+
+          <!-- 8. Coding Activity Section -->
+          <details id="coding-act" class="profile-section-details" open>
+            <summary class="profile-section-summary">
+              <span class="sec-title">⚡ Coding Activity & Platform Metrics</span>
+            </summary>
+            <div class="profile-section-body">
+              <div class="coding-metrics-grid">
+                <div class="coding-metric-card">
+                  <span class="metric-icon">🎯</span>
+                  <div class="metric-details">
+                    <span class="metric-count">${cand.builderProof?.codeQuestCompleted || 42}</span>
+                    <span class="metric-lbl-text">CodeQuest Completed</span>
+                  </div>
+                </div>
+                <div class="coding-metric-card">
+                  <span class="metric-icon">🤖</span>
+                  <div class="metric-details">
+                    <span class="metric-count">${cand.builderProof?.leetZPromptsCompleted || 128}</span>
+                    <span class="metric-lbl-text">LeetZ Prompts</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </details>
+
         </div>
       </div>
+    </div>
+  `;
     </div>
   `;
 }
