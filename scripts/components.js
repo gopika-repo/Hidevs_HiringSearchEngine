@@ -226,6 +226,46 @@ export function renderCandidateCard(cand, state) {
         </div>
       </div>
 
+      <!-- Phase 7: Coding Activity Metrics & Trend Visualization -->
+      <div class="coding-activity-panel">
+        <div class="coding-activity-header">
+          <span class="coding-activity-title">⚡ CODING ACTIVITY METRICS (HiDevs Platform)</span>
+          <span class="coding-activity-sub">Verified Code Execution & Prompt Benchmarks</span>
+        </div>
+
+        <div class="coding-metrics-grid">
+          <div class="coding-metric-card">
+            <span class="metric-icon">🎯</span>
+            <div class="metric-details">
+              <span class="metric-count">${cand.builderProof?.codeQuestCompleted || 42}</span>
+              <span class="metric-lbl-text">CodeQuest Completed</span>
+            </div>
+          </div>
+
+          <div class="coding-metric-card">
+            <span class="metric-icon">🤖</span>
+            <div class="metric-details">
+              <span class="metric-count">${cand.builderProof?.leetZPromptsCompleted || 128}</span>
+              <span class="metric-lbl-text">LeetZ Prompts Completed</span>
+            </div>
+          </div>
+
+          <div class="coding-metric-card trend-card">
+            <div class="trend-header">
+              <span class="metric-lbl-text">Historical Activity Trend (6 Mos)</span>
+              <span class="trend-badge">↑ Active Growth</span>
+            </div>
+            <div class="trend-sparkline-row">
+              ${(cand.builderProof?.monthlyTrend || [12, 18, 24, 31, 38, 42]).map(val => {
+                const maxVal = Math.max(...(cand.builderProof?.monthlyTrend || [12, 18, 24, 31, 38, 42]));
+                const pct = Math.max(15, Math.min(100, Math.round((val / maxVal) * 100)));
+                return `<div class="sparkline-bar" style="height:${pct}%;" title="Month activity: ${val} completions"></div>`;
+              }).join('')}
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- AI Hiring Assistant Panel (Recommended Roles, Strengths, Risks) -->
       <div class="ai-assistant-panel">
         <div class="assistant-header-row">
@@ -681,6 +721,23 @@ export function renderFilterSidebar(state) {
             <div class="filter-pills-row">
               <button class="chip ${state.filters.builderSignals.has('hackathon') ? 'active' : ''}" data-action="filter-signal" data-value="hackathon">🏆 Hackathon Winner</button>
               <button class="chip ${state.filters.builderSignals.has('deployed') ? 'active' : ''}" data-action="filter-signal" data-value="deployed">⚡ Deployed Apps</button>
+            </div>
+          </div>
+
+          <!-- Phase 7: Coding Activity Filters -->
+          <div class="sub-filter-block">
+            <label class="sub-filter-label">CodeQuest Completed</label>
+            <div class="filter-pills-row">
+              <button class="chip ${state.filters.minCodeQuest === 30 ? 'active' : ''}" data-action="filter-radio" data-category="minCodeQuest" value="30">30+ CodeQuests</button>
+              <button class="chip ${state.filters.minCodeQuest === 15 ? 'active' : ''}" data-action="filter-radio" data-category="minCodeQuest" value="15">15+ CodeQuests</button>
+            </div>
+          </div>
+
+          <div class="sub-filter-block">
+            <label class="sub-filter-label">LeetZ Prompts Completed</label>
+            <div class="filter-pills-row">
+              <button class="chip ${state.filters.minLeetZ === 100 ? 'active' : ''}" data-action="filter-radio" data-category="minLeetZ" value="100">100+ LeetZ Prompts</button>
+              <button class="chip ${state.filters.minLeetZ === 50 ? 'active' : ''}" data-action="filter-radio" data-category="minLeetZ" value="50">50+ LeetZ Prompts</button>
             </div>
           </div>
         </div>

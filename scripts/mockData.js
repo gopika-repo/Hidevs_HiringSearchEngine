@@ -96,7 +96,10 @@ export const mockCandidates = [
       challengesCount: 4,
       aiRankPercentile: 8,
       streakDays: 23,
-      monthsActiveCount: 10
+      monthsActiveCount: 10,
+      codeQuestCompleted: 42,
+      leetZPromptsCompleted: 128,
+      monthlyTrend: [12, 18, 24, 31, 38, 42]
     },
     fitVerdict: {
       status: "Strong Fit",
@@ -569,7 +572,17 @@ export const mockCandidates = [
         challengesCount: (i % 5) + 3,
         aiRankPercentile: rankPct,
         streakDays: (i * 3) % 40,
-        monthsActiveCount: (i % 12) + 3
+        monthsActiveCount: (i % 12) + 3,
+        codeQuestCompleted: Math.floor(15 + (i * 1.8)),
+        leetZPromptsCompleted: Math.floor(40 + (i * 4.2)),
+        monthlyTrend: [
+          Math.floor(5 + (i * 0.3)),
+          Math.floor(10 + (i * 0.5)),
+          Math.floor(15 + (i * 0.8)),
+          Math.floor(22 + (i * 1.1)),
+          Math.floor(30 + (i * 1.4)),
+          Math.floor(40 + (i * 1.8))
+        ]
       },
       fitVerdict: {
         status: rankPct <= 25 ? "Strong Fit" : (rankPct <= 60 ? "Good Fit" : "Stretch Fit"),

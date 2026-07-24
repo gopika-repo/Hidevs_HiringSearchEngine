@@ -32,7 +32,9 @@ class Store {
         culturePrefs: new Set(),
         willingToRelocate: false,
         openToContract: false,
-        minCgpa: null
+        minCgpa: null,
+        minCodeQuest: null,
+        minLeetZ: null
       },
       sortBy: 'Best Match',
       currentPage: 1,
@@ -98,8 +100,8 @@ class Store {
     } else if (category === 'rankingPercentile') {
       const numVal = parseInt(value, 10);
       this.state.filters.rankingPercentile = this.state.filters.rankingPercentile === numVal ? 100 : numVal;
-    } else if (['noticePeriod', 'salary', 'companyTier', 'education', 'minAiScore', 'minProjects', 'minCgpa'].includes(category)) {
-      const valParsed = (category === 'minAiScore' || category === 'minProjects') ? (value ? parseInt(value, 10) : null) : category === 'minCgpa' ? (value ? parseFloat(value) : null) : value;
+    } else if (['noticePeriod', 'salary', 'companyTier', 'education', 'minAiScore', 'minProjects', 'minCgpa', 'minCodeQuest', 'minLeetZ'].includes(category)) {
+      const valParsed = (category === 'minAiScore' || category === 'minProjects' || category === 'minCodeQuest' || category === 'minLeetZ') ? (value ? parseInt(value, 10) : null) : category === 'minCgpa' ? (value ? parseFloat(value) : null) : value;
       this.state.filters[category] = this.state.filters[category] === valParsed ? null : valParsed;
     } else if (category === 'hasGithub') {
       this.state.filters.hasGithub = !this.state.filters.hasGithub;
@@ -222,6 +224,8 @@ class Store {
     this.state.filters.willingToRelocate = false;
     this.state.filters.openToContract = false;
     this.state.filters.minCgpa = null;
+    this.state.filters.minCodeQuest = null;
+    this.state.filters.minLeetZ = null;
     this.state.currentPage = 1;
     this.notify();
   }
@@ -385,6 +389,17 @@ class Store {
       // CGPA Filter
       if (this.state.filters.minCgpa) {
         if (!cand.education || !cand.education.cgpa || cand.education.cgpa < this.state.filters.minCgpa) return false;
+      }
+
+      // Coding Activity Filters (CodeQuest & LeetZ)
+      if (this.state.filters.minCodeQuest) {
+        const cq = cand.builderProof?.codeQuestCompleted || 0;
+        if (cq < this.state.filters.minCodeQuest) return false;
+      }
+
+      if (this.state.filters.minLeetZ) {
+        const lz = cand.builderProof?.leetZPromptsCompleted || 0;
+        if (lz < this.state.filters.minLeetZ) return false;
       }
 
       return true;
