@@ -15,11 +15,22 @@ export function parseNaturalLanguageQuery(rawQuery) {
     role: '',
     immediateOnly: false,
     topRankedOnly: false,
-    aiOnly: false
+    aiOnly: false,
+    openToWorkOnly: false,
+    hasGithubOnly: false,
+    hasLinkedinOnly: false,
+    minCgpa: null,
+    minCodeQuest: null,
+    minLeetZ: null,
+    strongPerformanceOnly: false,
+    experienceBand: null
   };
 
-  // 1. Skill Extraction
-  const knownSkills = ["python", "fastapi", "langchain", "react", "typescript", "go", "docker", "pytorch", "next.js", "kubernetes"];
+  // 1. Skill & Tech Extraction
+  const knownSkills = [
+    "python", "fastapi", "langchain", "react", "typescript", "go", "docker", 
+    "pytorch", "next.js", "kubernetes", "kafka", "redis", "llamaindex", "huggingface"
+  ];
   knownSkills.forEach(skill => {
     if (q.includes(skill)) parsed.skills.push(skill);
   });
@@ -30,15 +41,39 @@ export function parseNaturalLanguageQuery(rawQuery) {
     if (q.includes(loc)) parsed.location = loc;
   });
 
-  // 3. Role Extraction
+  // 3. Role & Experience Band Extraction
   if (q.includes("ai builder") || q.includes("ai engineer") || q.includes("ml engineer")) parsed.role = "AI / ML Engineer";
+  else if (q.includes("frontend") || q.includes("ui engineer")) parsed.role = "Full Stack";
   else if (q.includes("backend")) parsed.role = "Backend";
   else if (q.includes("full stack") || q.includes("fullstack")) parsed.role = "Full Stack";
   else if (q.includes("platform")) parsed.role = "Platform Engineering";
 
-  // 4. Intent Modifiers
+  if (q.includes("senior") || q.includes("lead") || q.includes("staff")) parsed.experienceBand = "6+";
+  else if (q.includes("junior") || q.includes("early career")) parsed.experienceBand = "0-2";
+
+  // 4. Intent Modifiers & Platform Field Matches
+  if (q.includes("open to work")) parsed.openToWorkOnly = true;
+  if (q.includes("github") || q.includes("with github")) parsed.hasGithubOnly = true;
+  if (q.includes("linkedin") || q.includes("with linkedin")) parsed.hasLinkedinOnly = true;
   if (q.includes("immediate") || q.includes("immediate joiner")) parsed.immediateOnly = true;
   if (q.includes("top") || q.includes("top rank") || q.includes("top ranked")) parsed.topRankedOnly = true;
+  if (q.includes("strong performance") || q.includes("high performance") || q.includes("developer performance")) parsed.strongPerformanceOnly = true;
+
+  // 5. Numeric Cutoff Matches (CGPA, CodeQuest, LeetZ)
+  const cgpaMatch = q.match(/cgpa\s*(?:above|greater than|>|>=)?\s*(\d+(?:\.\d+)?)/i) || q.match(/(\d+(?:\.\d+)?)\s*\+?\s*cgpa/i);
+  if (cgpaMatch) {
+    parsed.minCgpa = parseFloat(cgpaMatch[1]);
+  }
+
+  const codeQuestMatch = q.match(/(\d+)\s*\+?\s*codequests?/i) || q.match(/more than\s*(\d+)\s*codequests?/i);
+  if (codeQuestMatch) {
+    parsed.minCodeQuest = parseInt(codeQuestMatch[1], 10);
+  }
+
+  const leetZMatch = q.match(/(\d+)\s*\+?\s*leetz/i) || q.match(/more than\s*(\d+)\s*leetz/i);
+  if (leetZMatch) {
+    parsed.minLeetZ = parseInt(leetZMatch[1], 10);
+  }
 
   return parsed;
 }
@@ -50,18 +85,21 @@ export function initGlobalSearch() {
   if (!searchInput || !dropdown) return;
 
   const popularSearches = [
-    "Python developer in Bangalore",
-    "Top AI builders",
-    "Immediate joiner",
-    "Top LangChain developer",
-    "React Full Stack Remote"
+    "Frontend developers open to work",
+    "Backend engineers with GitHub",
+    "React developers with CGPA above 8",
+    "Candidates with strong developer performance",
+    "Developers who completed more than 20 CodeQuests",
+    "Python LLM Engineers Bangalore"
   ];
 
   const recentFilters = [
     { label: "⚡ Immediate Joiners", filterId: "immediate" },
     { label: "🤖 AI Engineers", filterId: "ai_engineers" },
     { label: "★ Top 25% AI Rank", filterId: "top_ranked" },
-    { label: "🌐 Remote Ready", filterId: "remote" }
+    { label: "🌐 Remote Ready", filterId: "remote" },
+    { label: "🐙 Has GitHub", filterId: "has_github" },
+    { label: "🎓 CGPA ≥ 8.5", filterId: "cgpa_85" }
   ];
 
   const renderDropdownContent = (filterText = '') => {
@@ -145,24 +183,51 @@ export function initGlobalSearch() {
   });
 
   // Suggestion item selection
+  const applyParsedSearch = (queryStr) => {
+    const parsed = parseNaturalLanguageQuery(queryStr);
+    store.setSearchQuery(queryStr);
+
+    if (parsed) {
+      if (parsed.openToWorkOnly) store.state.filters.availability = "Open to Work";
+      if (parsed.hasGithubOnly) store.state.filters.hasGithub = true;
+      if (parsed.hasLinkedinOnly) store.state.filters.hasLinkedin = true;
+      if (parsed.minCgpa) store.state.filters.minCgpa = parsed.minCgpa;
+      if (parsed.minCodeQuest) store.state.filters.minCodeQuest = parsed.minCodeQuest;
+      if (parsed.minLeetZ) store.state.filters.minLeetZ = parsed.minLeetZ;
+      if (parsed.skills.length > 0) {
+        parsed.skills.forEach(s => store.state.filters.preferredTech.add(s));
+      }
+      if (parsed.role) {
+        store.state.filters.roleTypes.add(parsed.role);
+      }
+      if (parsed.location) {
+        store.setLocationFilter(parsed.location);
+      }
+      store.notify();
+    }
+  };
+
   dropdown.addEventListener('click', (e) => {
     const item = e.target.closest('.suggestion-item');
-    if (item) {
-      const query = item.dataset.query;
-      if (query) {
-        searchInput.value = query;
-        dropdown.classList.remove('visible');
+    if (!item) return;
 
-        // Apply Natural Language Parsing
-        const parsed = parseNaturalLanguageQuery(query);
-        if (parsed) {
-          if (parsed.location) store.setLocationFilter(parsed.location);
-          if (parsed.immediateOnly) store.state.filters.noticePeriod = 'immediate';
-          if (parsed.topRankedOnly) store.state.filters.rankingPercentile = 25;
-        }
+    if (item.dataset.query) {
+      searchInput.value = item.dataset.query;
+      applyParsedSearch(item.dataset.query);
+      dropdown.classList.remove('active');
+    } else if (item.dataset.filterId) {
+      const fid = item.dataset.filterId;
+      if (fid === 'has_github') store.state.filters.hasGithub = true;
+      else if (fid === 'cgpa_85') store.state.filters.minCgpa = 8.5;
+      else store.toggleQuickFilter(fid);
+      dropdown.classList.remove('active');
+    }
+  });
 
-        document.dispatchEvent(new CustomEvent('search-query-changed', { detail: { query } }));
-      }
+  searchInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      applyParsedSearch(searchInput.value);
+      dropdown.classList.remove('active');
     }
   });
 

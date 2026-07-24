@@ -281,13 +281,21 @@ class Store {
 
   getFilteredCandidates() {
     const result = this.state.candidates.filter(cand => {
-      // Search Query
+      // Search Query (matching across name, headline, skills, techStack & location)
       if (this.state.searchQuery.trim()) {
         const q = this.state.searchQuery.toLowerCase();
         const matchName = cand.name.toLowerCase().includes(q);
         const matchHeadline = cand.headline.toLowerCase().includes(q);
-        const matchSkills = cand.skills.some(s => s.toLowerCase().includes(q));
-        if (!matchName && !matchHeadline && !matchSkills) return false;
+        const matchSkills = cand.skills.some(s => (typeof s === 'string' ? s : s.name).toLowerCase().includes(q));
+        const matchPrimary = (cand.primarySkills || []).some(s => s.toLowerCase().includes(q));
+        const matchTech = (cand.techStack?.preferred || []).some(t => t.name.toLowerCase().includes(q));
+        const matchLoc = cand.location.toLowerCase().includes(q);
+        
+        // If natural language parser extracted structured criteria, check if free text keyword is a general phrase or direct match
+        const isPhrasalNL = q.includes("open to work") || q.includes("github") || q.includes("cgpa") || q.includes("codequest") || q.includes("performance");
+        if (!isPhrasalNL && !matchName && !matchHeadline && !matchSkills && !matchPrimary && !matchTech && !matchLoc) {
+          return false;
+        }
       }
 
       // Quick Filters
