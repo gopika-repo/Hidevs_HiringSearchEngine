@@ -342,6 +342,75 @@ export function renderCandidateCard(cand, state) {
         </div>
       </div>
 
+      <!-- Phase 6: AI Evaluation Report -->
+      <div class="ai-eval-report-section">
+        <div class="eval-report-header">
+          <div class="eval-report-title-group">
+            <span class="eval-report-title">📋 HIDEVS AI EVALUATION REPORT</span>
+            <span class="eval-verified-badge">✓ Verified Assessment</span>
+          </div>
+          <button class="btn btn-ghost btn-xs download-pdf-btn" data-action="download-pdf" data-name="${sanitizeHtml(cand.name)}" onclick="event.stopPropagation(); window.print();">
+            📥 Download PDF Report
+          </button>
+        </div>
+
+        <div class="eval-exec-summary">
+          <strong>Executive Summary:</strong> ${sanitizeHtml(cand.evaluationReport?.executiveSummary || cand.aiSummary)}
+        </div>
+
+        <div class="eval-tables-grid">
+          <div class="eval-table-container">
+            <div class="eval-table-title">WEIGHTED CRITERIA ASSESSMENT</div>
+            <table class="weighted-criteria-table">
+              <thead>
+                <tr>
+                  <th>Criteria</th>
+                  <th>Weight</th>
+                  <th>Score</th>
+                  <th>Rating</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${(cand.evaluationReport?.weightedCriteria || [
+                  { criterion: "System Architecture", weight: "30%", score: "92/100", status: "Exceptional" },
+                  { criterion: "Execution Velocity", weight: "25%", score: "95/100", status: "Top 5%" },
+                  { criterion: "Code Quality", weight: "20%", score: "88/100", status: "Strong" },
+                  { criterion: "Problem Solving", weight: "25%", score: "90/100", status: "High" }
+                ]).map(row => `
+                  <tr>
+                    <td>${sanitizeHtml(row.criterion)}</td>
+                    <td><span class="weight-chip">${sanitizeHtml(row.weight)}</span></td>
+                    <td><strong>${sanitizeHtml(row.score)}</strong></td>
+                    <td><span class="status-badge ${row.status.toLowerCase().includes('top') ? 'badge-green' : 'badge-neutral'}">${sanitizeHtml(row.status)}</span></td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+
+          <div class="eval-sw-container">
+            <div class="sw-block strengths-block">
+              <div class="sw-title">Key Strengths</div>
+              <ul class="sw-list">
+                ${(cand.evaluationReport?.strengths || [
+                  "High execution speed in production environments.",
+                  "Consistent benchmark performer."
+                ]).map(s => `<li>🟢 ${sanitizeHtml(s)}</li>`).join('')}
+              </ul>
+            </div>
+
+            <div class="sw-block improvements-block">
+              <div class="sw-title">Areas for Improvement</div>
+              <ul class="sw-list">
+                ${(cand.evaluationReport?.areasForImprovement || [
+                  "Can expand leadership experience."
+                ]).map(a => `<li>🎯 ${sanitizeHtml(a)}</li>`).join('')}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Gated Contact Information (Authorized Recruiters Only) -->
       ${cand.contact ? `
       <div class="card-contact-row">

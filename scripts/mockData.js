@@ -143,6 +143,25 @@ export const mockCandidates = [
         communication: 86,
         reliabilityScore: 94
       }
+    },
+    evaluationReport: {
+      executiveSummary: "Arjun demonstrates top-tier backend engineering and ML API execution with exceptional velocity in Python & FastAPI. Highly recommended for Senior IC and Founding Engineer roles.",
+      weightedCriteria: [
+        { criterion: "System Architecture & Performance", weight: "30%", score: "92/100", status: "Exceptional" },
+        { criterion: "AI & Model Deployment", weight: "25%", score: "95/100", status: "Top 5%" },
+        { criterion: "Code Quality & Testing", weight: "20%", score: "88/100", status: "Strong" },
+        { criterion: "Problem Solving & Algorithms", weight: "15%", score: "90/100", status: "High" },
+        { criterion: "Team Communication & Leadership", weight: "10%", score: "84/100", status: "Proficient" }
+      ],
+      strengths: [
+        "Proven ability to ship production LLM agents serving 340+ daily users.",
+        "Latency optimization expert (reduced Swiggy inference latency from 450ms to 120ms).",
+        "Consistent hackathon winner with demonstrated zero-to-one builder velocity."
+      ],
+      areasForImprovement: [
+        "Expand full-stack UI capabilities beyond fundamental React components.",
+        "Gain formal people-management and team lead experience."
+      ]
     }
   },
   {
@@ -588,6 +607,22 @@ export const mockCandidates = [
           communication: Math.floor(80 + (i % 18)),
           reliabilityScore: Math.floor(82 + (i % 17))
         }
+      },
+      evaluationReport: {
+        executiveSummary: `Candidate ${idx} exhibits strong technical execution in ${stackSel.join(' & ')} with solid problem-solving metrics and verified platform activity.`,
+        weightedCriteria: [
+          { criterion: "Technical Competency", weight: "35%", score: `${Math.floor(82 + (i % 15))}/100`, status: "Strong" },
+          { criterion: "Execution & Velocity", weight: "25%", score: `${Math.floor(85 + (i % 12))}/100`, status: "High" },
+          { criterion: "System Design", weight: "20%", score: `${Math.floor(80 + (i % 18))}/100`, status: "Good" },
+          { criterion: "Problem Solving", weight: "20%", score: `${Math.floor(84 + (i % 14))}/100`, status: "Verified" }
+        ],
+        strengths: [
+          `Strong production experience with ${stackSel[0]} and ${stackSel[1] || 'cloud services'}.`,
+          `Demonstrated streak of ${ (i * 3) % 40 } days active platform engagement.`
+        ],
+        areasForImprovement: [
+          `Continue expanding system design depth for enterprise-scale workloads.`
+        ]
       }
     };
   })
