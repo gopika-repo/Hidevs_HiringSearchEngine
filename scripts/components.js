@@ -1169,8 +1169,6 @@ export function renderFullProfileView(cand, state) {
       </div>
     </div>
   `;
-    </div>
-  `;
 }
 
 // --- Workspace Pipeline Renderer ---
