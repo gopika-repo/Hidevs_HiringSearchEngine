@@ -127,7 +127,13 @@ export const mockCandidates = [
     ],
     intelligenceCards: [
       { title: "Builder Momentum", signal: "Strong ↑", observation: "Project output has grown consistently across 3 years with increasing complexity.", takeaway: "Upward trajectory — best work is recent and accelerating." }
-    ]
+    ],
+    education: {
+      degree: "B.Tech in Computer Science",
+      college: "IIT Bombay",
+      graduationYear: 2020,
+      cgpa: 8.7
+    }
   },
   {
     id: "cand-2",
@@ -191,7 +197,8 @@ export const mockCandidates = [
       { name: "PromptCraft Workspace", description: "Visual prompt engineering workbench for LLM teams", techStack: ["React", "TypeScript", "OpenAI SDK"], usersCount: "150 active users", verified: true, deployed: true, links: { live: "https://promptcraft.app", github: "github.com/priyamehta/promptcraft" } }
     ],
     hackathons: [{ name: "FinTech AI Sprint 2023", rank: "1st Place", date: "Nov 2023" }],
-    intelligenceCards: [{ title: "Product Engineering Fit", signal: "Strong", observation: "Builds complete product interfaces over backend APIs.", takeaway: "Ideal candidate for AI product teams needing full-stack execution." }]
+    intelligenceCards: [{ title: "Product Engineering Fit", signal: "Strong", observation: "Builds complete product interfaces over backend APIs.", takeaway: "Ideal candidate for AI product teams needing full-stack execution." }],
+    education: { degree: "M.S. in Computer Science", college: "VJTI Mumbai", graduationYear: 2021, cgpa: 9.1 }
   },
   {
     id: "cand-3",
@@ -248,7 +255,8 @@ export const mockCandidates = [
     experience: [{ title: "SDE II", company: "Amazon", duration: "2020 - 2026", highlights: ["Led tier-1 messaging engine team for AWS internal tools."] }],
     projects: [{ name: "GoStream Pipeline", description: "Event streaming broker in Go handling 50k msgs/sec", techStack: ["Go", "Kafka", "Docker"], usersCount: "Production System", verified: true, deployed: true, links: { github: "github.com/rahulkumar/gostream" } }],
     hackathons: [{ name: "AWS Cloud Architecture Cup", rank: "Top 2 Percentile", date: "Aug 2023" }],
-    intelligenceCards: [{ title: "Platform Engineering Fit", signal: "Elite ★", observation: "Top 2% System Design challenge performance.", takeaway: "Ideal for senior backend or platform architecture roles." }]
+    intelligenceCards: [{ title: "Platform Engineering Fit", signal: "Elite ★", observation: "Top 2% System Design challenge performance.", takeaway: "Ideal for senior backend or platform architecture roles." }],
+    education: { degree: "B.E. in Computer Science", college: "BITS Pilani", graduationYear: 2018, cgpa: 8.9 }
   },
   {
     id: "cand-4",
@@ -305,7 +313,8 @@ export const mockCandidates = [
     experience: [{ title: "Lead Frontend Engineer", company: "Flipkart", duration: "2019 - Present", highlights: ["Maintained design token pipeline across 14 web products."] }],
     projects: [{ name: "DesignSystem Engine", description: "Cross-platform design token engine for e-commerce apps", techStack: ["TypeScript", "React", "Next.js"], usersCount: "1M+ daily users", verified: true, deployed: true, links: { github: "github.com/ananya/design-engine" } }],
     hackathons: [{ name: "React India Hackathon", rank: "1st Place", date: "Oct 2023" }],
-    intelligenceCards: []
+    intelligenceCards: [],
+    education: { degree: "B.Tech in Information Technology", college: "NSUT Delhi", graduationYear: 2017, cgpa: 9.4 }
   },
   {
     id: "cand-5",
@@ -361,7 +370,8 @@ export const mockCandidates = [
     experience: [{ title: "MLOps Engineer", company: "PhonePe", duration: "2024 - Present", highlights: ["Configured Kubeflow pipelines for transaction fraud ML models."] }],
     projects: [],
     hackathons: [{ name: "Cloud Native ML Challenge", rank: "1st Place", date: "Jan 2024" }],
-    intelligenceCards: []
+    intelligenceCards: [],
+    education: { degree: "B.Tech in Computer Science", college: "IIT Hyderabad", graduationYear: 2022, cgpa: 8.2 }
   },
   {
     id: "cand-6",
@@ -421,7 +431,8 @@ export const mockCandidates = [
       { name: "GenAI World Hackathon", rank: "1st Place", date: "Feb 2024" },
       { name: "Vector Search Open Cup", rank: "1st Place", date: "Nov 2023" }
     ],
-    intelligenceCards: []
+    intelligenceCards: [],
+    education: { degree: "M.Tech in Artificial Intelligence", college: "IISc Bangalore", graduationYear: 2019, cgpa: 9.8 }
   },
   // Candidates 7 - 50 generated with realistic spread across roles, experience, notice periods, and scores
   ...Array.from({ length: 44 }, (_, i) => {
@@ -551,7 +562,13 @@ export const mockCandidates = [
         { name: `Project ${idx} Alpha`, description: `Scalable ${stackSel[0]} service for data processing`, techStack: stackSel, usersCount: `${(i + 1) * 40}+ users`, verified: true, deployed: true, links: { github: `github.com/candidate-${idx}/alpha` } }
       ],
       hackathons: (i % 3 === 0) ? [{ name: `HiDevs Challenge #${i + 1}`, rank: `Top ${rankPct}%`, date: "2024" }] : [],
-      intelligenceCards: []
+      intelligenceCards: [],
+      education: {
+        degree: (i % 2 === 0) ? "B.Tech in Computer Science" : "M.S. in Software Engineering",
+        college: ["IIT Madras", "NIT Trichy", "IIIT Hyderabad", "DTU Delhi", "PES University"][i % 5],
+        graduationYear: 2024 - expYrs,
+        cgpa: parseFloat((7.2 + (i % 25) * 0.11).toFixed(1))
+      }
     };
   })
 ];

@@ -31,7 +31,8 @@ class Store {
         employmentType: new Set(),
         culturePrefs: new Set(),
         willingToRelocate: false,
-        openToContract: false
+        openToContract: false,
+        minCgpa: null
       },
       sortBy: 'Best Match',
       currentPage: 1,
@@ -97,8 +98,8 @@ class Store {
     } else if (category === 'rankingPercentile') {
       const numVal = parseInt(value, 10);
       this.state.filters.rankingPercentile = this.state.filters.rankingPercentile === numVal ? 100 : numVal;
-    } else if (['noticePeriod', 'salary', 'companyTier', 'education', 'minAiScore', 'minProjects'].includes(category)) {
-      const valParsed = category === 'minAiScore' || category === 'minProjects' ? (value ? parseInt(value, 10) : null) : value;
+    } else if (['noticePeriod', 'salary', 'companyTier', 'education', 'minAiScore', 'minProjects', 'minCgpa'].includes(category)) {
+      const valParsed = (category === 'minAiScore' || category === 'minProjects') ? (value ? parseInt(value, 10) : null) : category === 'minCgpa' ? (value ? parseFloat(value) : null) : value;
       this.state.filters[category] = this.state.filters[category] === valParsed ? null : valParsed;
     } else if (category === 'hasGithub') {
       this.state.filters.hasGithub = !this.state.filters.hasGithub;
@@ -220,6 +221,7 @@ class Store {
     this.state.filters.culturePrefs.clear();
     this.state.filters.willingToRelocate = false;
     this.state.filters.openToContract = false;
+    this.state.filters.minCgpa = null;
     this.state.currentPage = 1;
     this.notify();
   }
@@ -379,6 +381,11 @@ class Store {
       // Relocation / Contract filters
       if (this.state.filters.willingToRelocate && !cand.employment?.willingToRelocate) return false;
       if (this.state.filters.openToContract && !cand.employment?.openToContract) return false;
+
+      // CGPA Filter
+      if (this.state.filters.minCgpa) {
+        if (!cand.education || !cand.education.cgpa || cand.education.cgpa < this.state.filters.minCgpa) return false;
+      }
 
       return true;
     });

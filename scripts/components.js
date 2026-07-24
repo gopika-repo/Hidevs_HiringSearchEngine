@@ -296,6 +296,14 @@ export function renderCandidateCard(cand, state) {
         </div>` : ''}
       </div>` : ''}
 
+      <!-- Academic & Education Row (Phase 4) -->
+      ${cand.education ? `
+      <div class="education-card-row">
+        <span class="edu-icon">🎓</span>
+        <span class="edu-text"><strong>${sanitizeHtml(cand.education.degree)}</strong> · ${sanitizeHtml(cand.education.college)} ('${cand.education.graduationYear})</span>
+        ${cand.education.cgpa ? `<span class="cgpa-badge" title="Verified Academic Performance">CGPA: ${cand.education.cgpa}/10</span>` : ''}
+      </div>` : ''}
+
       <!-- Gated Contact Information (Authorized Recruiters Only) -->
       ${cand.contact ? `
       <div class="card-contact-row">
@@ -607,6 +615,16 @@ export function renderFilterSidebar(state) {
               ${['Remote-first', 'Startup', 'High ownership', 'Mentorship', 'Research-driven', 'Product-driven', 'Engineering-first', 'Collaborative'].map(p => `
                 <button class="chip chip-culture-filter ${state.filters.culturePrefs.has(p) ? 'active' : ''}" data-action="filter-culture" data-value="${p}">${p}</button>
               `).join('')}
+            </div>
+          </div>
+
+          <!-- Academic & CGPA Filter (Phase 4) -->
+          <div class="sub-filter-block">
+            <label class="sub-filter-label">Academic CGPA Cutoff</label>
+            <div class="filter-pills-row">
+              <button class="chip ${state.filters.minCgpa === 9.0 ? 'active' : ''}" data-action="filter-radio" data-category="minCgpa" value="9.0">9.0+ CGPA</button>
+              <button class="chip ${state.filters.minCgpa === 8.5 ? 'active' : ''}" data-action="filter-radio" data-category="minCgpa" value="8.5">8.5+ CGPA</button>
+              <button class="chip ${state.filters.minCgpa === 8.0 ? 'active' : ''}" data-action="filter-radio" data-category="minCgpa" value="8.0">8.0+ CGPA</button>
             </div>
           </div>
 
