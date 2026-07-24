@@ -911,7 +911,7 @@ export function renderFullProfileView(cand, state) {
                 <div class="sw-block">
                   <div class="sw-title">Verified Key Strengths</div>
                   <ul class="sw-list">
-                    ${(cand.evaluationReport?.strengths || [`Proven production experience in ${cand.skills[0] || 'backend'} systems.`]).map(st => `<li>🟢 ${sanitizeHtml(st)}</li>`).join('')}
+                    ${(cand.evaluationReport?.strengths || [`Proven production experience in ${typeof cand.skills?.[0] === 'string' ? cand.skills[0] : (cand.skills?.[0]?.name || 'backend')} systems.`]).map(st => `<li>🟢 ${sanitizeHtml(st)}</li>`).join('')}
                   </ul>
                 </div>
                 <div class="sw-block">
@@ -976,7 +976,7 @@ export function renderFullProfileView(cand, state) {
               <div class="info-cell">
                 <span class="cell-lbl">Key Hiring Reasons</span>
                 <ul style="margin: 0; padding-left: 14px; font-size: 11px; color: var(--color-text-secondary);">
-                  ${(cand.whyInterview || [{ claim: `Proven ${cand.company} tenure`, evidence: `Built production ${cand.skills[0]} services.` }]).map(w => `<li><strong>${sanitizeHtml(w.claim)}:</strong> ${sanitizeHtml(w.evidence)}</li>`).join('')}
+                  ${(cand.whyInterview || [{ claim: `Proven ${cand.company} tenure`, evidence: `Built production ${typeof cand.skills?.[0] === 'string' ? cand.skills[0] : (cand.skills?.[0]?.name || 'backend')} services.` }]).map(w => `<li><strong>${sanitizeHtml(w.claim)}:</strong> ${sanitizeHtml(w.evidence)}</li>`).join('')}
                 </ul>
               </div>
             </div>
@@ -990,7 +990,7 @@ export function renderFullProfileView(cand, state) {
               <div class="info-cell">
                 <span class="cell-lbl">Suggested Interview Focus Areas</span>
                 <ul style="margin: 0; padding-left: 14px; font-size: 11px; color: var(--color-text-secondary);">
-                  <li>Evaluate ${cand.skills[0] || 'core stack'} system architecture depth.</li>
+                  <li>Evaluate ${typeof cand.skills?.[0] === 'string' ? cand.skills[0] : (cand.skills?.[0]?.name || 'core stack')} system architecture depth.</li>
                   <li>Verify production throughput and deployment velocity.</li>
                 </ul>
               </div>
