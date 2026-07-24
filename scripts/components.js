@@ -131,7 +131,7 @@ export function renderTopNavbar(user, state) {
     <div class="top-navbar-left">
       <div class="top-navbar-brand">
         <span>HiDevs</span>
-        <span class="badge-logo" style="font-size: 10px; padding: 1px 6px;">RECRUITER ENGINE</span>
+        <span class="badge-logo" style="font-size: var(--type-label-size); padding: 1px 6px;">RECRUITER ENGINE</span>
       </div>
 
       <div class="header-search-container" style="margin: 0; flex: 1;">
@@ -139,7 +139,7 @@ export function renderTopNavbar(user, state) {
           <span class="search-icon-svg" aria-hidden="true" style="left: 10px;">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
           </span>
-          <input type="text" id="global-search-input" class="global-search-input" placeholder="Search 'Python developer in Bangalore', 'Top AI builders'..." style="padding-left: 32px; padding-right: 50px; height: 34px; font-size: 13px;" value="${sanitizeHtml(state.searchQuery || '')}" autocomplete="off" />
+          <input type="text" id="global-search-input" class="global-search-input" placeholder="Search 'Python developer in Bangalore', 'Top AI builders'..." style="padding-left: 32px; padding-right: 50px; height: 34px; font-size: var(--type-body-sm-size);" value="${sanitizeHtml(state.searchQuery || '')}" autocomplete="off" />
           <kbd style="position: absolute; right: 8px; font-size: 9px; font-weight: 700; background: var(--color-bg-subtle); color: var(--color-text-muted); border: 1px solid var(--color-border-subtle); border-radius: 4px; padding: 1px 5px; pointer-events: none;">⌘K</kbd>
           <div class="search-suggestions-dropdown" id="search-dropdown"></div>
         </div>
@@ -147,14 +147,14 @@ export function renderTopNavbar(user, state) {
     </div>
 
     <div class="top-navbar-right">
-      <button class="btn btn-ghost btn-sm" id="nav-workspace-pill" style="font-size: 12px; gap: 6px;">
+      <button class="btn btn-ghost btn-sm" id="nav-workspace-pill" style="font-size: var(--type-caption-size); gap: 6px;">
         <span>★ Pipeline</span>
         <span class="badge-count" id="shortlist-count-badge">${state.shortlistedIds ? state.shortlistedIds.size : 0}</span>
       </button>
 
       <div class="user-profile-btn" tabindex="0" title="${user.name} (${user.role})">
-        <div class="user-profile-avatar" style="width: 26px; height: 26px; font-size: 11px;">${user.avatar}</div>
-        <span style="font-size: 12px; font-weight: 600;">${user.name.split(' ')[0]}</span>
+        <div class="user-profile-avatar" style="width: 26px; height: 26px; font-size: var(--type-caption-size);">${user.avatar}</div>
+        <span style="font-size: var(--type-caption-size); font-weight: 600;">${user.name.split(' ')[0]}</span>
       </div>
     </div>
   `;
@@ -163,26 +163,26 @@ export function renderTopNavbar(user, state) {
 // --- Inline Section 3 Candidate Preview Renderer ---
 export function renderInlinePreview(cand, state) {
   if (!cand) return `
-    <div style="padding: 32px 16px; text-align: center; color: var(--color-text-muted);">
-      <div style="font-size: 24px; margin-bottom: 8px;">👤</div>
-      <div style="font-weight: 600; font-size: 13px; margin-bottom: 4px;">No Candidate Selected</div>
-      <div style="font-size: 11px;">Click on any candidate card to open their quick recruiter dossier.</div>
+    <div style="padding: var(--s4) var(--s2); text-align: center; color: var(--color-text-muted);">
+      <div style="font-size: var(--type-h2-size); margin-bottom: var(--s1);">👤</div>
+      <div style="font-weight: 600; font-size: var(--type-body-sm-size); margin-bottom: var(--s0);">No Candidate Selected</div>
+      <div style="font-size: var(--type-caption-size);">Click on any candidate card to open their quick recruiter dossier.</div>
     </div>
   `;
 
   const isShortlisted = state.shortlistedIds.has(cand.id);
 
   return `
-    <div style="padding: 14px 16px; border-bottom: 1px solid var(--color-border-subtle); display: flex; justify-content: space-between; align-items: flex-start; background: var(--color-bg-surface);">
-      <div style="display: flex; gap: 10px; align-items: center;">
-        <div class="avatar" style="width: 40px; height: 40px; font-size: 15px; font-weight: 700; flex-shrink: 0;">
+    <div style="padding: var(--s2); border-bottom: 1px solid var(--color-border-subtle); display: flex; justify-content: space-between; align-items: flex-start; background: var(--color-bg-surface);">
+      <div style="display: flex; gap: var(--s1h); align-items: center;">
+        <div class="avatar" style="width: var(--s5); height: var(--s5); font-size: var(--type-body-size); font-weight: 700; flex-shrink: 0;">
           ${sanitizeHtml(cand.avatar)}
         </div>
         <div>
-          <div style="font-weight: 700; font-size: 14px; color: var(--color-text-primary); line-height: 1.2;">
+          <div style="font-weight: 700; font-size: var(--type-body-sm-size); color: var(--color-text-primary); line-height: 1.2;">
             ${sanitizeHtml(cand.name)}
           </div>
-          <div style="font-size: 11px; color: var(--color-text-secondary); margin-top: 2px;">
+          <div style="font-size: var(--type-caption-size); color: var(--color-text-secondary); margin-top: 2px;">
             ${sanitizeHtml(cand.headline)} · ${sanitizeHtml(cand.company)}
           </div>
         </div>
@@ -190,11 +190,11 @@ export function renderInlinePreview(cand, state) {
       <button class="btn-icon" data-action="close-preview" title="Close Preview" style="width: 24px; height: 24px;">×</button>
     </div>
 
-    <div style="padding: 14px 16px; display: flex; flex-direction: column; gap: 12px; flex: 1; overflow-y: auto;">
+    <div style="padding: var(--s2); display: flex; flex-direction: column; gap: var(--s1h); flex: 1; overflow-y: auto;">
       ${renderStructuredBriefCard(cand)}
     </div>
 
-    <div style="padding: 12px 16px; border-top: 1px solid var(--color-border-subtle); background: var(--color-bg-surface); display: flex; justify-content: space-between; align-items: center;">
+    <div style="padding: var(--s1h) var(--s2); border-top: 1px solid var(--color-border-subtle); background: var(--color-bg-surface); display: flex; justify-content: space-between; align-items: center;">
       <button class="btn ${isShortlisted ? 'btn-primary' : 'btn-secondary'} btn-xs" data-action="shortlist" data-id="${cand.id}">
         ${isShortlisted ? '★ Shortlisted' : 'Shortlist'}
       </button>
@@ -235,7 +235,7 @@ export function renderCandidateCard(cand, state) {
         <div class="concise-identity-col">
           <div class="concise-name-row">
             <span class="candidate-name" data-action="open-preview" data-id="${cand.id}">${sanitizeHtml(cand.name)}</span>
-            <span class="badge ${cand.availability === 'Open to Work' ? 'badge-open-to-work' : 'badge-open-select'}" style="font-size: 10px; padding: 1px 6px;">
+            <span class="badge ${cand.availability === 'Open to Work' ? 'badge-open-to-work' : 'badge-open-select'}" style="font-size: var(--type-label-size); padding: 1px 6px;">
               ● ${sanitizeHtml(cand.availability)}
             </span>
             ${cand.employment?.openToWork !== false ? `<span class="emp-badge emp-badge-open" style="font-size: 9px; padding: 1px 5px;">Open to Work</span>` : ''}
@@ -252,11 +252,11 @@ export function renderCandidateCard(cand, state) {
         <!-- Scores Column -->
         <div class="concise-scores-col">
           <div class="ai-hiring-score-box" style="padding: 2px 6px;">
-            <span class="score-num" style="font-size: 13px;">${aiHiringScore}</span>
+            <span class="score-num" style="font-size: var(--type-body-sm-size);">${aiHiringScore}</span>
             <span class="score-label" style="font-size: 8px;">HiDevs AI</span>
           </div>
           <div class="ai-hiring-score-box" style="padding: 2px 6px; background: #FAF5FF; border-color: #D8B4FE; color: #6B21A8;">
-            <span class="score-num" style="font-size: 13px;">${builderScore}</span>
+            <span class="score-num" style="font-size: var(--type-body-sm-size);">${builderScore}</span>
             <span class="score-label" style="font-size: 8px;">Builder Score</span>
           </div>
         </div>
@@ -281,7 +281,7 @@ export function renderCandidateCard(cand, state) {
       <!-- Skills Chips Row (Top 5 Skills) -->
       <div class="concise-skills-row">
         <span class="skills-lbl">Top Skills:</span>
-        ${top5Skills.map(s => `<span class="chip chip-verified" style="font-size: 10px; padding: 1px 6px;">${sanitizeHtml(s)}</span>`).join('')}
+        ${top5Skills.map(s => `<span class="chip chip-verified" style="font-size: var(--type-label-size); padding: 1px 6px;">${sanitizeHtml(s)}</span>`).join('')}
       </div>
 
       <!-- Action Footer -->
@@ -317,9 +317,9 @@ export function renderFilterSidebar(state) {
   const roleList = ["AI / ML Engineer", "Backend", "Full Stack", "Platform Engineering"];
 
   return `
-    <div class="sidebar-top-bar" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--color-border-subtle);">
-      <span style="font-weight: 700; font-size: 13px; letter-spacing: 0.04em; color: var(--color-text-primary);">RECRUITER FILTERS</span>
-      <button class="btn btn-ghost btn-sm" data-action="clear-filters" style="padding: 2px 6px; font-size: 11px; color: var(--color-accent-base);">Clear All</button>
+    <div class="sidebar-top-bar" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--s1h); padding-bottom: var(--s1); border-bottom: 1px solid var(--color-border-subtle);">
+      <span style="font-weight: 700; font-size: var(--type-body-sm-size); letter-spacing: 0.04em; color: var(--color-text-primary);">RECRUITER FILTERS</span>
+      <button class="btn btn-ghost btn-sm" data-action="clear-filters" style="padding: 2px 6px; font-size: var(--type-caption-size); color: var(--color-accent-base);">Clear All</button>
     </div>
 
     <div class="recruiter-filter-accordion">
@@ -345,7 +345,7 @@ export function renderFilterSidebar(state) {
           <div class="sub-filter-block">
             <div style="display: flex; justify-content: space-between; align-items: center;">
               <label class="sub-filter-label">Skills & Stack</label>
-              <label class="form-check" style="font-size: 11px;">
+              <label class="form-check" style="font-size: var(--type-caption-size);">
                 <input type="checkbox" ${state.filters.builderSignals.has('verified_skills') ? 'checked' : ''} data-action="filter-signal" data-value="verified_skills">
                 <span>Verified Only</span>
               </label>
@@ -372,7 +372,7 @@ export function renderFilterSidebar(state) {
           <!-- Location & Remote -->
           <div class="sub-filter-block">
             <label class="sub-filter-label">Location & Remote</label>
-            <input type="text" class="global-search-input" placeholder="e.g. Bangalore, Remote, Delhi..." value="${sanitizeHtml(state.filters.location || '')}" data-action="filter-location-input" style="width: 100%; height: 30px; padding: 0 8px; font-size: 12px; margin-bottom: 6px;">
+            <input type="text" class="global-search-input" placeholder="e.g. Bangalore, Remote, Delhi..." value="${sanitizeHtml(state.filters.location || '')}" data-action="filter-location-input" style="width: 100%; height: 30px; padding: 0 8px; font-size: var(--type-caption-size); margin-bottom: 6px;">
             <div class="filter-pills-row">
               <button class="chip ${state.filters.workMode === 'Remote' ? 'active' : ''}" data-action="filter-radio" data-category="workMode" value="Remote">Remote Only</button>
               <button class="chip ${state.filters.workMode === 'Hybrid' ? 'active' : ''}" data-action="filter-radio" data-category="workMode" value="Hybrid">Hybrid</button>
@@ -673,11 +673,11 @@ export function renderPreviewPanel(cand, state) {
 
   return `
     <div class="preview-panel-header">
-      <div style="display: flex; align-items: center; gap: 12px;">
-        <div class="avatar" style="width: 36px; height: 36px; font-size: 14px;">${sanitizeHtml(cand.avatar)}</div>
+      <div style="display: flex; align-items: center; gap: var(--s1h);">
+        <div class="avatar" style="width: var(--s4) - 4px; height: var(--s4) - 4px; font-size: var(--type-body-sm-size);">${sanitizeHtml(cand.avatar)}</div>
         <div>
-          <div style="font-weight: 600; font-size: 15px; color: var(--color-text-primary);">${sanitizeHtml(cand.name)}</div>
-          <div style="font-size: 13px; color: var(--color-text-muted);">${sanitizeHtml(cand.headline)} · ${sanitizeHtml(cand.company)}</div>
+          <div style="font-weight: 600; font-size: var(--type-body-size); color: var(--color-text-primary);">${sanitizeHtml(cand.name)}</div>
+          <div style="font-size: var(--type-body-sm-size); color: var(--color-text-muted);">${sanitizeHtml(cand.headline)} · ${sanitizeHtml(cand.company)}</div>
         </div>
       </div>
       <button class="btn-icon" data-action="close-preview">${icons.close}</button>
@@ -688,14 +688,14 @@ export function renderPreviewPanel(cand, state) {
 
       ${cand.projects && cand.projects.length > 0 ? `
         <div>
-          <div style="font-size: 12px; font-weight: 600; text-transform: uppercase; color: var(--color-text-muted); margin-bottom: 8px;">
+          <div style="font-size: var(--type-caption-size); font-weight: 600; text-transform: uppercase; color: var(--color-text-muted); margin-bottom: var(--s1);">
             TOP PROJECTS
           </div>
           <div style="display: flex; flex-direction: column; gap: 8px;">
             ${cand.projects.map(p => `
-              <div style="border: 1px solid var(--color-border-subtle); padding: 10px; border-radius: 6px;">
-                <div style="font-weight: 600; font-size: 14px;">${sanitizeHtml(p.name)} <span style="font-size: 12px; color: var(--color-accent-base); font-weight: 400;">(${sanitizeHtml(p.usersCount)})</span></div>
-                <div style="font-size: 13px; color: var(--color-text-muted); margin: 4px 0;">${sanitizeHtml(p.description)}</div>
+              <div style="border: 1px solid var(--color-border-subtle); padding: var(--s1h); border-radius: 6px;">
+                <div style="font-weight: 600; font-size: var(--type-body-sm-size);">${sanitizeHtml(p.name)} <span style="font-size: var(--type-caption-size); color: var(--color-accent-base); font-weight: 400;">(${sanitizeHtml(p.usersCount)})</span></div>
+                <div style="font-size: var(--type-body-sm-size); color: var(--color-text-muted); margin: 4px 0;">${sanitizeHtml(p.description)}</div>
                 <div class="skills-row">
                   ${p.techStack.map(t => `<span class="chip">${sanitizeHtml(t)}</span>`).join('')}
                 </div>
@@ -735,32 +735,32 @@ export function renderFullProfileView(cand, state) {
   });
 
   return `
-    <div style="max-width: var(--container-max-width); margin: 0 auto; padding: 24px;">
+    <div style="max-width: var(--container-max-width); margin: 0 auto; padding: var(--s3);">
       
       <!-- 1. CANDIDATE HEADER -->
-      <div id="candidate-header" class="candidate-card" style="padding: 24px; margin-bottom: 20px; background: var(--color-bg-surface);">
-        <div style="display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap;">
+      <div id="candidate-header" class="candidate-card" style="padding: var(--s3); margin-bottom: var(--s2h); background: var(--color-bg-surface);">
+        <div style="display: flex; gap: var(--s2h); align-items: flex-start; flex-wrap: wrap;">
           <div class="avatar" style="width: 80px; height: 80px; font-size: 28px; font-weight: 700; border: 3px solid var(--color-accent-base); flex-shrink: 0;">
             ${sanitizeHtml(cand.avatar)}
           </div>
           <div style="flex: 1; min-width: 280px;">
-            <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: var(--s2); flex-wrap: wrap;">
               <div>
-                <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-                  <h1 style="font-size: 24px; font-weight: 700; color: var(--color-text-primary); font-family: var(--font-family-display, inherit); margin: 0;">${sanitizeHtml(cand.name)}</h1>
-                  <span class="badge ${cand.availability === 'Open to Work' ? 'badge-open-to-work' : 'badge-open-select'}" style="font-size: 11px; padding: 2px 8px;">
+                <div style="display: flex; align-items: center; gap: var(--s1h); flex-wrap: wrap;">
+                  <h1 style="font-size: var(--type-h2-size); font-weight: 700; color: var(--color-text-primary); font-family: var(--font-family-display, inherit); margin: 0;">${sanitizeHtml(cand.name)}</h1>
+                  <span class="badge ${cand.availability === 'Open to Work' ? 'badge-open-to-work' : 'badge-open-select'}" style="font-size: var(--type-caption-size); padding: 2px 8px;">
                     ● ${sanitizeHtml(cand.availability)}
                   </span>
                   ${cand.fitVerdict ? `
-                    <span class="badge ${cand.fitVerdict.status === 'Strong Fit' ? 'badge-open-to-work' : 'badge-open-select'}" style="font-weight: 700; font-size: 11px; padding: 2px 8px;">
+                    <span class="badge ${cand.fitVerdict.status === 'Strong Fit' ? 'badge-open-to-work' : 'badge-open-select'}" style="font-weight: 700; font-size: var(--type-caption-size); padding: 2px 8px;">
                       ${sanitizeHtml(cand.fitVerdict.status)}
                     </span>
                   ` : ''}
                 </div>
-                <div style="font-size: 14px; color: var(--color-text-secondary); margin-top: 4px; font-weight: 600;">
+                <div style="font-size: var(--type-body-sm-size); color: var(--color-text-secondary); margin-top: 4px; font-weight: 600;">
                   ${sanitizeHtml(cand.headline)} · ${sanitizeHtml(cand.company)}
                 </div>
-                <div style="font-size: 12px; color: var(--color-text-muted); margin-top: 6px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+                <div style="font-size: var(--type-caption-size); color: var(--color-text-muted); margin-top: 6px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
                   <span>📍 ${sanitizeHtml(cand.location)}</span> · 
                   <span>💻 ${sanitizeHtml(cand.workMode)}</span> · 
                   <span>⏳ ${cand.experienceYears} yrs exp</span> · 
@@ -769,7 +769,7 @@ export function renderFullProfileView(cand, state) {
               </div>
 
               <!-- Top Scores & Quick Actions -->
-              <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+              <div style="display: flex; align-items: center; gap: var(--s1h); flex-wrap: wrap;">
                 <div class="ai-hiring-score-box" style="padding: 6px 12px;">
                   <span class="score-num">${cand.aiHiringScore || 92}</span>
                   <span class="score-label">HiDevs AI Score</span>
@@ -788,11 +788,11 @@ export function renderFullProfileView(cand, state) {
       </div>
 
       <!-- Left Dossier Navigation + Right Section Cards Layout -->
-      <div style="display: grid; grid-template-columns: 220px 1fr; gap: 20px;">
+      <div style="display: grid; grid-template-columns: 220px 1fr; gap: var(--s2h);">
         
         <!-- Sticky Navigation Menu -->
         <div style="position: sticky; top: 80px; height: fit-content;">
-          <div style="font-size: 10px; font-weight: 800; text-transform: uppercase; color: var(--color-text-muted); margin-bottom: 8px; letter-spacing: 0.05em;">CANDIDATE PROFILE SECTIONS</div>
+          <div style="font-size: var(--type-label-size); font-weight: 800; text-transform: uppercase; color: var(--color-text-muted); margin-bottom: var(--s1); letter-spacing: 0.05em;">CANDIDATE PROFILE SECTIONS</div>
           <div class="dossier-nav-menu">
             <a href="#candidate-header" class="nav-link">👤 Candidate Header</a>
             <a href="#contact-info" class="nav-link">📞 Contact Information</a>
@@ -809,14 +809,14 @@ export function renderFullProfileView(cand, state) {
         </div>
 
         <!-- Right Section Cards Container -->
-        <div style="display: flex; flex-direction: column; gap: 16px;">
+        <div style="display: flex; flex-direction: column; gap: var(--s2);">
 
           <!-- 2. CONTACT INFORMATION CARD -->
           <div id="contact-info" class="candidate-card" style="padding: 16px;">
-            <div style="font-size: 12px; font-weight: 800; text-transform: uppercase; color: var(--color-text-muted); margin-bottom: 10px; letter-spacing: 0.04em;">
+            <div style="font-size: var(--type-caption-size); font-weight: 800; text-transform: uppercase; color: var(--color-text-muted); margin-bottom: 10px; letter-spacing: 0.04em;">
               📞 Contact Information & Credentials
             </div>
-            <div class="info-grid-3col" style="margin-bottom: 12px;">
+            <div class="info-grid-3col" style="margin-bottom: var(--s1h);">
               <div class="info-cell">
                 <span class="cell-lbl">Email Address</span>
                 <a href="mailto:${sanitizeHtml(cand.contact?.email || 'recruiter@hidevs.io')}" class="cell-val link-val">${icons.email} ${sanitizeHtml(cand.contact?.email || 'N/A')}</a>
@@ -839,21 +839,21 @@ export function renderFullProfileView(cand, state) {
 
           <!-- 3. PROFESSIONAL SUMMARY CARD -->
           <div id="pro-summary" class="candidate-card" style="padding: 16px;">
-            <div style="font-size: 12px; font-weight: 800; text-transform: uppercase; color: var(--color-text-muted); margin-bottom: 8px; letter-spacing: 0.04em;">
+            <div style="font-size: var(--type-caption-size); font-weight: 800; text-transform: uppercase; color: var(--color-text-muted); margin-bottom: var(--s1); letter-spacing: 0.04em;">
               📝 Professional Summary
             </div>
-            <p style="font-size: 13px; color: var(--color-text-secondary); line-height: 1.55; margin: 0;">
+            <p style="font-size: var(--type-body-sm-size); color: var(--color-text-secondary); line-height: 1.55; margin: 0;">
               ${sanitizeHtml(cand.about || cand.aiSummary)}
             </p>
           </div>
 
           <!-- 4. TECHNICAL SKILLS CARD -->
           <div id="tech-skills" class="candidate-card" style="padding: 16px;">
-            <div style="font-size: 12px; font-weight: 800; text-transform: uppercase; color: var(--color-text-muted); margin-bottom: 12px; letter-spacing: 0.04em;">
+            <div style="font-size: var(--type-caption-size); font-weight: 800; text-transform: uppercase; color: var(--color-text-muted); margin-bottom: var(--s1h); letter-spacing: 0.04em;">
               🛠️ Technical Skills & Preferred Stack
             </div>
             <!-- Preferred Tech Stack Progress Bars -->
-            <div style="margin-bottom: 12px;">
+            <div style="margin-bottom: var(--s1h);">
               <span class="cell-lbl" style="margin-bottom: 6px; display: block;">Preferred Tech Stack & Proficiency</span>
               <div class="tech-bars-grid">
                 ${(cand.techStack?.preferred || [
@@ -871,14 +871,14 @@ export function renderFullProfileView(cand, state) {
             </div>
             <!-- Skill Distribution Badges -->
             <div style="margin-bottom: 10px;">
-              <span class="cell-lbl" style="margin-bottom: 4px; display: block;">Assessed Primary Skills</span>
+              <span class="cell-lbl" style="margin-bottom: var(--s0); display: block;">Assessed Primary Skills</span>
               <div class="skills-row">
                 ${normalizedSkills.map(s => `<span class="chip active">${sanitizeHtml(s.name)} (${s.score})</span>`).join('')}
               </div>
             </div>
             <!-- Additional Skills Chips -->
             <div>
-              <span class="cell-lbl" style="margin-bottom: 4px; display: block;">Additional Skills & Tools</span>
+              <span class="cell-lbl" style="margin-bottom: var(--s0); display: block;">Additional Skills & Tools</span>
               <div class="skills-row">
                 ${(cand.techStack?.additional || ['Redis', 'PostgreSQL', 'Docker', 'Kubernetes', 'AWS Lambda']).map(a => `<span class="chip chip-secondary">${sanitizeHtml(a)}</span>`).join('')}
               </div>
@@ -887,25 +887,25 @@ export function renderFullProfileView(cand, state) {
 
           <!-- 5. EXPERIENCE CARD -->
           <div id="experience" class="candidate-card" style="padding: 16px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-              <div style="font-size: 12px; font-weight: 800; text-transform: uppercase; color: var(--color-text-muted); letter-spacing: 0.04em;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--s1h);">
+              <div style="font-size: var(--type-caption-size); font-weight: 800; text-transform: uppercase; color: var(--color-text-muted); letter-spacing: 0.04em;">
                 💼 Professional Experience Timeline
               </div>
               <span class="exp-band-badge">Total Experience: ${cand.experienceYears} Years</span>
             </div>
-            <div style="display: flex; flex-direction: column; gap: 12px;">
+            <div style="display: flex; flex-direction: column; gap: var(--s1h);">
               ${(cand.experience || [
                 { title: `${cand.experienceYears > 5 ? 'Senior' : 'Software'} Engineer`, company: cand.company, duration: "2023 - Present", highlights: [`Built core high-throughput production features.`, `Improved pipeline efficiency by 25%.`] }
               ]).map(e => `
-                <div style="padding: 10px 12px; background: var(--color-bg-subtle); border-radius: var(--radius-sm); border: 1px solid var(--color-border-subtle);">
-                  <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px;">
-                    <strong style="font-size: 13px; color: var(--color-text-primary);">${sanitizeHtml(e.title)}</strong>
-                    <span style="font-size: 11px; color: var(--color-text-muted); font-weight: 600;">${sanitizeHtml(e.duration)}</span>
+                <div style="padding: var(--s1h) 12px; background: var(--color-bg-subtle); border-radius: var(--radius-sm); border: 1px solid var(--color-border-subtle);">
+                  <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: var(--s0);">
+                    <strong style="font-size: var(--type-body-sm-size); color: var(--color-text-primary);">${sanitizeHtml(e.title)}</strong>
+                    <span style="font-size: var(--type-caption-size); color: var(--color-text-muted); font-weight: 600;">${sanitizeHtml(e.duration)}</span>
                   </div>
-                  <div style="font-size: 11px; color: var(--color-text-secondary); font-weight: 600; margin-bottom: 6px;">
+                  <div style="font-size: var(--type-caption-size); color: var(--color-text-secondary); font-weight: 600; margin-bottom: 6px;">
                     🏢 ${sanitizeHtml(e.company)}
                   </div>
-                  <ul style="margin: 0; padding-left: 16px; font-size: 11px; color: var(--color-text-secondary);">
+                  <ul style="margin: 0; padding-left: 16px; font-size: var(--type-caption-size); color: var(--color-text-secondary);">
                     ${(e.highlights || []).map(h => `<li style="margin-bottom: 2px;">${sanitizeHtml(h)}</li>`).join('')}
                   </ul>
                 </div>
@@ -915,7 +915,7 @@ export function renderFullProfileView(cand, state) {
 
           <!-- 6. EDUCATION CARD -->
           <div id="education" class="candidate-card" style="padding: 16px;">
-            <div style="font-size: 12px; font-weight: 800; text-transform: uppercase; color: var(--color-text-muted); margin-bottom: 10px; letter-spacing: 0.04em;">
+            <div style="font-size: var(--type-caption-size); font-weight: 800; text-transform: uppercase; color: var(--color-text-muted); margin-bottom: 10px; letter-spacing: 0.04em;">
               🎓 Academic Background & Credentials
             </div>
             <div class="education-card-row" style="margin: 0;">
@@ -927,19 +927,19 @@ export function renderFullProfileView(cand, state) {
 
           <!-- 7. PROJECTS & HACKATHONS CARD -->
           <div id="projects" class="candidate-card" style="padding: 16px;">
-            <div style="font-size: 12px; font-weight: 800; text-transform: uppercase; color: var(--color-text-muted); margin-bottom: 12px; letter-spacing: 0.04em;">
+            <div style="font-size: var(--type-caption-size); font-weight: 800; text-transform: uppercase; color: var(--color-text-muted); margin-bottom: var(--s1h); letter-spacing: 0.04em;">
               🚀 Featured Projects, Personal Projects & Hackathons
             </div>
-            <div style="display: flex; flex-direction: column; gap: 10px;">
+            <div style="display: flex; flex-direction: column; gap: var(--s1h);">
               ${(cand.projects || [
                 { name: `Production ML Pipeline`, description: `High-throughput asynchronous inference engine`, techStack: ['Python', 'FastAPI'], usersCount: '500+ daily active users', verified: true }
               ]).map(p => `
-                <div style="padding: 10px 12px; background: var(--color-bg-subtle); border-radius: var(--radius-sm); border: 1px solid var(--color-border-subtle);">
-                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-                    <strong style="font-size: 12px; color: var(--color-text-primary);">${sanitizeHtml(p.name)}</strong>
+                <div style="padding: var(--s1h) 12px; background: var(--color-bg-subtle); border-radius: var(--radius-sm); border: 1px solid var(--color-border-subtle);">
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--s0);">
+                    <strong style="font-size: var(--type-caption-size); color: var(--color-text-primary);">${sanitizeHtml(p.name)}</strong>
                     ${p.verified ? `<span class="eval-verified-badge">Verified Project</span>` : ''}
                   </div>
-                  <p style="font-size: 11px; color: var(--color-text-secondary); margin: 0 0 6px 0;">${sanitizeHtml(p.description)}</p>
+                  <p style="font-size: var(--type-caption-size); color: var(--color-text-secondary); margin: 0 0 6px 0;">${sanitizeHtml(p.description)}</p>
                   <div class="skills-row">
                     ${(p.techStack || []).map(t => `<span class="chip chip-secondary">${sanitizeHtml(t)}</span>`).join('')}
                   </div>
@@ -948,9 +948,9 @@ export function renderFullProfileView(cand, state) {
 
               ${(cand.hackathons || []).length > 0 ? `
                 <div style="margin-top: 6px;">
-                  <span class="cell-lbl" style="margin-bottom: 4px; display: block;">Hackathons & Challenges</span>
+                  <span class="cell-lbl" style="margin-bottom: var(--s0); display: block;">Hackathons & Challenges</span>
                   ${cand.hackathons.map(h => `
-                    <div style="font-size: 11px; color: var(--color-text-secondary); font-weight: 600;">
+                    <div style="font-size: var(--type-caption-size); color: var(--color-text-secondary); font-weight: 600;">
                       🏆 ${sanitizeHtml(h.name)} — <span style="color:#047857;">Rank: ${sanitizeHtml(h.rank)}</span> (${sanitizeHtml(h.date)})
                     </div>
                   `).join('')}
@@ -961,8 +961,8 @@ export function renderFullProfileView(cand, state) {
 
           <!-- 8. PERFORMANCE CARD -->
           <div id="performance" class="candidate-card" style="padding: 16px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-              <div style="font-size: 12px; font-weight: 800; text-transform: uppercase; color: #6B21A8; letter-spacing: 0.04em;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--s1h);">
+              <div style="font-size: var(--type-caption-size); font-weight: 800; text-transform: uppercase; color: #6B21A8; letter-spacing: 0.04em;">
                 📊 Developer Performance & Competency Matrix
               </div>
               <span class="exp-band-badge">${sanitizeHtml(cand.performanceDashboard?.experienceBand || 'Mid-Senior (3-5 Yrs)')}</span>
@@ -999,7 +999,7 @@ export function renderFullProfileView(cand, state) {
           <!-- 9. AI EVALUATION CARD -->
           <div id="ai-evaluation" class="candidate-card" style="padding: 16px;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-              <div style="font-size: 12px; font-weight: 800; text-transform: uppercase; color: var(--color-text-primary); letter-spacing: 0.04em;">
+              <div style="font-size: var(--type-caption-size); font-weight: 800; text-transform: uppercase; color: var(--color-text-primary); letter-spacing: 0.04em;">
                 📋 AI Evaluation Report
               </div>
               <button class="btn btn-secondary download-pdf-btn">↓ Download PDF Report</button>
@@ -1044,7 +1044,7 @@ export function renderFullProfileView(cand, state) {
 
           <!-- 10. CODING ACTIVITY CARD -->
           <div id="coding-activity" class="candidate-card" style="padding: 16px; background: #F0FDFA; border-color: #99F6E4;">
-            <div style="font-size: 12px; font-weight: 800; text-transform: uppercase; color: #0F766E; margin-bottom: 10px; letter-spacing: 0.04em;">
+            <div style="font-size: var(--type-caption-size); font-weight: 800; text-transform: uppercase; color: #0F766E; margin-bottom: 10px; letter-spacing: 0.04em;">
               ⚡ Coding Activity & Platform Metrics
             </div>
             <div class="coding-metrics-grid">
@@ -1081,7 +1081,7 @@ export function renderFullProfileView(cand, state) {
 
           <!-- 11. RECRUITER INSIGHTS CARD -->
           <div id="recruiter-insights" class="candidate-card" style="padding: 16px;">
-            <div style="font-size: 12px; font-weight: 800; text-transform: uppercase; color: var(--color-accent-base); margin-bottom: 10px; letter-spacing: 0.04em;">
+            <div style="font-size: var(--type-caption-size); font-weight: 800; text-transform: uppercase; color: var(--color-accent-base); margin-bottom: 10px; letter-spacing: 0.04em;">
               🎯 Recruiter Insights & Hiring Decision Rationale
             </div>
             <div class="info-grid-2col" style="margin-bottom: 10px;">
@@ -1093,7 +1093,7 @@ export function renderFullProfileView(cand, state) {
               </div>
               <div class="info-cell">
                 <span class="cell-lbl">Key Hiring Reasons</span>
-                <ul style="margin: 0; padding-left: 14px; font-size: 11px; color: var(--color-text-secondary);">
+                <ul style="margin: 0; padding-left: 14px; font-size: var(--type-caption-size); color: var(--color-text-secondary);">
                   ${(cand.whyInterview || [{ claim: `Proven ${cand.company} tenure`, evidence: `Built high-throughput production services.` }]).map(w => `<li><strong>${sanitizeHtml(w.claim)}:</strong> ${sanitizeHtml(w.evidence)}</li>`).join('')}
                 </ul>
               </div>
@@ -1101,13 +1101,13 @@ export function renderFullProfileView(cand, state) {
             <div class="info-grid-2col" style="padding-top: 8px; border-top: 1px solid var(--color-border-subtle);">
               <div class="info-cell">
                 <span class="cell-lbl" style="color: #D97706;">Potential Risks / Verification Points</span>
-                <ul style="margin: 0; padding-left: 14px; font-size: 11px; color: #B45309;">
+                <ul style="margin: 0; padding-left: 14px; font-size: var(--type-caption-size); color: #B45309;">
                   ${(cand.potentialConcerns || [`Notice period is ${cand.noticePeriodDays} days — verify timeline compatibility.`]).map(pc => `<li>${sanitizeHtml(pc)}</li>`).join('')}
                 </ul>
               </div>
               <div class="info-cell">
                 <span class="cell-lbl">Suggested Interview Focus Areas</span>
-                <ul style="margin: 0; padding-left: 14px; font-size: 11px; color: var(--color-text-secondary);">
+                <ul style="margin: 0; padding-left: 14px; font-size: var(--type-caption-size); color: var(--color-text-secondary);">
                   <li>Evaluate core system architecture and engineering depth.</li>
                   <li>Verify production throughput and deployment velocity.</li>
                 </ul>
@@ -1126,11 +1126,11 @@ export function renderWorkspaceView(state) {
   const allCandidates = state.candidates;
   
   return `
-    <div style="max-width: var(--container-max-width); margin: 0 auto; padding: 24px; width: 100%;">
+    <div style="max-width: var(--container-max-width); margin: 0 auto; padding: var(--s3); width: 100%;">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
         <div>
-          <h1 style="font-size: 24px; font-weight: 700;">Recruiter Hiring Workspace</h1>
-          <div style="font-size: 14px; color: var(--color-text-muted);">Manage candidate pipelines with drag-and-drop workflow stages.</div>
+          <h1 style="font-size: var(--type-h2-size); font-weight: 700;">Recruiter Hiring Workspace</h1>
+          <div style="font-size: var(--type-body-sm-size); color: var(--color-text-muted);">Manage candidate pipelines with drag-and-drop workflow stages.</div>
         </div>
       </div>
 
@@ -1161,9 +1161,9 @@ export function renderWorkspaceView(state) {
 function renderKanbanCard(cand, stage) {
   return `
     <div class="kanban-card" draggable="true" data-action="open-full-profile" data-id="${cand.id}" data-stage="${stage}">
-      <div style="font-weight: 600; font-size: 14px; color: var(--color-text-primary); margin-bottom: 2px;">${cand.name}</div>
-      <div style="font-size: 12px; color: var(--color-text-muted); margin-bottom: 6px;">${cand.headline}</div>
-      <div style="display: flex; justify-content: space-between; align-items: center; font-size: 11px;">
+      <div style="font-weight: 600; font-size: var(--type-body-sm-size); color: var(--color-text-primary); margin-bottom: 2px;">${cand.name}</div>
+      <div style="font-size: var(--type-caption-size); color: var(--color-text-muted); margin-bottom: 6px;">${cand.headline}</div>
+      <div style="display: flex; justify-content: space-between; align-items: center; font-size: var(--type-caption-size);">
         <span style="color: var(--color-accent-base); font-weight: 500;">★ Top ${cand.builderProof.aiRankPercentile}% AI Rank</span>
         <span style="color: var(--color-text-muted);">⋮</span>
       </div>

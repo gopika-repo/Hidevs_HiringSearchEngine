@@ -18,7 +18,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 0;
+  padding: var(--s1h) 0;
   flex-shrink: 0;
   z-index: 50;
   border-right: 1px solid var(--sidebar-border);
@@ -41,7 +41,7 @@
 .sidebar-nav-menu {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--s1);
   width: 100%;
   padding: 0 6px;
 }
