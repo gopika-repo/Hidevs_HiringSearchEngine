@@ -54,6 +54,10 @@ export const mockCandidates = [
     ],
     primarySkills: ["Python", "FastAPI", "LangChain"],
     roleTypes: ["AI / ML Engineer", "Backend"],
+    contact: {
+      email: "arjun.sharma@hidevs.io",
+      phone: "+91 98201 34567"
+    },
     links: {
       github: "https://github.com/arjunsharma-ml",
       linkedin: "https://linkedin.com/in/arjunsharma-ml",
@@ -123,6 +127,7 @@ export const mockCandidates = [
     ],
     primarySkills: ["React", "TypeScript", "Python", "FastAPI"],
     roleTypes: ["AI / ML Engineer", "Full Stack"],
+    contact: { email: "priya.mehta@hidevs.io", phone: "+91 97301 22456" },
     links: { github: "https://github.com/priyamehta-dev", linkedin: "https://linkedin.com/in/priyamehta-dev", portfolio: "https://priyamehta.io" },
     interviewReadiness: { completed: true, score: 82, assessedOn: "Jul 18, 2026" },
     builderProof: { projectsCount: 4, deployedProjectsCount: 3, hackathonWinsCount: 1, challengesCount: 3, aiRankPercentile: 15, streakDays: 14, monthsActiveCount: 8 },
@@ -165,6 +170,7 @@ export const mockCandidates = [
     ],
     primarySkills: ["Go", "Python", "Kubernetes", "Kafka"],
     roleTypes: ["Backend", "Platform Engineering"],
+    contact: { email: "rahul.kumar@hidevs.io", phone: "+91 90001 78901" },
     links: { github: "https://github.com/rahulkumar-backend", linkedin: "https://linkedin.com/in/rahulkumar-backend", portfolio: "https://rahulkumar.tech" },
     interviewReadiness: { completed: true, score: 94, assessedOn: "Jul 22, 2026" },
     builderProof: { projectsCount: 8, deployedProjectsCount: 6, hackathonWinsCount: 0, challengesCount: 6, aiRankPercentile: 2, streakDays: 45, monthsActiveCount: 12 },
@@ -200,6 +206,7 @@ export const mockCandidates = [
     ],
     primarySkills: ["React", "TypeScript", "Next.js"],
     roleTypes: ["Full Stack", "Backend"],
+    contact: { email: "ananya.verma@hidevs.io", phone: "+91 88001 56789" },
     links: { github: "https://github.com/ananya-verma", linkedin: "https://linkedin.com/in/ananyaverma-ui", portfolio: "https://ananya.design" },
     interviewReadiness: { completed: true, score: 91, assessedOn: "Jul 21, 2026" },
     builderProof: { projectsCount: 10, deployedProjectsCount: 8, hackathonWinsCount: 3, challengesCount: 7, aiRankPercentile: 5, streakDays: 60, monthsActiveCount: 14 },
@@ -234,6 +241,7 @@ export const mockCandidates = [
     ],
     primarySkills: ["Python", "FastAPI", "Kubernetes"],
     roleTypes: ["AI / ML Engineer", "Platform Engineering"],
+    contact: { email: "devansh.patel@hidevs.io", phone: "+91 91500 34501" },
     links: { github: "https://github.com/devansh-patel", linkedin: "https://linkedin.com/in/devansh-mlops" },
     interviewReadiness: { completed: false, score: 0, assessedOn: "" },
     builderProof: { projectsCount: 5, deployedProjectsCount: 4, hackathonWinsCount: 1, challengesCount: 4, aiRankPercentile: 12, streakDays: 18, monthsActiveCount: 6 },
@@ -269,6 +277,7 @@ export const mockCandidates = [
     ],
     primarySkills: ["Python", "PyTorch", "LangChain", "LlamaIndex"],
     roleTypes: ["AI / ML Engineer"],
+    contact: { email: "sneha.reddy@hidevs.io", phone: "+91 93300 12345" },
     links: { github: "https://github.com/sneha-reddy", linkedin: "https://linkedin.com/in/snehareddy-ai", portfolio: "https://snehareddy.ai" },
     interviewReadiness: { completed: true, score: 96, assessedOn: "Jul 23, 2026" },
     builderProof: { projectsCount: 9, deployedProjectsCount: 6, hackathonWinsCount: 4, challengesCount: 8, aiRankPercentile: 3, streakDays: 90, monthsActiveCount: 18 },
@@ -329,6 +338,10 @@ export const mockCandidates = [
       })),
       primarySkills: stackSel,
       roleTypes: roleSel,
+      contact: {
+        email: `candidate.${idx}@hidevs.io`,
+        phone: `+91 ${90000 + idx * 3}0 ${10000 + idx * 7}`
+      },
       links: {
         github: `https://github.com/candidate-${idx}`,
         linkedin: `https://linkedin.com/in/candidate-${idx}`,

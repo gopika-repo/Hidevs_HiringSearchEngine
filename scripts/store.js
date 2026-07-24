@@ -24,7 +24,9 @@ class Store {
         companyTier: null,
         education: null,
         minAiScore: null,
-        minProjects: null
+        minProjects: null,
+        hasGithub: false,
+        hasLinkedin: false
       },
       sortBy: 'Best Match',
       currentPage: 1,
@@ -93,6 +95,10 @@ class Store {
     } else if (['noticePeriod', 'salary', 'companyTier', 'education', 'minAiScore', 'minProjects'].includes(category)) {
       const valParsed = category === 'minAiScore' || category === 'minProjects' ? (value ? parseInt(value, 10) : null) : value;
       this.state.filters[category] = this.state.filters[category] === valParsed ? null : valParsed;
+    } else if (category === 'hasGithub') {
+      this.state.filters.hasGithub = !this.state.filters.hasGithub;
+    } else if (category === 'hasLinkedin') {
+      this.state.filters.hasLinkedin = !this.state.filters.hasLinkedin;
     }
     this.state.currentPage = 1;
     this.notify();
@@ -169,6 +175,8 @@ class Store {
     this.state.filters.education = null;
     this.state.filters.minAiScore = null;
     this.state.filters.minProjects = null;
+    this.state.filters.hasGithub = false;
+    this.state.filters.hasLinkedin = false;
     this.state.filters.skills.clear();
     this.state.filters.roleTypes.clear();
     this.state.filters.builderSignals.clear();
@@ -295,6 +303,10 @@ class Store {
         const projCount = cand.builderProof?.projectsCount ?? (cand.projects ? cand.projects.length : 0);
         if (projCount < this.state.filters.minProjects) return false;
       }
+
+      // Profile Links Filters
+      if (this.state.filters.hasGithub && !cand.links?.github) return false;
+      if (this.state.filters.hasLinkedin && !cand.links?.linkedin) return false;
 
       return true;
     });

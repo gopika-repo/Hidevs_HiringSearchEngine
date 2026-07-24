@@ -1203,3 +1203,90 @@
   line-height: 1.5;
   margin-bottom: 16px;
 }
+
+/* --- Phase 1: Candidate Contact & Professional Profile Styles --- */
+
+.card-profile-links {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.card-link-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  border: 1px solid var(--color-border-subtle);
+  background: var(--color-bg-subtle);
+  color: var(--color-text-secondary);
+  transition: border-color var(--duration-fast), background-color var(--duration-fast), color var(--duration-fast);
+}
+
+.card-link-btn:hover {
+  background: var(--color-bg-base);
+  border-color: var(--color-border-strong);
+  color: var(--color-text-primary);
+}
+
+.card-link-github:hover {
+  border-color: #333;
+  color: #111;
+}
+
+.card-link-linkedin:hover {
+  border-color: #0077B5;
+  color: #0077B5;
+}
+
+.card-contact-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 6px 10px;
+  background: var(--color-bg-base);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+  margin-bottom: var(--space-1-5);
+  font-size: 11px;
+}
+
+.contact-gate-label {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-text-muted);
+  padding: 1px 5px;
+  background: var(--color-bg-subtle);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+}
+
+.card-contact-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  transition: color var(--duration-fast);
+}
+
+.card-contact-item:hover {
+  color: var(--color-accent-base);
+  text-decoration: underline;
+}
+
+.contact-divider {
+  color: var(--color-border-strong);
+  font-size: 12px;
+}

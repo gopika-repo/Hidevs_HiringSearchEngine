@@ -158,6 +158,11 @@ export function renderCandidateCard(cand, state) {
             <span>💼 ${cand.experienceYears} yrs exp</span> · 
             <span>⏳ ${cand.noticePeriodDays === 0 ? 'Immediate Joiner' : cand.noticePeriodDays + 'd notice'}</span>
           </div>
+          <!-- Profile Links inline on card -->
+          <div class="card-profile-links">
+            ${cand.links?.github ? `<a class="card-link-btn card-link-github" href="${sanitizeHtml(cand.links.github)}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()" aria-label="GitHub profile">${icons.github} GitHub</a>` : ''}
+            ${cand.links?.linkedin ? `<a class="card-link-btn card-link-linkedin" href="${sanitizeHtml(cand.links.linkedin)}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()" aria-label="LinkedIn profile">${icons.linkedin} LinkedIn</a>` : ''}
+          </div>
         </div>
 
         <div class="scores-badge-col">
@@ -242,6 +247,19 @@ export function renderCandidateCard(cand, state) {
         <span class="skills-label">Verified Skills (Activity Proof):</span>
         ${top5Skills.map(s => `<span class="chip chip-verified">✓ ${sanitizeHtml(s)}</span>`).join('')}
       </div>
+
+      <!-- Gated Contact Information (Authorized Recruiters Only) -->
+      ${cand.contact ? `
+      <div class="card-contact-row">
+        <span class="contact-gate-label">Recruiter Access:</span>
+        <a class="card-contact-item" href="mailto:${sanitizeHtml(cand.contact.email)}" onclick="event.stopPropagation()" aria-label="Email ${sanitizeHtml(cand.name)}">
+          ${icons.email} ${sanitizeHtml(cand.contact.email)}
+        </a>
+        <span class="contact-divider">·</span>
+        <a class="card-contact-item" href="tel:${sanitizeHtml(cand.contact.phone)}" onclick="event.stopPropagation()" aria-label="Call ${sanitizeHtml(cand.name)}">
+          ${icons.phone} ${sanitizeHtml(cand.contact.phone)}
+        </a>
+      </div>` : ''}
 
       <!-- Action Buttons -->
       <div class="card-footer-bar">
@@ -457,6 +475,15 @@ export function renderFilterSidebar(state) {
               <button class="chip ${state.filters.builderSignals.has('problem_solving') ? 'active' : ''}" data-action="filter-signal" data-value="problem_solving">Problem Solving 85+</button>
               <button class="chip ${state.filters.builderSignals.has('communication') ? 'active' : ''}" data-action="filter-signal" data-value="communication">Comm 80+</button>
               <button class="chip ${state.filters.builderSignals.has('leadership') ? 'active' : ''}" data-action="filter-signal" data-value="leadership">Leadership 80+</button>
+            </div>
+          </div>
+
+          <!-- Profile Links Filter -->
+          <div class="sub-filter-block">
+            <label class="sub-filter-label">Professional Profiles</label>
+            <div class="filter-pills-row">
+              <button class="chip ${state.filters.hasGithub ? 'active' : ''}" data-action="filter-radio" data-category="hasGithub" value="true">${icons.github} Has GitHub</button>
+              <button class="chip ${state.filters.hasLinkedin ? 'active' : ''}" data-action="filter-radio" data-category="hasLinkedin" value="true">${icons.linkedin} Has LinkedIn</button>
             </div>
           </div>
         </div>
